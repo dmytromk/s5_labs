@@ -1,0 +1,47 @@
+package org.example.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Getter
+@Setter
+public class Customer {
+    @Id
+    private long id;
+
+    private String name;
+
+    @CreationTimestamp
+    @Column(name = "created_on")
+    private Instant createdOn;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="customer_mobile_tariff",
+            joinColumns=  @JoinColumn(name="customer_id", referencedColumnName="id"),
+            inverseJoinColumns= @JoinColumn(name="mobile_tariff_id", referencedColumnName="id"))
+    private Set<MobileTariff> mobileTariffs = new HashSet<MobileTariff>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="customer_home_tariff",
+            joinColumns=  @JoinColumn(name="customer_id", referencedColumnName="id"),
+            inverseJoinColumns= @JoinColumn(name="home_tariff_id", referencedColumnName="id"))
+    private Set<HomeTariff> homeTariffs = new HashSet<HomeTariff>();
+
+
+    public Customer(long id, String name, Instant createdOn) {
+        this.id = id;
+        this.name = name;
+        this.createdOn = createdOn;
+    }
+
+    public Customer() {
+
+    }
+}
