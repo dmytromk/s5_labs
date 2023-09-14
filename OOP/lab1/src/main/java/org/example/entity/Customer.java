@@ -14,6 +14,7 @@ import java.util.Set;
 @Setter
 public class Customer {
     @Id
+    @GeneratedValue
     private long id;
 
     private String name;

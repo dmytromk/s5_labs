@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class Tariff {
     @Id
+    @GeneratedValue
     private long id;
 
     @Column(name = "price_per_month")
