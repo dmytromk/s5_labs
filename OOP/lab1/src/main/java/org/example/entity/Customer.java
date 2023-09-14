@@ -44,4 +44,32 @@ public class Customer {
     public Customer() {
 
     }
+
+    public void addMobileTariff(MobileTariff mobileTariff) {
+        if (mobileTariff != null) {
+            mobileTariffs.add(mobileTariff);
+            mobileTariff.getCustomers().add(this);
+        }
+    }
+
+    public void removeMobileTariff(MobileTariff mobileTariff) {
+        if (mobileTariff != null && mobileTariffs.contains(mobileTariff)) {
+            mobileTariffs.remove(mobileTariff);
+            mobileTariff.getCustomers().remove(this);
+        }
+    }
+
+    public void addHomeTariff(HomeTariff homeTariff) {
+        if (homeTariff != null) {
+            homeTariffs.add(homeTariff);
+            homeTariff.getCustomers().add(this);
+        }
+    }
+
+    public void removeHomeTariff(HomeTariff homeTariff) {
+        if (homeTariff != null && homeTariffs.contains(homeTariff)) {
+            homeTariffs.remove(homeTariff);
+            homeTariff.getCustomers().remove(this);
+        }
+    }
 }
