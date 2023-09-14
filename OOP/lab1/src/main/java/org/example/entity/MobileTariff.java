@@ -15,10 +15,7 @@ public class MobileTariff extends Tariff {
 
     private int sms;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="customer_mobile_tariff",
-            joinColumns=  @JoinColumn(name="mobile_tariff_id", referencedColumnName="id"),
-            inverseJoinColumns= @JoinColumn(name="customer_id", referencedColumnName="id"))
+    @ManyToMany(mappedBy = "customer_mobile_tariff")
     private Set<Customer> customers = new HashSet<Customer>();
 
 

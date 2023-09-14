@@ -17,10 +17,7 @@ public class HomeTariff extends Tariff {
     @Column(name = "speed_mbps")
     private int speedMbps;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="customer_home_tariff",
-            joinColumns=  @JoinColumn(name="home_tariff_id", referencedColumnName="id"),
-            inverseJoinColumns= @JoinColumn(name="customer_id", referencedColumnName="id"))
+    @ManyToMany(mappedBy = "customer_home_tariff")
     private Set<Customer> customers = new HashSet<Customer>();
 
 
