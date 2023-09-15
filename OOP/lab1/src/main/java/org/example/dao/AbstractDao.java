@@ -17,7 +17,12 @@ public abstract class AbstractDao<T> {
 
     public List<T> findAll() {
         return TransactionManager.readTransaction(session ->
-                session.createQuery("FROM " + entityType.getSimpleName(), entityType).list());
+                session.createQuery("SELECT * FROM " + entityType.getSimpleName(), entityType).list());
+    }
+
+    public int countAll() {
+        return TransactionManager.readTransactionCount(session ->
+                session.createQuery("SELECT COUNT(*) " + entityType.getSimpleName(), entityType).getFirstResult());
     }
 
     public List<T> filterAllByParameter(String parameter) {

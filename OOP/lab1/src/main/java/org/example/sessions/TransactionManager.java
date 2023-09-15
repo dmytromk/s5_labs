@@ -17,6 +17,12 @@ public class TransactionManager {
         }
     }
 
+    public static int readTransactionCount(Function<Session, Integer> transactionOperation) {
+        try (Session session = sessionFactory.openSession()) {
+            return transactionOperation.apply(session);
+        }
+    }
+
     public static void commitTransaction(Consumer<Session> transactionOperation) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = null;
