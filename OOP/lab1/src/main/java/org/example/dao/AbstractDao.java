@@ -1,10 +1,8 @@
 package org.example.dao;
 
 import org.example.sessions.TransactionManager;
-import org.hibernate.query.Query;
 
 import java.util.List;
-import java.util.Map;
 
 public abstract class AbstractDao<T> {
     protected final Class<T> entityType;
@@ -20,6 +18,18 @@ public abstract class AbstractDao<T> {
     public List<T> findAll() {
         return TransactionManager.readTransaction(session ->
                 session.createQuery("FROM " + entityType.getSimpleName(), entityType).list());
+    }
+
+    public List<T> filterAllByParameter(String parameter) {
+        StringBuilder builder = new StringBuilder()
+                .append("FROM ")
+                .append(entityType.getSimpleName())
+                .append( " ORDER BY ")
+                .append(parameter);
+
+        return TransactionManager.readTransaction(session ->
+                session.createQuery(builder.toString(),
+                        entityType).list());
     }
 
     public void save(T entity) {
