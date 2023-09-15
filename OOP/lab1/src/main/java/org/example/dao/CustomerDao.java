@@ -3,32 +3,36 @@ package org.example.dao;
 import org.example.entity.Customer;
 import org.example.entity.HomeTariff;
 import org.example.entity.MobileTariff;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.example.sessions.TransactionManager;
 
 public class CustomerDao extends AbstractDao<Customer> {
 
-    public CustomerDao(SessionFactory sessionFactory) {
-        super(sessionFactory);
+    public CustomerDao(Class<Customer> entityType) {
+        super(entityType);
     }
 
-    public void addMobileTariffToCustomer(Customer customer, MobileTariff mobileTariff) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+    public void addMobileTariff(Customer customer, MobileTariff mobileTariff) {
         customer.addMobileTariff(mobileTariff);
-        session.persist(customer);
-        transaction.commit();
-        session.close();
+        TransactionManager.commitTransaction(session ->
+                session.persist(customer));
     }
 
-    public void addHomeTariffToCustomer(Customer customer, HomeTariff homeTariff) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+    public void removeMobileTariff(Customer customer, MobileTariff mobileTariff) {
+        customer.removeMobileTariff(mobileTariff);
+        TransactionManager.commitTransaction(session ->
+                session.remove(customer));
+    }
+
+    public void addHomeTariff(Customer customer, HomeTariff homeTariff) {
         customer.addHomeTariff(homeTariff);
-        session.persist(customer);
-        transaction.commit();
-        session.close();
+        TransactionManager.commitTransaction(session ->
+                session.persist(customer));
+    }
+
+    public void removeHomeTariff(Customer customer, HomeTariff homeTariff) {
+        customer.removeHomeTariff(homeTariff);
+        TransactionManager.commitTransaction(session ->
+                session.remove(customer));
     }
 
 }

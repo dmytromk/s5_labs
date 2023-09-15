@@ -1,11 +1,10 @@
 package org.example.dao;
 
 import org.example.entity.MobileTariff;
-import org.hibernate.SessionFactory;
 
 public class MobileTariffDao extends AbstractDao<MobileTariff> {
 
-    public MobileTariffDao(SessionFactory sessionFactory) {
-        super(sessionFactory);
+    public MobileTariffDao(Class<MobileTariff> entityType) {
+        super(entityType);
     }
 }

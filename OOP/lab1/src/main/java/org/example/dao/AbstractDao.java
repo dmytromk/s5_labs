@@ -1,45 +1,32 @@
 package org.example.dao;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.example.sessions.TransactionManager;
+import org.hibernate.query.Query;
+
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractDao<T> {
+    protected final Class<T> entityType;
 
-    protected final SessionFactory sessionFactory;
-
-    public AbstractDao(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public AbstractDao(Class<T> entityType) {
+        this.entityType = entityType;
     }
 
-    public T getById(Class<T> type, long id) {
-        Session session = sessionFactory.openSession();
-        T entity = session.get(type, id);
-        session.close();
-        return entity;
+    public T findById(long id) {
+        return TransactionManager.readTransaction(session -> session.get(entityType, id));
     }
 
-    public List<T> getAll(Class<T> type) {
-        Session session = sessionFactory.openSession();
-        List<T> entities = session.createQuery("from " + type.getName(), type).list();
-        session.close();
-        return entities;
+    public List<T> findAll() {
+        return TransactionManager.readTransaction(session ->
+                session.createQuery("FROM " + entityType.getSimpleName(), entityType).list());
     }
 
     public void save(T entity) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        session.persist(entity);
-        transaction.commit();
-        session.close();
+        TransactionManager.commitTransaction(session -> session.persist(entity));
     }
 
     public void delete(T entity) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        session.remove(entity);
-        transaction.commit();
-        session.close();
+        TransactionManager.commitTransaction(session -> session.remove(entity));
     }
 }

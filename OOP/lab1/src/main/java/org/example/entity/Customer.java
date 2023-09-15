@@ -35,13 +35,6 @@ public class Customer {
             inverseJoinColumns= @JoinColumn(name="home_tariff_id", referencedColumnName="id"))
     private Set<HomeTariff> homeTariffs = new HashSet<HomeTariff>();
 
-
-    public Customer(long id, String name, Instant createdOn) {
-        this.id = id;
-        this.name = name;
-        this.createdOn = createdOn;
-    }
-
     public Customer() {
 
     }
