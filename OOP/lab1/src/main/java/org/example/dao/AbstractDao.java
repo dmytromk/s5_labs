@@ -3,6 +3,7 @@ package org.example.dao;
 import org.example.sessions.TransactionManager;
 import org.hibernate.query.Query;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public abstract class AbstractDao<T> {
                         entityType).list());
     }
 
-    public List<T> findAllByParameters(Map<String, Object> parameters) {
+    public List<T> findAllByParameters(HashMap<String, Object> parameters) {
         StringBuilder builder = new StringBuilder()
                 .append("FROM ")
                 .append(entityType.getSimpleName())
