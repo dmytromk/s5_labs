@@ -39,7 +39,7 @@ public abstract class AbstractDao<T> {
                         entityType).list());
     }
 
-    public List<T> filterAllByParameters(Map<String, Object> parameters) {
+    public List<T> findAllByParameters(Map<String, Object> parameters) {
         StringBuilder builder = new StringBuilder()
                 .append("FROM ")
                 .append(entityType.getSimpleName())
