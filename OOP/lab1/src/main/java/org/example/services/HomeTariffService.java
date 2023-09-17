@@ -9,7 +9,7 @@ import java.util.List;
 
 public class HomeTariffService {
     private final HomeTariffDao homeTariffDao = new HomeTariffDao(HomeTariff.class);
-    private final HomeTariffFilter homeTariffFilter = new HomeTariffFilter();
+
 
     public HomeTariffService() {
 

@@ -2,13 +2,13 @@ package org.example.services;
 
 import org.example.dao.MobileTariffDao;
 import org.example.entities.MobileTariff;
+import org.example.filters.HomeTariffFilter;
 import org.example.filters.MobileTariffFilter;
 
 import java.util.List;
 
 public class MobileTariffService {
     private final MobileTariffDao mobileTariffDao = new MobileTariffDao(MobileTariff.class);
-    private final MobileTariffFilter mobileTariffFilter = new MobileTariffFilter();
 
     public MobileTariffService() {
 
