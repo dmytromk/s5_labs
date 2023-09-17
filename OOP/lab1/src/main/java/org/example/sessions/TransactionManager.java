@@ -17,7 +17,7 @@ public class TransactionManager {
         }
     }
 
-    public static int readTransactionCount(Function<Session, Integer> transactionOperation) {
+    public static Long readTransactionCount(Function<Session, Long> transactionOperation) {
         try (Session session = sessionFactory.openSession()) {
             return transactionOperation.apply(session);
         }

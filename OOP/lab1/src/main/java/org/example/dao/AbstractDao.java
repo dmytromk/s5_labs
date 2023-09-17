@@ -20,12 +20,14 @@ public abstract class AbstractDao<T> {
 
     public List<T> findAll() {
         return TransactionManager.readTransaction(session ->
-                session.createQuery("SELECT * FROM " + this.entityType.getSimpleName(), this.entityType).list());
+                session.createQuery("SELECT c FROM " + this.entityType.getSimpleName() + " c",
+                        this.entityType).list());
     }
 
-    public int countAll() {
+    public Long countAll() {
         return TransactionManager.readTransactionCount(session ->
-                session.createQuery("SELECT COUNT(*) " + this.entityType.getSimpleName(), this.entityType).getFirstResult());
+                session.createQuery("SELECT COUNT(c) FROM " + this.entityType.getSimpleName() + " c",
+                        Long.class).getSingleResult());
     }
 
     public List<T> sortAllByParameter(String parameter) {
@@ -33,6 +35,7 @@ public abstract class AbstractDao<T> {
                 .append("FROM ")
                 .append(this.entityType.getSimpleName())
                 .append( " ORDER BY ")
+                .append("c.")
                 .append(parameter);
 
         return TransactionManager.readTransaction(session ->

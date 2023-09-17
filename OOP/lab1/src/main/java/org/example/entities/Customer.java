@@ -73,8 +73,6 @@ public class Customer {
                 "id=" + this.id +
                 ", name='" + this.name + '\'' +
                 ", createdOn=" + this.createdOn +
-                ", mobileTariffs=" + this.mobileTariffs +
-                ", homeTariffs=" + this.homeTariffs +
                 '}';
     }
 }

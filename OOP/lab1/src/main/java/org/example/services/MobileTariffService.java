@@ -25,7 +25,7 @@ public class MobileTariffService {
         return this.mobileTariffDao.sortAllByParameter("price_per_month");
     }
 
-    public int countAll() {
+    public Long countAll() {
         return this.mobileTariffDao.countAll();
     }
 

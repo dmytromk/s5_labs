@@ -22,7 +22,7 @@ public class CustomerService {
         return this.customerDao.findAll();
     }
 
-    public int countAll() {
+    public Long countAll() {
         return this.customerDao.countAll();
     }
 

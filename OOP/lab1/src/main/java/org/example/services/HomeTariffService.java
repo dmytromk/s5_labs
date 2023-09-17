@@ -26,7 +26,7 @@ public class HomeTariffService {
         return this.homeTariffDao.sortAllByParameter("price_per_month");
     }
 
-    public int countAll() {
+    public Long countAll() {
         return this.homeTariffDao.countAll();
     }
 
