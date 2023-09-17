@@ -17,7 +17,7 @@ public class TariffDao<T extends Tariff, F extends Filter> extends AbstractDao<T
     public List<T> findAllByFilter(F filter) {
         StringBuilder builder = new StringBuilder()
                 .append("FROM ")
-                .append(entityType.getSimpleName())
+                .append(this.entityType.getSimpleName())
                 .append( " WHERE 1 = 1");
 
         HashMap<String, Object> parameters = filter.toMap();
@@ -40,7 +40,7 @@ public class TariffDao<T extends Tariff, F extends Filter> extends AbstractDao<T
         }
 
         return TransactionManager.readTransaction(session -> {
-            Query<T> query = session.createQuery(builder.toString(), entityType);
+            Query<T> query = session.createQuery(builder.toString(), this.entityType);
 
             for (Map.Entry<String, Object> entry : parameters.entrySet()) {
                 query.setParameter(entry.getKey(), entry.getValue());

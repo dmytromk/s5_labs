@@ -41,29 +41,40 @@ public class Customer {
 
     public void addMobileTariff(MobileTariff mobileTariff) {
         if (mobileTariff != null) {
-            mobileTariffs.add(mobileTariff);
+            this.mobileTariffs.add(mobileTariff);
             mobileTariff.getCustomers().add(this);
         }
     }
 
     public void removeMobileTariff(MobileTariff mobileTariff) {
-        if (mobileTariff != null && mobileTariffs.contains(mobileTariff)) {
-            mobileTariffs.remove(mobileTariff);
+        if (mobileTariff != null && this.mobileTariffs.contains(mobileTariff)) {
+            this.mobileTariffs.remove(mobileTariff);
             mobileTariff.getCustomers().remove(this);
         }
     }
 
     public void addHomeTariff(HomeTariff homeTariff) {
         if (homeTariff != null) {
-            homeTariffs.add(homeTariff);
+            this.homeTariffs.add(homeTariff);
             homeTariff.getCustomers().add(this);
         }
     }
 
     public void removeHomeTariff(HomeTariff homeTariff) {
-        if (homeTariff != null && homeTariffs.contains(homeTariff)) {
-            homeTariffs.remove(homeTariff);
+        if (homeTariff != null && this.homeTariffs.contains(homeTariff)) {
+            this.homeTariffs.remove(homeTariff);
             homeTariff.getCustomers().remove(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + this.id +
+                ", name='" + this.name + '\'' +
+                ", createdOn=" + this.createdOn +
+                ", mobileTariffs=" + this.mobileTariffs +
+                ", homeTariffs=" + this.homeTariffs +
+                '}';
     }
 }

@@ -10,10 +10,10 @@ import lombok.Setter;
 public class Tariff {
     @Id
     @GeneratedValue
-    private long id;
+    protected long id;
 
     @Column(name = "price_per_month")
-    private int pricePerMonth;
+    protected int pricePerMonth;
 
 
     public Tariff(long id, int pricePerMonth) {

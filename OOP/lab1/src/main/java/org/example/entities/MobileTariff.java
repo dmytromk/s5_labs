@@ -28,4 +28,14 @@ public class MobileTariff extends Tariff {
     public MobileTariff() {
         super();
     }
+
+    @Override
+    public String toString() {
+        return "MobileTariff{" +
+                "minutes=" + this.minutes +
+                ", sms=" + this.sms +
+                ", id=" + this.id +
+                ", pricePerMonth=" + this.pricePerMonth +
+                '}';
+    }
 }

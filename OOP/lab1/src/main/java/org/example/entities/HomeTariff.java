@@ -30,4 +30,14 @@ public class HomeTariff extends Tariff {
     public HomeTariff() {
 
     }
+
+    @Override
+    public String toString() {
+        return "HomeTariff{" +
+                "dataAllowanceMb=" + this.dataAllowanceMb +
+                ", speedMbps=" + this.speedMbps +
+                ", id=" + this.id +
+                ", pricePerMonth=" + this.pricePerMonth +
+                '}';
+    }
 }

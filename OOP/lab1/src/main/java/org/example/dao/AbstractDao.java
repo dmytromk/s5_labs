@@ -15,35 +15,35 @@ public abstract class AbstractDao<T> {
     }
 
     public T findById(long id) {
-        return TransactionManager.readTransaction(session -> session.get(entityType, id));
+        return TransactionManager.readTransaction(session -> session.get(this.entityType, id));
     }
 
     public List<T> findAll() {
         return TransactionManager.readTransaction(session ->
-                session.createQuery("SELECT * FROM " + entityType.getSimpleName(), entityType).list());
+                session.createQuery("SELECT * FROM " + this.entityType.getSimpleName(), this.entityType).list());
     }
 
     public int countAll() {
         return TransactionManager.readTransactionCount(session ->
-                session.createQuery("SELECT COUNT(*) " + entityType.getSimpleName(), entityType).getFirstResult());
+                session.createQuery("SELECT COUNT(*) " + this.entityType.getSimpleName(), this.entityType).getFirstResult());
     }
 
     public List<T> sortAllByParameter(String parameter) {
         StringBuilder builder = new StringBuilder()
                 .append("FROM ")
-                .append(entityType.getSimpleName())
+                .append(this.entityType.getSimpleName())
                 .append( " ORDER BY ")
                 .append(parameter);
 
         return TransactionManager.readTransaction(session ->
                 session.createQuery(builder.toString(),
-                        entityType).list());
+                        this.entityType).list());
     }
 
     public List<T> findAllByParameters(HashMap<String, Object> parameters) {
         StringBuilder builder = new StringBuilder()
                 .append("FROM ")
-                .append(entityType.getSimpleName())
+                .append(this.entityType.getSimpleName())
                 .append( " WHERE 1 = 1");
 
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
@@ -54,7 +54,7 @@ public abstract class AbstractDao<T> {
         }
 
         return TransactionManager.readTransaction(session -> {
-            Query<T> query = session.createQuery(builder.toString(), entityType);
+            Query<T> query = session.createQuery(builder.toString(), this.entityType);
 
             for (Map.Entry<String, Object> entry : parameters.entrySet()) {
                 query.setParameter(entry.getKey(), entry.getValue());

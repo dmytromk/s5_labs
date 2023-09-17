@@ -15,35 +15,35 @@ public class MobileTariffService {
     }
 
     public MobileTariff findById(long id) {
-        return mobileTariffDao.findById(id);
+        return this.mobileTariffDao.findById(id);
     }
 
     public List<MobileTariff> findAll() {
-        return mobileTariffDao.findAll();
+        return this.mobileTariffDao.findAll();
     }
 
     public List<MobileTariff> sortByPrice(){
-        return  mobileTariffDao.sortAllByParameter("price_per_month");
+        return this.mobileTariffDao.sortAllByParameter("price_per_month");
     }
 
     public int countAll() {
-        return mobileTariffDao.countAll();
+        return this.mobileTariffDao.countAll();
     }
 
 
     public void saveMobileTariff(MobileTariff mobileTariff) {
-        mobileTariffDao.save(mobileTariff);
+        this.mobileTariffDao.save(mobileTariff);
     }
 
     public void updateMobileTariff(MobileTariff mobileTariff) {
-        mobileTariffDao.update(mobileTariff);
+        this.mobileTariffDao.update(mobileTariff);
     }
 
     public void deleteMobileTariff(MobileTariff mobileTariff) {
-        mobileTariffDao.delete(mobileTariff);
+        this.mobileTariffDao.delete(mobileTariff);
     }
 
     public List<MobileTariff> findByFilter(MobileTariffFilter filter) {
-        return mobileTariffDao.findAllByFilter(filter);
+        return this.mobileTariffDao.findAllByFilter(filter);
     }
 }

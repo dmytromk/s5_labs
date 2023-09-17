@@ -19,28 +19,28 @@ public class MobileTariffFilter implements Filter {
     public HashMap<String, Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
 
-        if(minPricePerMonth != null){
-            result.put("minPricePerMonth", minPricePerMonth);
+        if(this.minPricePerMonth != null){
+            result.put("minPricePerMonth", this.minPricePerMonth);
         }
 
-        if(maxPricePerMonth != null){
-            result.put("maxPricePerMonth", maxPricePerMonth);
+        if(this.maxPricePerMonth != null){
+            result.put("maxPricePerMonth", this.maxPricePerMonth);
         }
 
-        if(minMinutes != null){
-            result.put("minMinutes", minMinutes);
+        if(this.minMinutes != null){
+            result.put("minMinutes", this.minMinutes);
         }
 
-        if(maxMinutes != null){
-            result.put("maxMinutes", maxMinutes);
+        if(this.maxMinutes != null){
+            result.put("maxMinutes", this.maxMinutes);
         }
 
-        if(minSms != null){
-            result.put("minSms", minSms);
+        if(this.minSms != null){
+            result.put("minSms", this.minSms);
         }
 
-        if(maxSms != null){
-            result.put("maxSms", maxSms);
+        if(this.maxSms != null){
+            result.put("maxSms", this.maxSms);
         }
 
         return result;

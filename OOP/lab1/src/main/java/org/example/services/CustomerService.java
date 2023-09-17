@@ -15,42 +15,42 @@ public class CustomerService {
     }
 
     public Customer findById(long id) {
-        return customerDao.findById(id);
+        return this.customerDao.findById(id);
     }
 
     public List<Customer> findAll() {
-        return customerDao.findAll();
+        return this.customerDao.findAll();
     }
 
     public int countAll() {
-        return customerDao.countAll();
+        return this.customerDao.countAll();
     }
 
     public void saveCustomer(Customer customer) {
-        customerDao.save(customer);
+        this.customerDao.save(customer);
     }
 
     public void updateCustomer(Customer customer) {
-        customerDao.update(customer);
+        this.customerDao.update(customer);
     }
 
     public void deleteCustomer(Customer customer) {
-        customerDao.delete(customer);
+        this.customerDao.delete(customer);
     }
 
     public void addMobileTariff(Customer customer, MobileTariff mobileTariff) {
-        customerDao.addMobileTariff(customer, mobileTariff);
+        this.customerDao.addMobileTariff(customer, mobileTariff);
     }
 
     public void removeMobileTariff(Customer customer, MobileTariff mobileTariff) {
-        customerDao.removeMobileTariff(customer, mobileTariff);
+        this.customerDao.removeMobileTariff(customer, mobileTariff);
     }
 
     public void addHomeTariff(Customer customer, HomeTariff homeTariff) {
-        customerDao.addHomeTariff(customer, homeTariff);
+        this.customerDao.addHomeTariff(customer, homeTariff);
     }
 
     public void removeHomeTariff(Customer customer, HomeTariff homeTariff) {
-        customerDao.removeHomeTariff(customer, homeTariff);
+        this.customerDao.removeHomeTariff(customer, homeTariff);
     }
 }
