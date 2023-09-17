@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "home_tariff")
 @Getter
 @Setter
 public class HomeTariff extends Tariff {
