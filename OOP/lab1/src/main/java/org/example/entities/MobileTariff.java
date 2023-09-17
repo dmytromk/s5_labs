@@ -31,11 +31,12 @@ public class MobileTariff extends Tariff {
 
     @Override
     public String toString() {
-        return "MobileTariff{" +
-                "minutes=" + this.minutes +
-                ", sms=" + this.sms +
-                ", id=" + this.id +
+        return "MobileTariff = {" +
+                "id =" + this.id +
+                ", name=" + this.name +
                 ", pricePerMonth=" + this.pricePerMonth +
+                ", minutes=" + this.minutes +
+                ", sms=" + this.sms +
                 '}';
     }
 }

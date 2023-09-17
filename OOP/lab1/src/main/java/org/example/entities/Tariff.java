@@ -12,6 +12,8 @@ public class Tariff {
     @GeneratedValue
     protected long id;
 
+    protected String name;
+
     @Column(name = "price_per_month")
     protected int pricePerMonth;
 
