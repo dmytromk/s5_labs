@@ -20,7 +20,7 @@ public abstract class AbstractDao<T> {
 
     public List<T> findAll() {
         return TransactionManager.readTransaction(session ->
-                session.createQuery("SELECT c FROM " + this.entityType.getSimpleName() + " c",
+                session.createQuery("FROM " + this.entityType.getSimpleName(),
                         this.entityType).list());
     }
 
@@ -35,7 +35,6 @@ public abstract class AbstractDao<T> {
                 .append("FROM ")
                 .append(this.entityType.getSimpleName())
                 .append( " ORDER BY ")
-                .append("c.")
                 .append(parameter);
 
         return TransactionManager.readTransaction(session ->

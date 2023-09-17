@@ -26,15 +26,13 @@ public class TariffDao<T extends Tariff, F extends Filter> extends AbstractDao<T
             builder.append(" AND ")
                     .append(entry.getKey());
 
-            if (entry.getKey().contains("min")){
+            if (entry.getKey().contains("min")) {
                 builder.append(" >= :");
-            }
-
-            else if (entry.getKey().contains("max")) {
+            } else if (entry.getKey().contains("max")) {
                 builder.append(" <= :");
+            } else {
+                builder.append(" = :");
             }
-
-            else builder.append(" = :");
 
             builder.append(entry.getKey());
         }
