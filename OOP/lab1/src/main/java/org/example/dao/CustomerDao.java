@@ -1,8 +1,8 @@
 package org.example.dao;
 
-import org.example.entity.Customer;
-import org.example.entity.HomeTariff;
-import org.example.entity.MobileTariff;
+import org.example.entities.Customer;
+import org.example.entities.HomeTariff;
+import org.example.entities.MobileTariff;
 import org.example.sessions.TransactionManager;
 
 public class CustomerDao extends AbstractDao<Customer> {

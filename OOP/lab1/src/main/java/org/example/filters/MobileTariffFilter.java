@@ -1,4 +1,4 @@
-package org.example.filter;
+package org.example.filters;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 @Getter
 @Setter
-public class MobileTariffFilter {
+public class MobileTariffFilter implements Filter {
     private Integer minPricePerMonth;
     private Integer maxPricePerMonth;
     private Integer minMinutes;

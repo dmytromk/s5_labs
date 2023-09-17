@@ -19,8 +19,8 @@
     <!-- <property name="default_schema">tariffs</property> -->
     <property name="hibernate.current_session_context_class">thread</property>
 
-    <mapping class="org.example.entity.Customer"></mapping>
-    <mapping class="org.example.entity.MobileTariff"></mapping>
-    <mapping class="org.example.entity.HomeTariff"></mapping>
+    <mapping class="org.example.entities.Customer"></mapping>
+    <mapping class="org.example.entities.MobileTariff"></mapping>
+    <mapping class="org.example.entities.HomeTariff"></mapping>
   </session-factory>
 </hibernate-configuration>
