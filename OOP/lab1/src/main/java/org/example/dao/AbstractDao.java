@@ -71,4 +71,8 @@ public abstract class AbstractDao<T> {
     public void delete(T entity) {
         TransactionManager.commitTransaction(session -> session.remove(entity));
     }
+
+    public void update(T entity) {
+        TransactionManager.commitTransaction(session -> session.merge(entity));
+    }
 }
