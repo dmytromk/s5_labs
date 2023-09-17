@@ -8,7 +8,7 @@ import org.example.entities.MobileTariff;
 import java.util.List;
 
 public class CustomerService {
-    private final CustomerDao customerDao = new CustomerDao(Customer.class);
+    private final CustomerDao customerDao = new CustomerDao();
 
     public CustomerService() {
 

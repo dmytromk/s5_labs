@@ -2,13 +2,12 @@ package org.example.services;
 
 import org.example.dao.HomeTariffDao;
 import org.example.entities.HomeTariff;
-import org.example.entities.MobileTariff;
 import org.example.filters.HomeTariffFilter;
 
 import java.util.List;
 
 public class HomeTariffService {
-    private final HomeTariffDao homeTariffDao = new HomeTariffDao(HomeTariff.class);
+    private final HomeTariffDao homeTariffDao = new HomeTariffDao();
 
 
     public HomeTariffService() {

@@ -5,7 +5,7 @@ import org.example.filters.MobileTariffFilter;
 
 public class MobileTariffDao extends TariffDao<MobileTariff, MobileTariffFilter> {
 
-    public MobileTariffDao(Class<MobileTariff> entityType) {
-        super(entityType);
+    public MobileTariffDao() {
+        super(MobileTariff.class);
     }
 }

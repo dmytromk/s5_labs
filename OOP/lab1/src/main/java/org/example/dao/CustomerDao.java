@@ -7,8 +7,8 @@ import org.example.sessions.TransactionManager;
 
 public class CustomerDao extends AbstractDao<Customer> {
 
-    public CustomerDao(Class<Customer> entityType) {
-        super(entityType);
+    public CustomerDao() {
+        super(Customer.class);
     }
 
     public void addMobileTariff(Customer customer, MobileTariff mobileTariff) {

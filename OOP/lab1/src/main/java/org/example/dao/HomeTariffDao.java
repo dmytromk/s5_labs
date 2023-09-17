@@ -5,7 +5,7 @@ import org.example.filters.HomeTariffFilter;
 
 public class HomeTariffDao extends TariffDao<HomeTariff, HomeTariffFilter> {
 
-    public HomeTariffDao(Class<HomeTariff> entityType) {
-        super(entityType);
+    public HomeTariffDao() {
+        super(HomeTariff.class);
     }
 }
