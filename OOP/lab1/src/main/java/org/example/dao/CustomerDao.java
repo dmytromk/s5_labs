@@ -14,25 +14,25 @@ public class CustomerDao extends AbstractDao<Customer> {
     public void addMobileTariff(Customer customer, MobileTariff mobileTariff) {
         customer.addMobileTariff(mobileTariff);
         TransactionManager.commitTransaction(session ->
-                session.persist(customer));
+                session.merge(customer));
     }
 
     public void removeMobileTariff(Customer customer, MobileTariff mobileTariff) {
         customer.removeMobileTariff(mobileTariff);
         TransactionManager.commitTransaction(session ->
-                session.remove(customer));
+                session.merge(customer));
     }
 
     public void addHomeTariff(Customer customer, HomeTariff homeTariff) {
         customer.addHomeTariff(homeTariff);
         TransactionManager.commitTransaction(session ->
-                session.persist(customer));
+                session.merge(customer));
     }
 
     public void removeHomeTariff(Customer customer, HomeTariff homeTariff) {
         customer.removeHomeTariff(homeTariff);
         TransactionManager.commitTransaction(session ->
-                session.remove(customer));
+                session.merge(customer));
     }
 
 }

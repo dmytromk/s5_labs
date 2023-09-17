@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,7 @@ public class HomeTariff extends Tariff {
     @Column(name = "speed_mbps")
     private int speedMbps;
 
-    @ManyToMany(mappedBy = "homeTariffs")
+    @ManyToMany(mappedBy = "homeTariffs", fetch = FetchType.EAGER)
     private Set<Customer> customers = new HashSet<Customer>();
 
 
@@ -40,5 +41,30 @@ public class HomeTariff extends Tariff {
                 ", dataAllowanceMb=" + this.dataAllowanceMb +
                 ", speedMbps=" + this.speedMbps +
                 '}';
+    }
+
+    public void addCustomer(Customer customer){
+        this.customers.add(customer);
+    }
+
+    public void removeCustomer(Customer customer){
+        this.customers.remove(customer);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof HomeTariff))
+            return false;
+
+        HomeTariff other = (HomeTariff) o;
+
+        return Objects.equals(this.id, other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getClass().hashCode();
     }
 }

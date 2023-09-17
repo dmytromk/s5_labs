@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,7 +18,7 @@ public class MobileTariff extends Tariff {
 
     private int sms;
 
-    @ManyToMany(mappedBy = "mobileTariffs")
+    @ManyToMany(mappedBy = "mobileTariffs", fetch = FetchType.EAGER)
     private Set<Customer> customers = new HashSet<Customer>();
 
 
@@ -39,5 +41,30 @@ public class MobileTariff extends Tariff {
                 ", minutes=" + this.minutes +
                 ", sms=" + this.sms +
                 '}';
+    }
+
+    public void addCustomer(Customer customer){
+        this.customers.add(customer);
+    }
+
+    public void removeCustomer(Customer customer){
+        this.customers.remove(customer);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof MobileTariff))
+            return false;
+
+        MobileTariff other = (MobileTariff) o;
+
+        return Objects.equals(this.id, other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getClass().hashCode();
     }
 }
