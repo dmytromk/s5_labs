@@ -20,27 +20,27 @@ public class HomeTariffFilter implements Filter {
         HashMap<String, Object> result = new HashMap<>();
 
         if(this.minPricePerMonth != null){
-            result.put("minPricePerMonth", this.minPricePerMonth);
+            result.put("min_pricePerMonth", this.minPricePerMonth);
         }
 
         if(this.maxPricePerMonth != null){
-            result.put("maxPricePerMonth", this.maxPricePerMonth);
+            result.put("max_pricePerMonth", this.maxPricePerMonth);
         }
 
         if(this.minDataAllowanceMb != null){
-            result.put("minDataAllowanceMb", this.minDataAllowanceMb);
+            result.put("min_dataAllowanceMb", this.minDataAllowanceMb);
         }
 
         if(this.maxDataAllowanceMb != null){
-            result.put("maxDataAllowanceMb", this.maxDataAllowanceMb);
+            result.put("max_dataAllowanceMb", this.maxDataAllowanceMb);
         }
 
         if(this.minSpeedMbps != null){
-            result.put("minSpeedMbps", this.minSpeedMbps);
+            result.put("min_speedMbps", this.minSpeedMbps);
         }
 
         if(this.maxSpeedMbps != null){
-            result.put("maxSpeedMbps", this.maxSpeedMbps);
+            result.put("max_speedMbps", this.maxSpeedMbps);
         }
 
         return result;

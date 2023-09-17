@@ -23,15 +23,17 @@ public class TariffDao<T extends Tariff, F extends Filter> extends AbstractDao<T
         HashMap<String, Object> parameters = filter.toMap();
 
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-            builder.append(" AND ")
-                    .append(entry.getKey());
+            builder.append(" AND ");
 
-            if (entry.getKey().contains("min")) {
-                builder.append(" >= :");
-            } else if (entry.getKey().contains("max")) {
-                builder.append(" <= :");
+            if (entry.getKey().contains("min_")) {
+                builder.append(entry.getKey().substring(4))
+                        .append(" >= :");
+            } else if (entry.getKey().contains("max_")) {
+                builder.append(entry.getKey().substring(4))
+                        .append(" <= :");
             } else {
-                builder.append(" = :");
+                builder.append(entry.getKey())
+                        .append(" = :");
             }
 
             builder.append(entry.getKey());
