@@ -15,7 +15,7 @@ public class MobileTariff extends Tariff {
 
     private int sms;
 
-    @ManyToMany(mappedBy = "customer_mobile_tariff")
+    @ManyToMany(mappedBy = "mobileTariffs")
     private Set<Customer> customers = new HashSet<Customer>();
 
 

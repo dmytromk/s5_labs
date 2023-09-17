@@ -17,7 +17,7 @@ public class HomeTariff extends Tariff {
     @Column(name = "speed_mbps")
     private int speedMbps;
 
-    @ManyToMany(mappedBy = "customer_home_tariff")
+    @ManyToMany(mappedBy = "homeTariffs")
     private Set<Customer> customers = new HashSet<Customer>();
 
 
