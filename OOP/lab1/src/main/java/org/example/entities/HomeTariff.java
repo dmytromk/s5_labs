@@ -36,7 +36,7 @@ public class HomeTariff extends Tariff {
     @Override
     public String toString() {
         return "HomeTariff{" +
-                "id =" + this.id +
+                "id=" + this.id +
                 ", pricePerMonth=" + this.pricePerMonth +
                 ", dataAllowanceMb=" + this.dataAllowanceMb +
                 ", speedMbps=" + this.speedMbps +

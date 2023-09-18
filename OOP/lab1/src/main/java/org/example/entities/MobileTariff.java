@@ -35,7 +35,7 @@ public class MobileTariff extends Tariff {
     @Override
     public String toString() {
         return "MobileTariff = {" +
-                "id =" + this.id +
+                "id=" + this.id +
                 ", name=" + this.name +
                 ", pricePerMonth=" + this.pricePerMonth +
                 ", minutes=" + this.minutes +
