@@ -18,8 +18,8 @@ public class Tariff {
     protected int pricePerMonth;
 
 
-    public Tariff(long id, int pricePerMonth) {
-        this.id = id;
+    public Tariff(String name, int pricePerMonth) {
+        this.name = name;
         this.pricePerMonth = pricePerMonth;
     }
 

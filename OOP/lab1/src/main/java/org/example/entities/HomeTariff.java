@@ -23,8 +23,8 @@ public class HomeTariff extends Tariff {
     private Set<Customer> customers = new HashSet<Customer>();
 
 
-    public HomeTariff(long id, int pricePerMonth, int dataAllowanceMb, int speedMbps) {
-        super(id, pricePerMonth);
+    public HomeTariff(String name, int pricePerMonth, int dataAllowanceMb, int speedMbps) {
+        super(name, pricePerMonth);
         this.dataAllowanceMb = dataAllowanceMb;
         this.speedMbps = speedMbps;
     }

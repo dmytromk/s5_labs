@@ -22,8 +22,8 @@ public class MobileTariff extends Tariff {
     private Set<Customer> customers = new HashSet<Customer>();
 
 
-    public MobileTariff(long id, int pricePerMonth, int minutes, int sms) {
-        super(id, pricePerMonth);
+    public MobileTariff(String name, int pricePerMonth, int minutes, int sms) {
+        super(name, pricePerMonth);
         this.minutes = minutes;
         this.sms = sms;
     }

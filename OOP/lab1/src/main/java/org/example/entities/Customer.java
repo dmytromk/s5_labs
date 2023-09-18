@@ -41,6 +41,10 @@ public class Customer {
 
     }
 
+    public Customer(String name) {
+        this.name = name;
+    }
+
     public void addMobileTariff(MobileTariff mobileTariff) {
         if (mobileTariff != null) {
             this.mobileTariffs.add(mobileTariff);
