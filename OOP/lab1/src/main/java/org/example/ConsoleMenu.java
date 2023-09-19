@@ -11,6 +11,7 @@ import org.example.services.MobileTariffService;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -22,7 +23,7 @@ public class ConsoleMenu {
     private Scanner scanner;
 
     public ConsoleMenu() {
-        //this.disableLogging();
+        this.disableLogging();
         this.customerService = new CustomerService();
         this.homeTariffService = new HomeTariffService();
         this.mobileTariffService = new MobileTariffService();
@@ -65,6 +66,8 @@ public class ConsoleMenu {
             System.out.println("8. Remove Mobile Tariff from Customer");
             System.out.println("9. Add Home Tariff to Customer");
             System.out.println("10. Remove Home Tariff from Customer");
+            System.out.println("11. Find All Mobile Tariffs for Customer");
+            System.out.println("12. Find All Home Tariffs for Customer");
             System.out.println("0. Back to Main Menu");
             System.out.print("Enter your choice: ");
             choice = this.scanner.nextInt();
@@ -73,7 +76,8 @@ public class ConsoleMenu {
             switch (choice) {
                 case 1 -> {
                     System.out.print("Enter customer ID: ");
-                    long customerId = this.scanner.nextLong();
+                    long customerId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     Customer customer = this.customerService.findById(customerId);
                     if (customer != null) {
                         System.out.println("Customer found: " + customer.getName());
@@ -107,7 +111,8 @@ public class ConsoleMenu {
                 }
                 case 5 -> {
                     System.out.print("Enter customer ID to update: ");
-                    long updateCustomerId = this.scanner.nextLong();
+                    long updateCustomerId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     Customer updatedCustomer = this.customerService.findById(updateCustomerId);
                     if (updatedCustomer != null) {
                         System.out.println(updatedCustomer);
@@ -126,7 +131,8 @@ public class ConsoleMenu {
                 }
                 case 6 -> {
                     System.out.print("Enter customer ID to delete: ");
-                    long deleteCustomerId = this.scanner.nextLong();
+                    long deleteCustomerId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     Customer deleteCustomer = this.customerService.findById(deleteCustomerId);
                     if (deleteCustomer != null) {
                         this.customerService.deleteCustomer(deleteCustomer);
@@ -137,11 +143,13 @@ public class ConsoleMenu {
                 }
                 case 7 -> {
                     System.out.print("Enter customer ID to add mobile tariff: ");
-                    long customerId = this.scanner.nextLong();
+                    long customerId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     Customer customer = this.customerService.findById(customerId);
                     if (customer != null) {
                         System.out.print("Enter mobile tariff ID to add: ");
-                        long mobileTariffId = this.scanner.nextLong();
+                        long mobileTariffId = this.scanner.nextInt();
+                        this.scanner.nextLine();
                         MobileTariff mobileTariff = this.mobileTariffService.findById(mobileTariffId);
                         if(mobileTariff != null) {
                             this.customerService.addMobileTariff(customer, mobileTariff);
@@ -154,11 +162,13 @@ public class ConsoleMenu {
                 }
                 case 8 -> {
                     System.out.print("Enter customer ID to delete mobile tariff: ");
-                    long customerId = this.scanner.nextLong();
+                    long customerId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     Customer customer = this.customerService.findById(customerId);
                     if (customer != null) {
                         System.out.print("Enter mobile tariff ID to delete: ");
-                        long mobileTariffId = this.scanner.nextLong();
+                        long mobileTariffId = this.scanner.nextInt();
+                        this.scanner.nextLine();
                         MobileTariff mobileTariff = this.mobileTariffService.findById(mobileTariffId);
                         if(mobileTariff != null) {
                             this.customerService.removeMobileTariff(customer, mobileTariff);
@@ -171,11 +181,13 @@ public class ConsoleMenu {
                 }
                 case 9 -> {
                     System.out.print("Enter customer ID to add home tariff: ");
-                    long customerId = this.scanner.nextLong();
+                    long customerId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     Customer customer = this.customerService.findById(customerId);
                     if (customer != null) {
                         System.out.print("Enter home tariff ID to add: ");
-                        long homeTariffId = this.scanner.nextLong();
+                        long homeTariffId = this.scanner.nextInt();
+                        this.scanner.nextLine();
                         HomeTariff homeTariff = this.homeTariffService.findById(homeTariffId);
                         if(homeTariff != null) {
                             this.customerService.addHomeTariff(customer, homeTariff);
@@ -188,16 +200,46 @@ public class ConsoleMenu {
                 }
                 case 10 -> {
                     System.out.print("Enter customer ID to remove home tariff: ");
-                    long customerId = this.scanner.nextLong();
+                    long customerId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     Customer customer = this.customerService.findById(customerId);
                     if (customer != null) {
                         System.out.print("Enter home tariff ID to remove: ");
-                        long homeTariffId = this.scanner.nextLong();
+                        long homeTariffId = this.scanner.nextInt();
+                        this.scanner.nextLine();
                         HomeTariff homeTariff = this.homeTariffService.findById(homeTariffId);
                         if(homeTariff != null) {
                             this.customerService.removeHomeTariff(customer, homeTariff);
                         } else {
                             System.out.println("Home tariff not found.");
+                        }
+                    } else {
+                        System.out.println("Customer not found.");
+                    }
+                }
+                case 11 -> {
+                    System.out.print("Enter customer ID to get their Mobile Tariffs: ");
+                    long customerId = this.scanner.nextInt();
+                    this.scanner.nextLine();
+                    Customer customer = this.customerService.findById(customerId);
+                    if (customer != null) {
+                        Set<MobileTariff> mobileTariffs = customer.getMobileTariffs();
+                        for (MobileTariff m : mobileTariffs) {
+                            System.out.println(m);
+                        }
+                    } else {
+                        System.out.println("Customer not found.");
+                    }
+                }
+                case 12 -> {
+                    System.out.print("Enter customer ID to get their Home Tariffs: ");
+                    long customerId = this.scanner.nextInt();
+                    this.scanner.nextLine();
+                    Customer customer = this.customerService.findById(customerId);
+                    if (customer != null) {
+                        Set<HomeTariff> homeTariffs = customer.getHomeTariffs();
+                        for (HomeTariff m : homeTariffs) {
+                            System.out.println(m);
                         }
                     } else {
                         System.out.println("Customer not found.");
@@ -231,7 +273,8 @@ public class ConsoleMenu {
             switch (choice) {
                 case 1 -> {
                     System.out.print("Enter mobile tariff ID: ");
-                    long mobileTariffId = this.scanner.nextLong();
+                    long mobileTariffId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     MobileTariff mobileTariff = this.mobileTariffService.findById(mobileTariffId);
                     if (mobileTariff != null) {
                         System.out.println(mobileTariff);
@@ -256,7 +299,7 @@ public class ConsoleMenu {
                     System.out.println("Total number of mobile tariffs: " + mobileTariffCount);
                 }
                 case 5 -> {
-                    System.out.println("Enter updated mobile tariff details... (skip if no updates)");
+                    System.out.println("Enter mobile tariff info");
 
                     String name = this.getStringInput("Enter mobile tariff name:");
                     Integer pricePerMonth = this.getIntegerInput("Enter mobile tariff price per month:");
@@ -273,7 +316,8 @@ public class ConsoleMenu {
                 }
                 case 6 -> {
                     System.out.print("Enter mobile tariff ID to update: ");
-                    long updateMobileTariffId = this.scanner.nextLong();
+                    long updateMobileTariffId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     MobileTariff updatedMobileTariff = this.mobileTariffService.findById(updateMobileTariffId);
                     if (updatedMobileTariff != null) {
                         System.out.println("Enter updated mobile tariff details... (skip if no updates)");
@@ -303,7 +347,8 @@ public class ConsoleMenu {
                 }
                 case 7 -> {
                     System.out.print("Enter mobile tariff ID to delete: ");
-                    long deleteMobileTariffId = this.scanner.nextLong();
+                    long deleteMobileTariffId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     MobileTariff deleteMobileTariff = this.mobileTariffService.findById(deleteMobileTariffId);
                     if (deleteMobileTariff != null) {
                         this.mobileTariffService.deleteMobileTariff(deleteMobileTariff);
@@ -377,7 +422,8 @@ public class ConsoleMenu {
             switch (choice) {
                 case 1 -> {
                     System.out.print("Enter home tariff ID: ");
-                    long homeTariffId = this.scanner.nextLong();
+                    long homeTariffId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     HomeTariff homeTariff = this.homeTariffService.findById(homeTariffId);
                     if (homeTariff != null) {
                         System.out.println(homeTariff);
@@ -402,7 +448,7 @@ public class ConsoleMenu {
                     System.out.println("Total number of home tariffs: " + homeTariffCount);
                 }
                 case 5 -> {
-                    System.out.println("Enter updated mobile tariff details... (skip if no updates)");
+                    System.out.println("Enter mobile tariff info");
 
                     String name = this.getStringInput("Enter home tariff name:");
                     Integer pricePerMonth = this.getIntegerInput("Enter home tariff price per month:");
@@ -420,7 +466,8 @@ public class ConsoleMenu {
                 }
                 case 6 -> {
                     System.out.print("Enter home tariff ID to update: ");
-                    long updateHomeTariffId = this.scanner.nextLong();
+                    long updateHomeTariffId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     HomeTariff updatedHomeTariff = this.homeTariffService.findById(updateHomeTariffId);
                     if (updatedHomeTariff != null) {
                         System.out.println("Enter updated home tariff details... (skip if no updates)");
@@ -450,7 +497,8 @@ public class ConsoleMenu {
                 }
                 case 7 -> {
                     System.out.print("Enter home tariff ID to delete: ");
-                    long deleteHomeTariffId = this.scanner.nextLong();
+                    long deleteHomeTariffId = this.scanner.nextInt();
+                    this.scanner.nextLine();
                     HomeTariff deleteHomeTariff = this.homeTariffService.findById(deleteHomeTariffId);
                     if (deleteHomeTariff != null) {
                         this.homeTariffService.deleteHomeTariff(deleteHomeTariff);

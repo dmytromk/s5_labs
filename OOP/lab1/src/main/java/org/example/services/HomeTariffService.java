@@ -23,7 +23,7 @@ public class HomeTariffService {
     }
 
     public List<HomeTariff> sortByPrice(){
-        return this.homeTariffDao.sortAllByParameter("price_per_month");
+        return this.homeTariffDao.sortAllByParameter("pricePerMonth");
     }
 
     public Long countAll() {
