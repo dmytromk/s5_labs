@@ -7,10 +7,10 @@ public class Manager {
 
     private int secondsLimit = 5;
 
-    private currentStatus fStatus;
-    private currentStatus gStatus;
+    private currentStatus fStatus = currentStatus.WAITE;
+    private currentStatus gStatus = currentStatus.WAITE;
     public enum currentStatus {
-        SUCCESS, FAIL, TIMEOUT, ISNAN, INFINITE
+        WAITE, CALCULATION, SUCCESS, FAIL, TIMEOUT, ISNAN, INFINITE
     }
 
     public void run(Double x) {
@@ -19,6 +19,8 @@ public class Manager {
         MyThread threadG = new MyThread("g", x);
         threadF.start();
         threadG.start();
+        fStatus = currentStatus.CALCULATION;
+        gStatus = currentStatus.CALCULATION;
 
         try {
             threadF.join(secondsLimit * 1000);
@@ -32,6 +34,8 @@ public class Manager {
         System.out.println("G status: " + gStatus);
 
         if (fStatus==currentStatus.SUCCESS && gStatus==currentStatus.SUCCESS) {
+            System.out.println("f(x) = " + threadF.result.getAsDouble());
+            System.out.println("g(x) = " + threadG.result.getAsDouble());
             this.answer = calculateAnswer(threadF.result.getAsDouble(),
                     threadG.result.getAsDouble());
             System.out.println("RESULT = " + this.answer);
