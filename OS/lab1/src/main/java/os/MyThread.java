@@ -17,6 +17,8 @@ public class MyThread extends Thread{
     @Override
     public void run() {
         try {
+            Thread.sleep(5000);
+
             if(functionName.equals("f")) {
                 result = OptionalDouble.of(Func.tryF(x).get());
                 synchronized (this){
@@ -35,7 +37,7 @@ public class MyThread extends Thread{
                 }
             }
         } catch (Exception e){
-            System.out.println("Couldn't compute function " + this.functionName);
+//            System.out.println("Couldn't compute function " + this.functionName);
         }
     }
 }
