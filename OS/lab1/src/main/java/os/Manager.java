@@ -1,6 +1,5 @@
 package os;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,12 +10,12 @@ public class Manager {
 
     private final Map<Double, Double> resultCache = new ConcurrentHashMap<>();
 
-    private currentStatus fStatus = currentStatus.WAITE;
-    private currentStatus gStatus = currentStatus.WAITE;
+    private currentStatus fStatus = currentStatus.WAIT;
+    private currentStatus gStatus = currentStatus.WAIT;
     private final Scanner scanner = new Scanner(System.in);
 
     public enum currentStatus {
-        WAITE, CALCULATION, SUCCESS, FAIL, TIMEOUT, ISNAN, INFINITE
+        WAIT, CALCULATION, SUCCESS, FAIL, TIMEOUT, ISNAN, INFINITE
     }
 
     public void run(Double x) {
@@ -128,21 +127,27 @@ public class Manager {
     }
 
     private void menu(MyThread... threads) {
-        int choice = 1;
+        int choice = -11;
 
         do {
             System.out.println("\n1. Cancel execution");
             System.out.println("2. Function statuses");
             System.out.println("Press any other button to exit this menu");
             System.out.print("Enter your choice: ");
-            choice = this.scanner.nextInt();
-            this.scanner.nextLine();
+            String input = this.scanner.nextLine();
 
-            switch (choice) {
-                case 1 -> interruptThreads(threads);
-                case 2 -> System.out.println("F status: " + fStatus +
-                        "\nG status: " + gStatus);
-                default -> System.out.println("You exited menu. Goodbye.\n");
+            try {
+                choice = Integer.parseInt(input);
+
+                switch (choice) {
+                    case 1 -> interruptThreads(threads);
+                    case 2 -> System.out.println("F status: " + fStatus +
+                            "\nG status: " + gStatus);
+                    default -> System.out.println("You exited menu. Goodbye.\n");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. You exited the menu. Goodbye.\n");
+                choice = 0;
             }
         } while (choice == 1 || choice == 2);
     }
