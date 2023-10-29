@@ -4,7 +4,9 @@ project(lab6)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(lab6 main.cpp
-        matrix.h)
+        matrix.cpp
+        matrix.h
+)
 
 find_package(MPI REQUIRED)
 set(MPI_EXECUTABLE_SUFFIX ".mpich")
