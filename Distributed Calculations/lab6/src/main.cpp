@@ -1,11 +1,17 @@
 #include <iostream>
 #include "mpi.h"
 
-int main(int argc, char **argv) {
-    printf("Before MPI_INIT\n");
+#include <stdio.h>
+#include "NaiveMultiplication.h"
+
+int main(int argc, char **argv)
+{
     MPI_Init(&argc, &argv);
-    printf("Parallel sect\n");
+
+    NaiveMultiplication::calculate(2);
+    //NaiveMultiplication::calculate(argc, argv, 4);
+
     MPI_Finalize();
-    printf("After MPI_FINALIZE\n");
+
     return 0;
 }

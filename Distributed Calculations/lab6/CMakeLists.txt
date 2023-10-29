@@ -4,8 +4,8 @@ project(lab6)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(lab6 src/main.cpp
-        src/matrix.cpp
         src/matrix.h
+        src/NaiveMultiplication.h
 )
 
 find_package(MPI REQUIRED)

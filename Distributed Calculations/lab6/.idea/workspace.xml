@@ -26,10 +26,11 @@
       <change beforePath="$PROJECT_DIR$/../lab4/records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../lab4/records.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lab4/task_c/Main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../lab4/task_c/Main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lab5/task_c/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../lab5/task_c/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matrix.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matrix.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OOP/lab1/src/main/java/org/example/ConsoleMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../OOP/lab1/src/main/java/org/example/ConsoleMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OS/lab1/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS/lab1/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OS/lab1/src/main/java/os/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS/lab1/src/main/java/os/Main.java" afterDir="false" />
@@ -102,7 +103,7 @@
       <option name="presentableId" value="Default" />
       <updated>1698526114511</updated>
       <workItem from="1698526116549" duration="1492000" />
-      <workItem from="1698527615684" duration="9334000" />
+      <workItem from="1698527615684" duration="24050000" />
     </task>
     <servers />
   </component>
