@@ -3,9 +3,9 @@ project(lab6)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(lab6 main.cpp
-        matrix.cpp
-        matrix.h
+add_executable(lab6 src/main.cpp
+        src/matrix.cpp
+        src/matrix.h
 )
 
 find_package(MPI REQUIRED)
