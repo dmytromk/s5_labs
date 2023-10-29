@@ -60,7 +60,7 @@ namespace SquareMatrix {
         std::uniform_real_distribution<double> distribution(min, max);
 
         for (int i = 0; i < size * size; i++) {
-            matrix[i] = distribution(gen);
+            matrix[i] = int(distribution(gen));
         }
     }
 
@@ -83,5 +83,29 @@ namespace SquareMatrix {
             }
             std::cout << std::endl;
         }
+    }
+
+    // Function to multiply two square matrices (naively)
+    void multiply(double* matrix1, double* matrix2, double* result, unsigned int size) {
+        for (unsigned int i = 0; i < size; i++) {
+            for (unsigned int j = 0; j < size; j++) {
+                result[i * size + j] = 0.0;
+                for (unsigned int k = 0; k < size; k++) {
+                    result[i * size + j] += matrix1[i * size + k] * matrix2[k * size + j];
+                }
+            }
+        }
+    }
+
+    // Function to check if two matrices are equal
+    bool areEqual(double* matrix1, double* matrix2, unsigned int size) {
+        for (unsigned int i = 0; i < size; i++) {
+            for (unsigned int j = 0; j < size; j++) {
+                if (matrix1[i * size + j] != matrix2[i * size + j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

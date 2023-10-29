@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 {
     MPI_Init(&argc, &argv);
 
-    NaiveMultiplication::calculate(2);
+    NaiveMultiplication::calculate(1400);
     //NaiveMultiplication::calculate(argc, argv, 4);
 
     MPI_Finalize();

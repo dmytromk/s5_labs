@@ -73,8 +73,6 @@ namespace NaiveMultiplication {
                 }
             }
 
-            printf("Test");
-
             MPI_Status Status;
 
             prev_data_num -= 1;
@@ -93,9 +91,15 @@ namespace NaiveMultiplication {
         if (proc_rank == 0) {
             end_time = MPI_Wtime();
             printf("Tape Algorithm[%dx%d]: %7.4f\n", matrix_size, matrix_size, end_time-start_time);
-            SquareMatrix::print(matrixA, matrix_size);
-            SquareMatrix::print(matrixB, matrix_size);
-            SquareMatrix::print(matrixC, matrix_size);
+
+            double *checker = new double[matrix_size * matrix_size];
+            SquareMatrix::multiply(matrixA, matrixB, checker, matrix_size);
+
+            if (SquareMatrix::areEqual(matrixC, checker, matrix_size)) {
+                printf("Matrices are equal.\n");
+            } else {
+                printf("Matrices are not equal.\n");
+            }
         }
 
         delete[] bufferA;
