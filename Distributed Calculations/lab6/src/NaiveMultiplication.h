@@ -16,11 +16,10 @@ void calculateNaiveMultiplication(unsigned int matrix_size) {
     int proc_rank, proc_size, tape_len;
     double *matrixA, *matrixB, *matrixC;
     double *bufferA, *bufferB, *bufferC;
+    double start_time, end_time;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank); // Ранг (номер) даного потоку
     MPI_Comm_size(MPI_COMM_WORLD, &proc_size); // Кількість потокіа
-
-    double start_time, end_time;
 
     if (proc_rank == 0) {
         matrixA = (double*)malloc(matrix_size * matrix_size * sizeof(double));
@@ -47,7 +46,7 @@ void calculateNaiveMultiplication(unsigned int matrix_size) {
     Scatter розподіляє частини задачі по всіх потоках з комунікатора (для 4 потоків кожному дістається четверта
     частина кожної матриці). 1-й параметр - звідки розподіляються дані, 2-й - кількість елементів відправлених на
     кожен потік, 3-й - тип даних, 4-й - приймаючий буфер, 5-й - його розмір, 6-й - кількість елементів отриманих на
-    кожному потоці,7-й - тип даних отримуваних елементів, 7-й - номер процеса відправника, що розподіляє дані,
+    кожному потоці, 7-й - тип даних отримуваних елементів, 8-й - номер процеса відправника, що розподіляє дані,
     останній - комунікатор.
     */
     MPI_Scatter(matrixA, tape_len * matrix_size, MPI_DOUBLE, bufferA, tape_len * matrix_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -87,7 +86,8 @@ void calculateNaiveMultiplication(unsigned int matrix_size) {
         Виконується циклічне пересилання стрічки з матриці B у сусідні процеси (напрямок пересилки - за зростанням
         рангів процесів).
         */
-        MPI_Sendrecv_replace(bufferB, tape_len * matrix_size, MPI_DOUBLE, next_proc, 0, prev_proc, 0, MPI_COMM_WORLD, &Status);
+        MPI_Sendrecv_replace(bufferB, tape_len * matrix_size, MPI_DOUBLE,
+                             next_proc, 0, prev_proc, 0, MPI_COMM_WORLD, &Status);
     }
 
     /*
