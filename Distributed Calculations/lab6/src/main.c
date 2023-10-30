@@ -8,9 +8,10 @@ int main(int argc, char **argv)
 {
     MPI_Init(&argc, &argv);
 
-    calculateNaiveMultiplication(10);
-    (10);
-    calculateCannonMultiplication(10);
+    int size = 4;
+
+    //calculateNaiveMultiplication(size);
+    calculateCannonMultiplication(size);
 
     MPI_Finalize();
 

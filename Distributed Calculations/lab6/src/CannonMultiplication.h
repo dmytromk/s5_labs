@@ -24,12 +24,13 @@ void matrixScatter(double *matrix, double *matrixBlock, unsigned int matrix_size
                     block_size * matrix_size, MPI_DOUBLE, 0, col_comm);
 
     for (int i = 0; i < block_size; i++) {
-        double* sub_row = (double*)malloc(sizeof(double) * block_size);
-        memcpy(sub_row, matrix_row + i * matrix_size, block_size * sizeof(int));
+        double* sub_row = (double*)malloc(sizeof(double) * matrix_size * (block_size - i));
+        memcpy(sub_row, matrix_row + i * matrix_size, block_size * sizeof(double));
 
         double *sub_row_result = (double *)malloc(sizeof(double) * block_size);
 
-        MPI_Scatter(sub_row, block_size, MPI_DOUBLE, sub_row_result, block_size, MPI_DOUBLE, 0, row_comm);
+        MPI_Scatter(sub_row, block_size, MPI_DOUBLE,
+                    sub_row_result, block_size, MPI_DOUBLE, 0, row_comm);
         memcpy(matrixBlock + i * block_size, sub_row_result, sizeof(double) * block_size);
 
         free(sub_row_result);
@@ -56,13 +57,15 @@ void calculateCannonMultiplication(unsigned int matrix_size) {
         return;
     }
 
+    matrixA = (double*)malloc(matrix_size * matrix_size * sizeof(double));
+    matrixB = (double*)malloc(matrix_size * matrix_size * sizeof(double));
+    matrixC = (double*)malloc(matrix_size * matrix_size * sizeof(double));
+
+    fill(matrixC, matrix_size, 0);
+
     if (proc_rank == 0) {
-        matrixA = (double*)malloc(matrix_size * matrix_size * sizeof(double));
-        matrixB = (double*)malloc(matrix_size * matrix_size * sizeof(double));
-        matrixC = (double*)malloc(matrix_size * matrix_size * sizeof(double));
         generateRandom(matrixA, matrix_size, 2, 10);
         generateRandom(matrixB, matrix_size, 2, 10);
-        fill(matrixC, matrix_size, 0);
         start_time = MPI_Wtime();
     }
 
@@ -153,16 +156,21 @@ void calculateCannonMultiplication(unsigned int matrix_size) {
     MPI_Barrier(MPI_COMM_WORLD);
 
     // Блоки матриць A і B, які містяться в процесі (i, j) перемножуються, і результат додається до матриці Сij
-    for (int i = 0; i < blockSize; i++)
-        for (int j = 0; j < blockSize; j++)
-            for (int k = 0; k < blockSize; k++)
+    for (int i = 0; i < blockSize; i++) {
+        for (int j = 0; j < blockSize; j++) {
+            for (int k = 0; k < blockSize; k++) {
                 blockMatrixC[i * blockSize + j] += blockMatrixA[i * blockSize + k] * blockMatrixB[k * blockSize + j];
+            }
+        }
+    };
 
 
     /*
     Для кожного рядка виконується циклічне пересилання блоків матриці A, які містяться в кожному потоці цього рядка,
     в напрямку зменшення номерів стовпців.
     */
+//    print(blockMatrixC, blockSize);
+//    printf("------------------\n");
     for (int iter = 0; iter < gridSize - 1; iter++) {
         int nextProc = grid_coords[1] - 1;
         if (nextProc < 0)
@@ -184,30 +192,42 @@ void calculateCannonMultiplication(unsigned int matrix_size) {
         MPI_Sendrecv_replace(blockMatrixB, blockSize, MPI_DOUBLE,
                              nextProc, 1, MPI_ANY_SOURCE, 1, col_comm, &status);
 
-        for (int i = 0; i < blockSize; i++)
-            for (int j = 0; j < blockSize; j++)
-                for (int k = 0; k < blockSize; k++)
-                    blockMatrixC[i * blockSize + j] += blockMatrixA[i * blockSize + k] * blockMatrixB[k * blockSize + j];
+        for (int i = 0; i < blockSize; i++) {
+            for (int j = 0; j < blockSize; j++) {
+                for (int k = 0; k < blockSize; k++) {
+                    blockMatrixC[i * blockSize + j] +=
+                            blockMatrixA[i * blockSize + k] * blockMatrixB[k * blockSize + j];
+                }
+            }
+        }
     }
 
     // Результат
     double *resultRow = (double *)malloc(matrix_size * blockSize * sizeof(double));
 
     for (int i = 0; i < blockSize; i++) {
-        MPI_Gather(&blockMatrixA[i * blockSize], blockSize, MPI_DOUBLE,
-                   &resultRow[i * matrix_size], blockSize, MPI_DOUBLE, 0, row_comm);
+//        MPI_Gather(&blockMatrixA[i * blockSize], blockSize, MPI_DOUBLE,
+//                   &resultRow[i * matrix_size], blockSize, MPI_DOUBLE, 0, row_comm);
 
-//        double *subRow = (double *)malloc(blockSize * sizeof(double));
-//        memcpy(subRow, blockMatrixC + i * blockSize, blockSize * sizeof(int));
-//
-//        double *subRowRes = (double *)malloc(gridSize * blockSize * sizeof(double));
-//
-//        MPI_Gather(subRow, blockSize, MPI_DOUBLE,
-//                   subRowRes, blockSize, MPI_DOUBLE, 0, row_comm);
-//        memcpy(&resultRow[i * matrix_size], subRowRes, gridSize * blockSize * sizeof(int));
-//
-//        free(subRow);
-//        free(subRowRes);
+        double *subRow = (double *)malloc(blockSize * (blockSize - i) * sizeof(double));
+        memcpy(subRow, blockMatrixC + i * blockSize, blockSize * sizeof(double));
+
+//        print(subRow, blockSize);
+//        printf("-----\n");
+
+        double *subRowRes = (double *)malloc(gridSize * blockSize * sizeof(double));
+
+        MPI_Gather(subRow, blockSize, MPI_DOUBLE,
+                   subRowRes, blockSize, MPI_DOUBLE, 0, row_comm);
+        memcpy(&resultRow[i * matrix_size], subRowRes, gridSize * blockSize * sizeof(double));
+
+//        print(subRowRes, gridSize * blockSize);
+//        printf("-----\n");
+//        print(resultRow, matrix_size * blockSize);
+//        printf("-----\n");
+
+        free(subRow);
+        free(subRowRes);
     }
 
     if (grid_coords[1] == 0)
@@ -221,10 +241,37 @@ void calculateCannonMultiplication(unsigned int matrix_size) {
         double *checker = (double *)malloc(matrix_size * matrix_size * sizeof(int));
         multiply(matrixA, matrixB, checker, matrix_size);
 
+        printf("");
+        printf("");
+        print(matrixA, matrix_size);
+        printf("");
+        print(matrixB, matrix_size);
+        printf("");
+        printf("");
+        print(matrixC, matrix_size);
+        printf("");
+        printf("");
+        print(checker, matrix_size);
+
         if (areEqual(matrixC, checker, matrix_size)) {
             printf("Matrices are equal.\n");
         } else {
             printf("Matrices are not equal.\n");
         }
+    }
+
+    free(subdims);
+    free(dim_dize);
+    free(grid_coords);
+    free(periodic);
+    free(resultRow);
+
+    free(blockMatrixA);
+    free(blockMatrixB);
+    free(blockMatrixC);
+    if (proc_rank == 0) {
+        free(matrixA);
+        free(matrixB);
+        free(matrixC);
     }
 }

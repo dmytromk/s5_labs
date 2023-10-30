@@ -59,7 +59,7 @@ void calculateNaiveMultiplication(unsigned int matrix_size) {
         prev_proc = proc_size - 1;
     int prev_data_num = proc_rank;
 
-    printf("Test size %d %d \n", proc_rank, proc_size);
+    //printf("Test size %d %d \n", proc_rank, proc_size);
 
     // Стрічкове перемноження матриць
     for (int p = 0; p < proc_size; p++) {
