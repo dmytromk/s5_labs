@@ -102,7 +102,7 @@ void run_naive(unsigned int size) {
 
     if (process_rank == 0) {
         end_time = MPI_Wtime();
-        printf("Tape Algorithm[%dx%d]: %7.4f\n", size, size, end_time - start_time);
+        printf("%7.4f", end_time - start_time);
 
 //            double *checker = (double*)malloc((size * size) * sizeof(double));
 //            multiply(A, B, checker, size);
