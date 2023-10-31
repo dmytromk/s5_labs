@@ -2,276 +2,150 @@
 // Created by Dmytro Mandziuk on 30.10.2023.
 //
 
-#pragma once
+#ifndef LAB6_CANNONMULTIPLICATION_H
+#define LAB6_CANNONMULTIPLICATION_H
 
-#include <time.h>
-#include <mpi.h>
-#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
+#include "Common.h"
 #include "matrix.h"
 
-int thread_grid_coords[2]; // Декартові координати даного потоку
-MPI_Comm col_comm;
-MPI_Comm row_comm;
+static int slice_size;
+static MPI_Comm col_Comm;
+static MPI_Comm row_Comm;
 
-// Розподілення блоків між потоками
-void matrixScatter(double *matrix, double *matrixBlock, unsigned int matrix_size, int block_size) {
-    double *matrix_row = (double *)malloc(sizeof(double) * block_size * matrix_size);
+int grid[2];
+int grid_size;
+static MPI_Comm grid_Comm;
 
-    if (thread_grid_coords[1] == 0)
-        MPI_Scatter(matrix, block_size * matrix_size, MPI_DOUBLE, matrix_row,
-                    block_size * matrix_size, MPI_DOUBLE, 0, col_comm);
+void shift_left(double* A, int size, int block_size) {
+    MPI_Status status;
 
-    for (int i = 0; i < block_size; i++) {
-        double* sub_row = (double*)malloc(sizeof(double) * matrix_size * (block_size - i));
-        memcpy(sub_row, matrix_row + i * matrix_size, block_size * sizeof(double));
+    int next_p = grid[1] + 1;
+    if (grid[1] == grid_size - 1) next_p = 0;
 
-        double *sub_row_result = (double *)malloc(sizeof(double) * block_size);
+    int prev_p = grid[1] - 1;
+    if (grid[1] == 0) prev_p = grid_size - 1;
 
-        MPI_Scatter(sub_row, block_size, MPI_DOUBLE,
-                    sub_row_result, block_size, MPI_DOUBLE, 0, row_comm);
-        memcpy(matrixBlock + i * block_size, sub_row_result, sizeof(double) * block_size);
-
-        free(sub_row_result);
-    }
-
-    free(matrix_row);
+    MPI_Sendrecv_replace(A, block_size * block_size, MPI_DOUBLE, next_p, 0, prev_p, 0, row_Comm, &status);
 }
 
-void calculateCannonMultiplication(unsigned int matrix_size) {
-    int proc_rank, proc_size, gridSize;
+void shift_right(double* B, int size, int block_size) {
+    MPI_Status Status;
 
-    double *matrixA, *matrixB, *matrixC;
-    double *blockMatrixA, *blockMatrixB, *blockMatrixC;
+    int NextProc = grid[0] + 1;
+    if (grid[0] == grid_size - 1) NextProc = 0;
 
-    double start_time, end_time;
+    int PrevProc = grid[0] - 1;
+    if (grid[0] == 0) PrevProc = grid_size - 1;
 
-    MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank); // Ранг (номер) даного потоку
-    MPI_Comm_size(MPI_COMM_WORLD, &proc_size); // Кількість потокіа
-    gridSize = (int) sqrt(proc_size); // Загальна кількість кроків
+    MPI_Sendrecv_replace(B, block_size * block_size, MPI_DOUBLE, NextProc, 0, PrevProc, 0, col_Comm, &Status);
+}
 
-    if (proc_size != gridSize * gridSize) {
-        if (proc_rank == 0)
-            printf("4) %d x %d, 0 ms (procNum != %d x %d)\n", matrix_size, matrix_size, gridSize, gridSize);
-        return;
+void collect_result_cannon(double* C, double* C_block, int size, int block_size) {
+    double* res_row = (double*)malloc(size * block_size * sizeof(double));
+
+    for (int i = 0; i < block_size; i++) {
+        MPI_Gather(&C_block[i * block_size], block_size, MPI_DOUBLE, &res_row[i * size], block_size, MPI_DOUBLE, 0, row_Comm);
     }
 
-    matrixA = (double*)malloc(matrix_size * matrix_size * sizeof(double));
-    matrixB = (double*)malloc(matrix_size * matrix_size * sizeof(double));
-    matrixC = (double*)malloc(matrix_size * matrix_size * sizeof(double));
+    if (grid[1] == 0) {
+        MPI_Gather(res_row, block_size * size, MPI_DOUBLE, C, block_size * size, MPI_DOUBLE, 0, col_Comm);
+    }
 
-    fill(matrixC, matrix_size, 0);
+    free(res_row);
+}
 
-    if (proc_rank == 0) {
-        generateRandom(matrixA, matrix_size, 2, 10);
-        generateRandom(matrixB, matrix_size, 2, 10);
+void init_computation(double* A, double* B, double* C, int size, int block_size) {
+    for (int i = 0; i < grid_size; ++i) {
+        multiply(A, B, C, block_size);
+        shift_left(A, size, block_size);
+        shift_right(B, size, block_size);
+    }
+}
+
+void scatter_block(double* matr, double* block, int row, int col, int size, int block_size) {
+    int start_pos = col * block_size * size + row * block_size;
+    int cur_pos = start_pos;
+    for (int i = 0; i < block_size; ++i, cur_pos += size) {
+        MPI_Scatter(&matr[cur_pos], block_size, MPI_DOUBLE, &(block[i * block_size]), block_size, MPI_DOUBLE, 0, grid_Comm);
+    }
+}
+
+void scatter(double* A, double* A_block, double* B, double* B_block, int size, int block_size) {
+    int N = grid[0];
+    int M = grid[1];
+    scatter_block(A, A_block, N, (N + M) % grid_size, size, block_size);
+    scatter_block(B, B_block, (N + M) % grid_size, M, size, block_size);
+}
+
+void init_grid_comms_cannon() {
+    int d_size[2], period[2], sub_dim[2];
+    d_size[0] = grid_size;
+    d_size[1] = grid_size;
+    period[0] = 0;
+    period[1] = 0;
+
+    MPI_Cart_create(MPI_COMM_WORLD, 2, d_size, period, 1, &grid_Comm);
+    MPI_Cart_coords(grid_Comm, process_rank, 2, grid);
+
+    sub_dim[0] = 0;
+    sub_dim[1] = 1;
+    MPI_Cart_sub(grid_Comm, sub_dim, &row_Comm);
+
+    sub_dim[0] = 1;
+    sub_dim[1] = 0;
+    MPI_Cart_sub(grid_Comm, sub_dim, &col_Comm);
+}
+
+void init_cannon(double** A, double** B, double** C, double** A_block, double** B_block, double** C_block, int* size, int* block_size) {
+    *block_size = *size / grid_size;
+    *A_block = (double*)malloc((*block_size * *block_size) * sizeof(double));
+    *B_block = (double*)malloc((*block_size * *block_size) * sizeof(double));
+    *C_block = (double*)malloc((*block_size * *block_size) * sizeof(double));
+    fill(*C_block, 0, *block_size);
+    if (process_rank == 0) {
+        *A = (double*)malloc((*size * *size) * sizeof(double));
+        *B = (double*)malloc((*size * *size) * sizeof(double));
+        *C = (double*)malloc((*size * *size) * sizeof(double));
+        generateRandom(*A, *size, 2, 10);
+        generateRandom(*B, *size, 2, 10);
+    }
+}
+
+void run_cannon(int argc, char* argv[], int size) {
+    double *A, *B, *C, *A_block, *B_block, *C_block;
+    int block_size;
+    double start_time, end_time;
+
+    grid_size = sqrt((double)process_num);
+    if (process_num != grid_size * grid_size) {
+        if (process_rank == 0) {
+            printf("\n Invalid number of processes for algorithm execution");
+        }
+        return;
+    }
+    init_grid_comms_cannon();
+    init_cannon(&A, &B, &C, &A_block, &B_block, &C_block, &size, &block_size);
+    scatter(A, A_block, B, B_block, size, block_size);
+
+    if (process_rank == 0) {
         start_time = MPI_Wtime();
     }
 
+    init_computation(A_block, B_block, C_block, size, block_size);
 
-    // Комунікатор для декартової решітки потоків
-    MPI_Comm grid_comm;
-
-    // Розмір блоку
-    int blockSize = matrix_size / gridSize;
-
-    // Виділення кожному з потоків місця для зберігання блоків з кожної матриці
-    blockMatrixA = (double*)malloc(blockSize * blockSize * sizeof(double));
-    blockMatrixB = (double*)malloc(blockSize * blockSize * sizeof(double));
-    blockMatrixC = (double*)malloc(blockSize * blockSize * sizeof(double));
-
-    // Потреба у фіксації виміру решітки потоків
-    int *subdims = (int*)malloc(2 * sizeof(int));
-
-    int *dim_dize = (int*)malloc(2 * sizeof(int));
-    int *periodic = (int*)malloc(2 * sizeof(int));
-
-    int *grid_coords = (int*)malloc(2 * sizeof(int));
-
-    dim_dize[0] = gridSize;
-    dim_dize[1] = gridSize;
-
-    periodic[0] = 0;
-    periodic[1] = 0;
-
-    /*
-    Створення комунікатора COMM_CART з декартовою топологією з процесів комунікатора COMM_WORLD. Перший параметр -
-    вхідний комунікатор, другий параметр задає розмірність одержуваної декартовой решітки, третій - цілочисельний масив
-    ndims розміру, що вказує на к-ть процесів в кожному вимірі, четвертий - це логічний масив, що визначає, чи є решітка
-    періодичною (значення false) уздовж кожного виміру. reorder - логічний параметр, що визначає, що при значенні
-    true системі дозволено змінювати порядок нумерації потоків для оптимізації розподілу потоків по фізичним
-    процесорам використовуваного паралельного комп'ютера. Останній параметр - комунікатор з новою декартовою топологією.
-    */
-    MPI_Cart_create(MPI_COMM_WORLD, 2, dim_dize, periodic, 1, &grid_comm);
-
-    // Визначення декартових координат для кожного потоку
-    MPI_Cart_coords(grid_comm, proc_rank, 2, grid_coords);
-
-    // Створення комунікаторів для кожного з рядків решітки потоків
-    subdims[0] = 0;
-    subdims[1] = 1;
-    MPI_Cart_sub(grid_comm, subdims, &row_comm);
-
-    // Створення комунікаторів для кожного зі стовпчиків решітки потоків
-    subdims[0] = 1;
-    subdims[1] = 0;
-    MPI_Cart_sub(grid_comm, subdims, &col_comm);
-
-    // Розподілення задач для потоків декартової решітки
-    matrixScatter(matrixA, blockMatrixA, matrix_size, blockSize);
-    matrixScatter(matrixB, blockMatrixB, matrix_size, blockSize);
-
-    /*
-    Для кожного рядка декартової решітки потоків (крім першого рядка) виконується циклічний зсув блоків матриці A
-    на (i - 1) позицій вліво (тобто в напрямку зменшення номерів стовпців).
-    */
-    if (grid_coords[0] != 0) {
-        int nextProc = grid_coords[1] - grid_coords[0];
-        if (nextProc < 0)
-            nextProc += gridSize;
-
-        MPI_Status status;
-
-        MPI_Sendrecv_replace(blockMatrixA, blockSize * blockSize, MPI_DOUBLE,
-                             nextProc, 0, MPI_ANY_SOURCE, 0, row_comm, &status);
-    }
-
-    /*
-    Для кожного стовпця j декартової решітки потоків (крім першого стовпця) виконується циклічний зсув блоків
-    матриці B на (j - 1) позицій вгору (тобто в напрямку зменшення номерів рядків).
-    */
-    if (grid_coords[1] != 0) {
-        int nextProc = grid_coords[0] - grid_coords[1];
-        if (nextProc < 0)
-            nextProc += gridSize;
-
-        MPI_Status status;
-
-        MPI_Sendrecv_replace(blockMatrixB, blockSize * blockSize, MPI_DOUBLE,
-                             nextProc, 1, MPI_ANY_SOURCE, 1, col_comm, &status);
-    }
-
-    // Встановлення бар'єру
-    MPI_Barrier(MPI_COMM_WORLD);
-
-    // Блоки матриць A і B, які містяться в процесі (i, j) перемножуються, і результат додається до матриці Сij
-    for (int i = 0; i < blockSize; i++) {
-        for (int j = 0; j < blockSize; j++) {
-            for (int k = 0; k < blockSize; k++) {
-                blockMatrixC[i * blockSize + j] += blockMatrixA[i * blockSize + k] * blockMatrixB[k * blockSize + j];
-            }
-        }
-    };
-
-
-    /*
-    Для кожного рядка виконується циклічне пересилання блоків матриці A, які містяться в кожному потоці цього рядка,
-    в напрямку зменшення номерів стовпців.
-    */
-//    print(blockMatrixC, blockSize);
-//    printf("------------------\n");
-    for (int iter = 0; iter < gridSize - 1; iter++) {
-        int nextProc = grid_coords[1] - 1;
-        if (nextProc < 0)
-            nextProc += gridSize;
-
-        MPI_Status status;
-
-        MPI_Sendrecv_replace(blockMatrixA, blockSize, MPI_DOUBLE,
-                             nextProc, 0, MPI_ANY_SOURCE, 0, row_comm, &status);
-
-        nextProc = grid_coords[0] - 1;
-        if (nextProc < 0)
-            nextProc += gridSize;
-
-        /*
-        Для кожного стовпця виконується циклічне пересилання блоків матриці B, які містяться в кожному потоці цього
-        стовпця, в напрямку зменшення номерів рядків.
-        */
-        MPI_Sendrecv_replace(blockMatrixB, blockSize, MPI_DOUBLE,
-                             nextProc, 1, MPI_ANY_SOURCE, 1, col_comm, &status);
-
-        for (int i = 0; i < blockSize; i++) {
-            for (int j = 0; j < blockSize; j++) {
-                for (int k = 0; k < blockSize; k++) {
-                    blockMatrixC[i * blockSize + j] +=
-                            blockMatrixA[i * blockSize + k] * blockMatrixB[k * blockSize + j];
-                }
-            }
-        }
-    }
-
-    // Результат
-    double *resultRow = (double *)malloc(matrix_size * blockSize * sizeof(double));
-
-    for (int i = 0; i < blockSize; i++) {
-//        MPI_Gather(&blockMatrixA[i * blockSize], blockSize, MPI_DOUBLE,
-//                   &resultRow[i * matrix_size], blockSize, MPI_DOUBLE, 0, row_comm);
-
-        double *subRow = (double *)malloc(blockSize * (blockSize - i) * sizeof(double));
-        memcpy(subRow, blockMatrixC + i * blockSize, blockSize * sizeof(double));
-
-//        print(subRow, blockSize);
-//        printf("-----\n");
-
-        double *subRowRes = (double *)malloc(gridSize * blockSize * sizeof(double));
-
-        MPI_Gather(subRow, blockSize, MPI_DOUBLE,
-                   subRowRes, blockSize, MPI_DOUBLE, 0, row_comm);
-        memcpy(&resultRow[i * matrix_size], subRowRes, gridSize * blockSize * sizeof(double));
-
-//        print(subRowRes, gridSize * blockSize);
-//        printf("-----\n");
-//        print(resultRow, matrix_size * blockSize);
-//        printf("-----\n");
-
-        free(subRow);
-        free(subRowRes);
-    }
-
-    if (grid_coords[1] == 0)
-        MPI_Gather(resultRow, blockSize * matrix_size, MPI_DOUBLE,
-                   matrixC, blockSize * matrix_size, MPI_DOUBLE, 0, col_comm);
-
-    if (proc_rank == 0) {
+    if (process_rank == 0) {
         end_time = MPI_Wtime();
-        printf("Cannon Algorithm[%dx%d]: %7.4f\n", matrix_size, matrix_size, end_time-start_time);
-
-        double *checker = (double *)malloc(matrix_size * matrix_size * sizeof(int));
-        multiply(matrixA, matrixB, checker, matrix_size);
-
-        printf("");
-        printf("");
-        print(matrixA, matrix_size);
-        printf("");
-        print(matrixB, matrix_size);
-        printf("");
-        printf("");
-        print(matrixC, matrix_size);
-        printf("");
-        printf("");
-        print(checker, matrix_size);
-
-        if (areEqual(matrixC, checker, matrix_size)) {
-            printf("Matrices are equal.\n");
-        } else {
-            printf("Matrices are not equal.\n");
-        }
     }
 
-    free(subdims);
-    free(dim_dize);
-    free(grid_coords);
-    free(periodic);
-    free(resultRow);
-
-    free(blockMatrixA);
-    free(blockMatrixB);
-    free(blockMatrixC);
-    if (proc_rank == 0) {
-        free(matrixA);
-        free(matrixB);
-        free(matrixC);
-    }
+    collect_result_cannon(C, C_block, size, block_size);
+    deconstruct(A, B, C, A_block, B_block, C_block);
+    if (process_rank == 0)
+        printf("Cannon Test results (size %dx%d): %f\n", size, size, end_time - start_time);
 }
+
+
+#endif //LAB6_CANNONMULTIPLICATION_H
