@@ -76,7 +76,7 @@ void transpose(double* matrix, unsigned int size) {
 void print(const double* matrix, unsigned int size) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            printf("%lf ", get(matrix, size, i, j));
+            printf("%d ", (int) get(matrix, size, i, j));
         }
         printf("\n");
     }
@@ -87,6 +87,17 @@ void multiply(double* matrix1, double* matrix2, double* result, unsigned int siz
     for (unsigned int i = 0; i < size; i++) {
         for (unsigned int j = 0; j < size; j++) {
             result[i * size + j] = 0.0;
+            for (unsigned int k = 0; k < size; k++) {
+                result[i * size + j] += matrix1[i * size + k] * matrix2[k * size + j];
+            }
+        }
+    }
+}
+
+// Function to multiply two square matrices (naively) and add result to third matrix
+void multiply_add(double* matrix1, double* matrix2, double* result, unsigned int size) {
+    for (unsigned int i = 0; i < size; i++) {
+        for (unsigned int j = 0; j < size; j++) {
             for (unsigned int k = 0; k < size; k++) {
                 result[i * size + j] += matrix1[i * size + k] * matrix2[k * size + j];
             }

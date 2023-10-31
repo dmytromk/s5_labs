@@ -20,7 +20,7 @@ int grid[2];
 int grid_size;
 static MPI_Comm grid_Comm;
 
-void shift_left(double* A, int size, int block_size) {
+void shift_left(double* A, int block_size) {
     MPI_Status status;
 
     int next_p = grid[1] + 1;
@@ -32,7 +32,7 @@ void shift_left(double* A, int size, int block_size) {
     MPI_Sendrecv_replace(A, block_size * block_size, MPI_DOUBLE, next_p, 0, prev_p, 0, row_Comm, &status);
 }
 
-void shift_right(double* B, int size, int block_size) {
+void shift_right(double* B, int block_size) {
     MPI_Status Status;
 
     int NextProc = grid[0] + 1;
@@ -51,6 +51,9 @@ void collect_result_cannon(double* C, double* C_block, int size, int block_size)
         MPI_Gather(&C_block[i * block_size], block_size, MPI_DOUBLE, &res_row[i * size], block_size, MPI_DOUBLE, 0, row_Comm);
     }
 
+//    print(res_row, size * block_size);
+//    printf("-----\n");
+
     if (grid[1] == 0) {
         MPI_Gather(res_row, block_size * size, MPI_DOUBLE, C, block_size * size, MPI_DOUBLE, 0, col_Comm);
     }
@@ -58,11 +61,30 @@ void collect_result_cannon(double* C, double* C_block, int size, int block_size)
     free(res_row);
 }
 
-void init_computation(double* A, double* B, double* C, int size, int block_size) {
+void init_computation(double* A, double* B, double* C, int block_size) {
     for (int i = 0; i < grid_size; ++i) {
-        multiply(A, B, C, block_size);
-        shift_left(A, size, block_size);
-        shift_right(B, size, block_size);
+        multiply_add(A, B, C, block_size);
+
+//        printf("-------\n");
+//        printf("C = %d\n", process_rank);
+//        print(A, block_size);
+//        print(B, block_size);
+//        print(C, block_size);
+//        printf("-------\n");
+
+        shift_left(A, block_size);
+
+//        printf("-------\n");
+//        printf("A = %d\n", process_rank);
+//        print(A, block_size);
+//        printf("-------\n");
+
+        shift_right(B, block_size);
+
+//        printf("-------\n");
+//        printf("B = %d\n", process_rank);
+//        print(B, block_size);
+//        printf("-------\n");
     }
 }
 
@@ -82,11 +104,9 @@ void scatter(double* A, double* A_block, double* B, double* B_block, int size, i
 }
 
 void init_grid_comms_cannon() {
-    int d_size[2], period[2], sub_dim[2];
-    d_size[0] = grid_size;
-    d_size[1] = grid_size;
-    period[0] = 0;
-    period[1] = 0;
+    int d_size[2] = {grid_size, grid_size};
+    int period[2] = {0, 0};
+    int sub_dim[2];
 
     MPI_Cart_create(MPI_COMM_WORLD, 2, d_size, period, 1, &grid_Comm);
     MPI_Cart_coords(grid_Comm, process_rank, 2, grid);
@@ -110,8 +130,8 @@ void init_cannon(double** A, double** B, double** C, double** A_block, double** 
         *A = (double*)malloc((*size * *size) * sizeof(double));
         *B = (double*)malloc((*size * *size) * sizeof(double));
         *C = (double*)malloc((*size * *size) * sizeof(double));
-        generateRandom(*A, *size, 2, 10);
-        generateRandom(*B, *size, 2, 10);
+        generateRandom(*A, *size, 2, 4);
+        generateRandom(*B, *size, 2, 4);
     }
 }
 
@@ -127,6 +147,7 @@ void run_cannon(int argc, char* argv[], int size) {
         }
         return;
     }
+
     init_grid_comms_cannon();
     init_cannon(&A, &B, &C, &A_block, &B_block, &C_block, &size, &block_size);
     scatter(A, A_block, B, B_block, size, block_size);
@@ -135,16 +156,29 @@ void run_cannon(int argc, char* argv[], int size) {
         start_time = MPI_Wtime();
     }
 
-    init_computation(A_block, B_block, C_block, size, block_size);
-
-    if (process_rank == 0) {
-        end_time = MPI_Wtime();
-    }
+    init_computation(A_block, B_block, C_block, block_size);
 
     collect_result_cannon(C, C_block, size, block_size);
+    if (process_rank == 0) {
+        end_time = MPI_Wtime();
+        printf("Cannon Algorithm[%dx%d]: %7.4f\n", size, size, end_time - start_time);
+
+        double *checker = (double*)malloc((size * size) * sizeof(double));
+        multiply(A, B, checker, size);
+
+//        print(A, size);
+//        print(B, size);
+//        print(C, size);
+//        print(checker, size);
+//
+//        if (areEqual(C, checker, size)) {
+//            printf("Matrices are equal.\n");
+//        } else {
+//            printf("Matrices are not equal.\n");
+//        }
+    }
+
     deconstruct(A, B, C, A_block, B_block, C_block);
-    if (process_rank == 0)
-        printf("Cannon Test results (size %dx%d): %f\n", size, size, end_time - start_time);
 }
 
 

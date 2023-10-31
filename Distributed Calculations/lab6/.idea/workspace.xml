@@ -28,10 +28,12 @@
       <change beforePath="$PROJECT_DIR$/../lab4/task_c/Main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../lab4/task_c/Main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lab5/task_c/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../lab5/task_c/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CannonMultiplication.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main" beforeDir="false" afterPath="$PROJECT_DIR$/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.dSYM/Contents/Resources/DWARF/main" beforeDir="false" afterPath="$PROJECT_DIR$/main.dSYM/Contents/Resources/DWARF/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CannonMultiplication.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/CannonMultiplication.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/NaiveMultiplication.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/NaiveMultiplication.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OOP/lab1/src/main/java/org/example/ConsoleMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../OOP/lab1/src/main/java/org/example/ConsoleMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OS/lab1/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS/lab1/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OS/lab1/src/main/java/os/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS/lab1/src/main/java/os/Main.java" afterDir="false" />
@@ -44,7 +46,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
@@ -106,7 +108,7 @@
       <updated>1698526114511</updated>
       <workItem from="1698526116549" duration="1492000" />
       <workItem from="1698527615684" duration="53376000" />
-      <workItem from="1698734739078" duration="6545000" />
+      <workItem from="1698734739078" duration="17374000" />
     </task>
     <servers />
   </component>
