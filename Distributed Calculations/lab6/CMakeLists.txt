@@ -8,6 +8,7 @@ add_executable(lab6 src/main.c
         src/NaiveMultiplication.h
         src/CannonMultiplication.h
         src/Common.h
+        src/FoxMultiplication.h
 )
 
 find_package(MPI REQUIRED)

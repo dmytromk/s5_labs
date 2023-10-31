@@ -5,8 +5,6 @@
 #ifndef LAB6_CANNONMULTIPLICATION_H
 #define LAB6_CANNONMULTIPLICATION_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 
 #include "Common.h"
@@ -135,7 +133,7 @@ void init_cannon(double** A, double** B, double** C, double** A_block, double** 
     }
 }
 
-void run_cannon(int argc, char* argv[], int size) {
+void run_cannon(int size) {
     double *A, *B, *C, *A_block, *B_block, *C_block;
     int block_size;
     double start_time, end_time;
@@ -163,9 +161,9 @@ void run_cannon(int argc, char* argv[], int size) {
         end_time = MPI_Wtime();
         printf("Cannon Algorithm[%dx%d]: %7.4f\n", size, size, end_time - start_time);
 
-        double *checker = (double*)malloc((size * size) * sizeof(double));
-        multiply(A, B, checker, size);
-
+//        double *checker = (double*)malloc((size * size) * sizeof(double));
+//        multiply(A, B, checker, size);
+//
 //        print(A, size);
 //        print(B, size);
 //        print(C, size);

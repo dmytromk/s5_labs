@@ -76,7 +76,7 @@ void transpose(double* matrix, unsigned int size) {
 void print(const double* matrix, unsigned int size) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            printf("%d ", (int) get(matrix, size, i, j));
+            printf("%lf ", get(matrix, size, i, j));
         }
         printf("\n");
     }
