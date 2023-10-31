@@ -17,7 +17,7 @@ int fox_grid[2];
 int fox_grid_size;
 static MPI_Comm fox_grid_Comm;
 
-void initGridCommsFox() {
+void init_grid_comms_fox() {
     int dim_size[2];
     int period[2];
     int sub_dimension[2];
@@ -35,7 +35,7 @@ void initGridCommsFox() {
     MPI_Cart_sub(fox_grid_Comm, sub_dimension, &ColComm);
 }
 
-void initFox(double** A, double** B, double** C, double** A_block, double** B_block, double** C_block, double** A_sup_block, int* size, int* block_size) {
+void init_fox(double** A, double** B, double** C, double** A_block, double** B_block, double** C_block, double** A_sup_block, int* size, int* block_size) {
     *block_size = *size / fox_grid_size;
     *A_block = (double*)malloc((*block_size * *block_size) * sizeof(double));
     *B_block = (double*)malloc((*block_size * *block_size) * sizeof(double));
@@ -50,7 +50,7 @@ void initFox(double** A, double** B, double** C, double** A_block, double** B_bl
     }
 }
 
-void scatterMatricesFox(double* matrix, double* matrx_block, int size, int block_size) {
+void scatter_matrices_fox(double* matrix, double* matrx_block, int size, int block_size) {
     double* row = (double*)malloc(sizeof(double) * (block_size * size));
     if (fox_grid[1] == 0) {
         MPI_Scatter(matrix, block_size * size, MPI_DOUBLE, row, block_size * size, MPI_DOUBLE, 0, ColComm);
@@ -61,12 +61,12 @@ void scatterMatricesFox(double* matrix, double* matrx_block, int size, int block
     free(row);
 }
 
-void scatterFox(double* A, double* B, double* A_block, double* B_block, int size, int block_size) {
-    scatterMatricesFox(A, A_block, size, block_size);
-    scatterMatricesFox(B, B_block, size, block_size);
+void scatter_fox(double* A, double* B, double* A_block, double* B_block, int size, int block_size) {
+    scatter_matrices_fox(A, A_block, size, block_size);
+    scatter_matrices_fox(B, B_block, size, block_size);
 }
 
-void collectResultFox(double* C, double* C_block, int size, int block_size) {
+void collect_result_fox(double* C, double* C_block, int size, int block_size) {
     double* res_row = (double*)malloc(sizeof(double) * (size * block_size));
     for (int i = 0; i < block_size; i++) {
         MPI_Gather(&C_block[i * block_size], block_size, MPI_DOUBLE, &res_row[i * size], block_size, MPI_DOUBLE, 0, RowComm);
@@ -95,7 +95,7 @@ void sendB(double* B, int block_size) {
     MPI_Sendrecv_replace(B, block_size * block_size, MPI_DOUBLE, next_process, 0, prev_process, 0, ColComm, &mpi_status);
 }
 
-void initComputation(double* A, double* A_sup_block, double* B, double* C, int block_size) {
+void init_fox_computation(double* A, double* A_sup_block, double* B, double* C, int block_size) {
     for (int i = 0; i < fox_grid_size; i++) {
         sendA(i, A, A_sup_block, block_size);
         multiply_add(A, B, C, block_size);
@@ -117,7 +117,7 @@ void deconstruct_fox(double* A, double* B, double* C, double* A_block, double* B
     }
 }
 
-void runFoxMultiplicationTest(int dim) {
+void run_fox(int dim) {
     double* A, * B, * C, * A_block, * B_block, * C_block, * A_sup_block;
     int size;
     int block_size;
@@ -130,13 +130,13 @@ void runFoxMultiplicationTest(int dim) {
         return;
     }
     size = dim;
-    initGridCommsFox();
-    initFox(&A, &B, &C, &A_block, &B_block, &C_block, &A_sup_block, &size, &block_size);
-    scatterFox(A, B, A_block, B_block, size, block_size);
+    init_grid_comms_fox();
+    init_fox(&A, &B, &C, &A_block, &B_block, &C_block, &A_sup_block, &size, &block_size);
+    scatter_fox(A, B, A_block, B_block, size, block_size);
     start_count = MPI_Wtime();
-    initComputation(A_block, A_sup_block, B_block, C_block, block_size);
+    init_fox_computation(A_block, A_sup_block, B_block, C_block, block_size);
     end_count = MPI_Wtime();
-    collectResultFox(C, C_block, size, block_size);
+    collect_result_fox(C, C_block, size, block_size);
     deconstruct_fox(A, B, C, A_block, B_block, C_block, A_sup_block);
     delta = end_count - start_count;
     if (process_rank == 0) {

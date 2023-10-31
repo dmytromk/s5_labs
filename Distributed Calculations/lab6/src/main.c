@@ -48,7 +48,7 @@ void run_tests(int size) {
         printf("%d\t", size);
     }
 
-    runFoxMultiplicationTest(size);
+    run_fox(size);
 
     if (process_rank == 0) {
         printf("%d\n", size);
