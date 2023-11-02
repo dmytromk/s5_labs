@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<sites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="internet-page.xsd">
+    
+    <site id="site1">
+        <title>CNN</title>
+        <type>News</type>
+        <has_authorization>false</has_authorization>
+        <characteristics>
+            <has_email>true</has_email>
+            <has_news>true</has_news>
+            <has_archive>false</has_archive>
+            <voting>Anonymous</voting>
+            <free>true</free>
+        </characteristics>
+    </site>
+
+    <site id="site2">
+        <title>Advertisement Pro</title>
+        <type>Advertisement</type>
+        <has_authorization>false</has_authorization>
+    </site>
+
+    <site id="site3">
+        <title>Example Portal Site</title>
+        <type>Portal</type>
+        <has_authorization>true</has_authorization>
+        <characteristics>
+            <has_email>true</has_email>
+            <has_news>false</has_news>
+            <has_archive>true</has_archive>
+            <voting>Authorized</voting>
+            <free>true</free>
+        </characteristics>
+    </site>
+
+</sites>
