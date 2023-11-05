@@ -1,17 +1,17 @@
 package os;
 
 public class sProcess {
-  public int cputime;
-  public int ioblocking;
-  public int cpudone;
-  public int ionext;
-  public int numblocked;
+  public int cpuTime;
+  public int ioBlocking;
+  public int cpuDone;
+  public int ioNext;
+  public int numBlocked;
 
-  public sProcess (int cputime, int ioblocking, int cpudone, int ionext, int numblocked) {
-    this.cputime = cputime;
-    this.ioblocking = ioblocking;
-    this.cpudone = cpudone;
-    this.ionext = ionext;
-    this.numblocked = numblocked;
+  public sProcess (int cpuTime, int ioBlocking, int cpuDone, int ioNext, int numBlocked) {
+    this.cpuTime = cpuTime;
+    this.ioBlocking = ioBlocking;
+    this.cpuDone = cpuDone;
+    this.ioNext = ioNext;
+    this.numBlocked = numBlocked;
   } 	
 }
