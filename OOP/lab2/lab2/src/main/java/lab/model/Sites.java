@@ -24,6 +24,15 @@ public class Sites {
         }
     }
 
+    public Site getLast() {
+        try {
+            return siteList.get(this.size()-1);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
     public boolean isEmpty() {
         return siteList.isEmpty();
     }
