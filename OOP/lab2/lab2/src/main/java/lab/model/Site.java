@@ -8,9 +8,9 @@ import lombok.Setter;
 public class Site {
     public enum SiteType {
         Advertisement,
+        Mirror,
         News,
         Portal,
-        Mirror
     }
 
     private String id;
