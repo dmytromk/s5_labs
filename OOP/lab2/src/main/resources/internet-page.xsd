@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="sites">
+        <xs:complexType>
+        <xs:sequence>
+            <xs:element name="site" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="title" type="xs:string"/>
+                        <xs:element name="type" type="siteType"/>
+                        <xs:element name="has_authorization" type="xs:boolean"/>
+                        <xs:element name="characteristics" type="characteristics" minOccurs="0"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:ID" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="siteType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Advertisement"/>
+            <xs:enumeration value="News"/>
+            <xs:enumeration value="Portal"/>
+            <xs:enumeration value="Mirror"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="characteristics">
+        <xs:sequence>
+            <xs:element name="has_email" type="xs:boolean"/>
+            <xs:element name="has_news" type="xs:boolean"/>
+            <xs:element name="has_archive" type="xs:boolean"/>
+            <xs:element name="voting">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="No"/>
+                        <xs:enumeration value="Anonymous"/>
+                        <xs:enumeration value="Authorized"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="free" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

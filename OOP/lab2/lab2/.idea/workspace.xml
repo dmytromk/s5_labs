@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2c72b093-7e85-4116-a5c2-c3cdbaf64638" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../Distributed Calculations/lab1/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Distributed Calculations/lab1/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Distributed Calculations/lab4/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Distributed Calculations/lab4/output.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Distributed Calculations/lab4/records.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Distributed Calculations/lab4/records.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Distributed Calculations/lab4/task_c/Main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Distributed Calculations/lab4/task_c/Main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Distributed Calculations/lab5/task_c/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Distributed Calculations/lab5/task_c/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Distributed Calculations/lab6/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Distributed Calculations/lab6/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Distributed Calculations/lab6/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Distributed Calculations/lab6/src/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lab1/src/main/java/org/example/ConsoleMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lab1/src/main/java/org/example/ConsoleMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/model/Characteristics.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/model/Site.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/model/Sites.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/parser/DOMParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/parser/MySAXParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/parser/SiteHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/parser/StAXParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/validator/XMLValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/internet-page.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/internet-page.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/lab/parser/ParserTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../OS/lab1/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../OS/lab1/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../OS/lab1/src/main/java/os/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../OS/lab1/src/main/java/os/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../OS/lab2/lab2/Summary-Processes" beforeDir="false" afterPath="$PROJECT_DIR$/../../../OS/lab2/lab2/Summary-Processes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../OS/lab2/lab2/Summary-Results" beforeDir="false" afterPath="$PROJECT_DIR$/../../../OS/lab2/lab2/Summary-Results" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../OS/lab2/lab2/src/main/java/os/Scheduling.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../OS/lab2/lab2/src/main/java/os/Scheduling.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../OS/lab2/lab2/src/main/java/os/SchedulingAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../OS/lab2/lab2/src/main/java/os/SchedulingAlgorithm.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2Xczb2S0BZ9mt1uKN43fczOMpUx" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "onboarding.tips.debug.path": "/Users/dmytromandziuk/uni/s5_labs/OOP/lab2/lab2/src/main/java/org/example/Main.java",
+    "ruby.rails.projectView.checked": "true",
+    "settings.editor.selected.configurable": "Errors",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="lab.parser" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2c72b093-7e85-4116-a5c2-c3cdbaf64638" name="Changes" comment="" />
+      <created>1698943223988</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1698943223988</updated>
+      <workItem from="1698943224989" duration="10112000" />
+      <workItem from="1699108224806" duration="1132000" />
+      <workItem from="1699134551018" duration="7000" />
+      <workItem from="1699134670110" duration="1000" />
+      <workItem from="1699134676917" duration="1000" />
+      <workItem from="1699134679637" duration="2000" />
+      <workItem from="1699208236716" duration="607000" />
+      <workItem from="1699286708429" duration="599000" />
+      <workItem from="1699296031481" duration="16433000" />
+      <workItem from="1699381094005" duration="8210000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Main.java</url>
+          <line>15</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/lab/model/Site.java</url>
+          <line>47</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

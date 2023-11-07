@@ -16,8 +16,8 @@ class ParserTest {
     void test() {
         final double Eps = 0.00001;
         List<Sites> sitesList = new ArrayList<>();
-        String filePathXML = "/Users/dmytromandziuk/uni/s5_labs/OOP/lab2/lab2/src/main/resources/internet-page.xml";
-        String filePathXSD = "/Users/dmytromandziuk/uni/s5_labs/OOP/lab2/lab2/src/main/resources/internet-page.xsd";
+        String filePathXML = "/Users/dmytromandziuk/uni/s5_labs/OOP/lab2/src/main/resources/internet-page.xml";
+        String filePathXSD = "/Users/dmytromandziuk/uni/s5_labs/OOP/lab2/src/main/resources/internet-page.xsd";
 
         sitesList.add(MySAXParser.parse(filePathXML));
         sitesList.add(StAXParser.parse(filePathXML));
