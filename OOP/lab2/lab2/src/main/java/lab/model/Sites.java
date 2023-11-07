@@ -41,6 +41,15 @@ public class Sites {
         return siteList.size();
     }
 
+    public void sortById() {
+        siteList.sort(new Comparator<Site>() {
+            @Override
+            public int compare(Site site1, Site site2) {
+                return site1.getId().compareTo(site2.getId());
+            }
+        });
+    }
+
     public void sortByTitle() {
         siteList.sort(new Comparator<Site>() {
             @Override

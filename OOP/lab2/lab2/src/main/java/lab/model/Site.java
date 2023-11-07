@@ -3,6 +3,8 @@ package lab.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 public class Site {
@@ -38,6 +40,23 @@ public class Site {
     public Site(String id, String title, SiteType type, boolean hasAuthorization, Characteristics characteristics) {
         this(id, title, type, hasAuthorization);
         this.characteristics = characteristics;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Site site = (Site) o;
+        return hasAuthorization == site.hasAuthorization &&
+                Objects.equals(id, site.id) &&
+                Objects.equals(title, site.title) &&
+                type == site.type &&
+                Objects.equals(characteristics, site.characteristics);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, type, hasAuthorization, characteristics);
     }
 }
 
