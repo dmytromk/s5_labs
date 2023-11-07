@@ -3,6 +3,7 @@ package lab.parser;
 import lab.model.Characteristics;
 import lab.model.Site;
 import lab.model.Sites;
+import lab.validator.XMLValidator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,10 +16,14 @@ class ParserTest {
     void test() {
         final double Eps = 0.00001;
         List<Sites> sitesList = new ArrayList<>();
-        String filePath = "/Users/dmytromandziuk/uni/s5_labs/OOP/lab2/lab2/src/main/resources/internet-page.xml";
-        sitesList.add(MySAXParser.parse(filePath));
-        sitesList.add(StAXParser.parse(filePath));
-        sitesList.add(DOMParser.parse(filePath));
+        String filePathXML = "/Users/dmytromandziuk/uni/s5_labs/OOP/lab2/lab2/src/main/resources/internet-page.xml";
+        String filePathXSD = "/Users/dmytromandziuk/uni/s5_labs/OOP/lab2/lab2/src/main/resources/internet-page.xsd";
+
+        sitesList.add(MySAXParser.parse(filePathXML));
+        sitesList.add(StAXParser.parse(filePathXML));
+        sitesList.add(DOMParser.parse(filePathXML));
+
+        assertTrue(XMLValidator.validate(filePathXML, filePathXSD));
 
         Site site1 = new Site("site1", "CNN", Site.SiteType.News, false);
         Characteristics characteristics1 = new Characteristics(true, true, false, true, Characteristics.VotingType.Anonymous);
