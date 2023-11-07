@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class Characteristic {
+public class Characteristics {
 
-    public Characteristic() {
+    public Characteristics() {
     }
 
     public enum VotingType {
@@ -22,7 +22,7 @@ public class Characteristic {
     private boolean isFree;
     private VotingType votingType;
 
-    public Characteristic(boolean hasEmail, boolean hasNews, boolean hasArchive, boolean isFree, VotingType votingType) {
+    public Characteristics(boolean hasEmail, boolean hasNews, boolean hasArchive, boolean isFree, VotingType votingType) {
         this.hasEmail = hasEmail;
         this.hasNews = hasNews;
         this.hasArchive = hasArchive;

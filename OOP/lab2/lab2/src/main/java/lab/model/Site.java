@@ -6,9 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Site {
-    public Site() {
-        Characteristic characteristic = new Characteristic();
-    }
 
     public enum SiteType {
         Advertisement,
@@ -21,8 +18,15 @@ public class Site {
     private String title;
     private SiteType type;
     private boolean hasAuthorization;
-    private Characteristic characteristics;
+    private Characteristics characteristics;
 
+    public Site() {
+        Characteristics characteristics = new Characteristics();
+    }
+
+    public Site(Characteristics characteristics) {
+        this.characteristics = characteristics;
+    }
 
     public Site(String id, String title, SiteType type, boolean hasAuthorization) {
         this.id = id;
@@ -31,7 +35,7 @@ public class Site {
         this.hasAuthorization = hasAuthorization;
     }
 
-    public Site(String id, String title, SiteType type, boolean hasAuthorization, Characteristic characteristics) {
+    public Site(String id, String title, SiteType type, boolean hasAuthorization, Characteristics characteristics) {
         this(id, title, type, hasAuthorization);
         this.characteristics = characteristics;
     }
