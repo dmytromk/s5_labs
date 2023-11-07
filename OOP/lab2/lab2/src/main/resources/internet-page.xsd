@@ -10,7 +10,7 @@
                         <xs:element name="title" type="xs:string"/>
                         <xs:element name="type" type="siteType"/>
                         <xs:element name="has_authorization" type="xs:boolean"/>
-                        <xs:element name="characteristics" type="characteristic" minOccurs="0"/>
+                        <xs:element name="characteristics" type="characteristics" minOccurs="0"/>
                     </xs:sequence>
                     <xs:attribute name="id" type="xs:ID" use="required"/>
                 </xs:complexType>
@@ -28,7 +28,7 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:complexType name="characteristic">
+    <xs:complexType name="characteristics">
         <xs:sequence>
             <xs:element name="has_email" type="xs:boolean"/>
             <xs:element name="has_news" type="xs:boolean"/>
