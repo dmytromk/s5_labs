@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="airline.xsd">
+
+    <airline id="A001" name="Airline1" country="Country1">
+        <flights name="Flight1" origin="City1" destination="City2" price="500"/>
+        <flights name="Flight2" origin="City3" destination="City4" price="700"/>
+    </airline>
+
+    <airline id="A002" name="Airline2" country="Country2">
+        <flights name="Flight3" origin="City5" destination="City6" price="600"/>
+        <flights name="Flight4" origin="City7" destination="City8" price="800"/>
+    </airline>
+
+    <airline id="A003" name="Airline3" country="Country3">
+        <flights name="Flight5" origin="City9" destination="City10" price="550"/>
+    </airline>
+
+</collection>

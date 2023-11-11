@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="collection">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="airline" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="flights" type="flights" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                        <xs:attribute name="country" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="flights">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="origin" type="xs:string" use="required"/>
+        <xs:attribute name="destination" type="xs:string" use="required"/>
+        <xs:attribute name="price" type="xs:integer" use="required"/>
+    </xs:complexType>
+
+</xs:schema>
