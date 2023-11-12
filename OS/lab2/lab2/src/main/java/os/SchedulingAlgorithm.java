@@ -9,7 +9,7 @@ import java.io.*;
 
 public class SchedulingAlgorithm {
 
-  public static Results Run(int runtime, Vector<sProcess> processVector, Results result) {
+  public static Results run(int runtime, Vector<sProcess> processVector, Results result) {
     int i = 0;
     int comptime = 0;
     int currentProcess = 0;
@@ -18,11 +18,9 @@ public class SchedulingAlgorithm {
     int completed = 0;
     String resultsFile = "Summary-Processes";
 
-    result.schedulingType = "Batch (Nonpreemptive)";
-    result.schedulingName = "First-Come First-Served"; 
+    result.schedulingType = "Interactive";
+    result.schedulingName = "Shortest Process Next";
     try {
-      //BufferedWriter out = new BufferedWriter(new FileWriter(resultsFile));
-      //OutputStream out = new FileOutputStream(resultsFile);
       PrintStream out = new PrintStream(new FileOutputStream(resultsFile));
       sProcess process = processVector.elementAt(currentProcess);
       out.println("Process: " + currentProcess + " registered... (" + process.cpuTime + " " + process.ioBlocking + " " + process.cpuDone + ")");
@@ -43,7 +41,8 @@ public class SchedulingAlgorithm {
           }
           process = processVector.elementAt(currentProcess);
           out.println("Process: " + currentProcess + " registered... (" + process.cpuTime + " " + process.ioBlocking + " " + process.cpuDone + ")");
-        }      
+        }
+
         if (process.ioBlocking == process.ioNext) {
           out.println("Process: " + currentProcess + " I/O blocked... (" + process.cpuTime + " " + process.ioBlocking + " " + process.cpuDone + ")");
           process.numBlocked++;
@@ -57,7 +56,8 @@ public class SchedulingAlgorithm {
           }
           process = processVector.elementAt(currentProcess);
           out.println("Process: " + currentProcess + " registered... (" + process.cpuTime + " " + process.ioBlocking + " " + process.cpuDone + ")");
-        }        
+        }
+
         process.cpuDone++;
         if (process.ioBlocking > 0) {
           process.ioNext++;
