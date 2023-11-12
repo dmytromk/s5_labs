@@ -6,9 +6,9 @@
                 <xs:element name="airline" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="flights" type="flights" minOccurs="0" maxOccurs="unbounded"/>
+                            <xs:element name="flight" type="flight" minOccurs="0" maxOccurs="unbounded"/>
                         </xs:sequence>
-                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                        <xs:attribute name="id" type="xs:string" use="required"/>
                         <xs:attribute name="name" type="xs:string" use="required"/>
                         <xs:attribute name="country" type="xs:string" use="required"/>
                     </xs:complexType>
@@ -16,10 +16,11 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:complexType name="flights">
+    <xs:complexType name="flight">
+        <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="name" type="xs:string" use="required"/>
         <xs:attribute name="origin" type="xs:string" use="required"/>
         <xs:attribute name="destination" type="xs:string" use="required"/>
-        <xs:attribute name="price" type="xs:integer" use="required"/>
+        <xs:attribute name="price" type="xs:double" use="required"/>
     </xs:complexType>
 </xs:schema>

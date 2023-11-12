@@ -10,6 +10,7 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,6 +18,9 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -29,6 +33,35 @@ public class XmlController {
 
     public XmlController(CommonController commonController) {
         this.commonController = commonController;
+    }
+
+    private String documentToString(Document doc) {
+        StringWriter sw = new StringWriter();
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+        return sw.toString();
+    }
+
+    private boolean validateXmlAgainstXsd(String xml, File xsdFile) {
+        try {
+            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = factory.newSchema(xsdFile);
+            Validator validator = schema.newValidator();
+            validator.validate(new StreamSource(new StringReader(xml)));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public String toXmlString(File xsdFile) {
@@ -66,21 +99,13 @@ public class XmlController {
             }
         }
 
-        StringWriter sw = new StringWriter();
-        try {
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
+        String xmlString = documentToString(doc);
 
-            // Set the XSD schema location in the transformer
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
-            transformer.transform(new DOMSource(doc), new StreamResult(sw));
-        } catch (TransformerException e) {
-            e.printStackTrace();
+        if (validateXmlAgainstXsd(xmlString, xsdFile)) {
+            return xmlString;
+        } else {
+            return null;
         }
-
-        return sw.toString();
     }
 
 
