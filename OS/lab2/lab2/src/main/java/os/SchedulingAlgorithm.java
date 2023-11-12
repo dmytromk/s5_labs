@@ -56,7 +56,7 @@ public class SchedulingAlgorithm {
                 process.getCurrentBurstTime() + " " + process.getEstimatedBurstTime() + ")");
 
           process.setNumBlocked(process.getNumBlocked() + 1);
-          int newEstimate = (int) (process.getEstimatedBurstTime() * process.getAgingCoefficient()
+          int newEstimate = (int) Math.round(process.getEstimatedBurstTime() * process.getAgingCoefficient()
                   + process.getCurrentBurstTime() * (1 - process.getAgingCoefficient()));
 
           process.setEstimatedBurstTime(newEstimate);
