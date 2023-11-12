@@ -1,19 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<collection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:noNamespaceSchemaLocation="airline.xsd">
-
-    <airline id="A001" name="Airline1" country="Country1">
-        <flights name="Flight1" origin="City1" destination="City2" price="500"/>
-        <flights name="Flight2" origin="City3" destination="City4" price="700"/>
-    </airline>
-
-    <airline id="A002" name="Airline2" country="Country2">
-        <flights name="Flight3" origin="City5" destination="City6" price="600"/>
-        <flights name="Flight4" origin="City7" destination="City8" price="800"/>
-    </airline>
-
-    <airline id="A003" name="Airline3" country="Country3">
-        <flights name="Flight5" origin="City9" destination="City10" price="550"/>
-    </airline>
-
+<?xml version="1.0" encoding="UTF-8"?><collection>
+  <airline country="Country1" id="A1" name="Airline1">
+    <flight destination="Destination1" id="03e98fcb-55c6-464c-b047-3b869f5595aa" name="Flight1_1" origin="Origin1" price="100.0"/>
+    <flight destination="Destination2" id="7fed95b1-ebb5-4ac4-b96e-92a8846c29e3" name="Flight1_2" origin="Origin2" price="150.0"/>
+  </airline>
+  <airline country="Country2" id="A2" name="Airline2">
+    <flight destination="Destination3" id="3dfcccd2-75ab-44d4-adf3-5d30ae58748a" name="Flight2_1" origin="Origin3" price="120.0"/>
+    <flight destination="Destination4" id="941d052f-e63d-428a-a662-e95282624cc9" name="Flight2_2" origin="Origin4" price="180.0"/>
+  </airline>
+  <airline country="Country1" id="A3" name="Airline1"/>
+  <airline country="Country1" id="A4" name="Airline1">
+    <flight destination="Destination5" id="cfe77371-5166-4555-8525-3bba4deb8250" name="Flight4_1" origin="Origin5" price="200.0"/>
+    <flight destination="Destination6" id="77b4e184-d343-42e9-b814-b7a74f9f1007" name="Flight4_2" origin="Origin6" price="250.0"/>
+  </airline>
 </collection>
