@@ -1,9 +1,9 @@
-os.Scheduling Type: Batch (Nonpreemptive)
-os.Scheduling Name: First-Come First-Served
-Simulation Run Time: 2750
-Mean: 1100
-Standard Deviation: 510
-os.Process #	CPU Time	IO Blocking	CPU Completed	CPU Blocked
-0		1372 (ms)	100 (ms)	1372 (ms)	13 times
-1		689 (ms)	500 (ms)	689 (ms)	1 times
-2		689 (ms)	30 (ms)		689 (ms)	22 times
+Scheduling Type: Interactive (Non preemptive)
+Scheduling Name: Shortest Process Next
+Simulation Run Time: 2181
+Mean: 500
+Standard Deviation: 200
+Process #	CPU Time	Burst Time	Burst Deviation	CPU Completed	CPU Blocked
+0			432 (ms)	100 (ms)	20 (ms)			1317 (ms)	13 times
+1			432 (ms)	500 (ms)	25 (ms)			432 (ms)	0 times
+2			432 (ms)	30 (ms)			5 (ms)			432 (ms)	14 times
