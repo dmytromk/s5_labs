@@ -28,6 +28,7 @@ public class Scheduling {
     String tmp;
     int cputime = 0;
     int ioblocking = 0;
+    int burstDeviation = 0;
     double X = 0.0;
 
     try {   
@@ -53,13 +54,14 @@ public class Scheduling {
           StringTokenizer st = new StringTokenizer(line);
           st.nextToken();
           ioblocking = Common.s2i(st.nextToken());
+          burstDeviation = Common.s2i(st.nextToken());
           X = Common.R1();
           while (X == -1.0) {
             X = Common.R1();
           }
           X = X * standardDev;
           cputime = (int) X + meanDev;
-          processVector.addElement(new sProcess(cputime, ioblocking, 0, 0, 0));          
+          processVector.addElement(new sProcess(cputime, ioblocking, 0, 0, 0, burstDeviation));          
         }
         if (line.startsWith("runtime")) {
           StringTokenizer st = new StringTokenizer(line);
@@ -112,7 +114,7 @@ public class Scheduling {
           }
           X = X * standardDev;
         int cpuTime = (int) X + meanDev;
-        processVector.addElement(new sProcess(cpuTime,i*100,0,0,0));
+        processVector.addElement(new sProcess(cpuTime,i*100,0,0,0, i*10));
         i++;
       }
     }
