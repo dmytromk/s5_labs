@@ -23,11 +23,11 @@ public class SchedulingAlgorithm {
     try {
       PrintStream out = new PrintStream(new FileOutputStream(resultsFile));
       sProcess process = processVector.elementAt(currentProcess);
-      out.println("Process: " + currentProcess + " registered... (" + process.cpuTime + " " + process.currentIoBlocking + " " + process.cpuDone + ")");
+      out.println("Process: " + currentProcess + " registered... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
       while (comptime < runtime) {
-        if (process.cpuDone == process.cpuTime) {
+        if (process.getCpuDone() == process.getCpuTime()) {
           completed++;
-          out.println("Process: " + currentProcess + " completed... (" + process.cpuTime + " " + process.currentIoBlocking + " " + process.cpuDone + ")");
+          out.println("Process: " + currentProcess + " completed... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
           if (completed == size) {
             result.computationTime = comptime;
             out.close();
@@ -35,33 +35,33 @@ public class SchedulingAlgorithm {
           }
           for (i = size - 1; i >= 0; i--) {
             process = processVector.elementAt(i);
-            if (process.cpuDone < process.cpuTime) {
+            if (process.getCpuDone() < process.getCpuTime()) {
               currentProcess = i;
             }
           }
           process = processVector.elementAt(currentProcess);
-          out.println("Process: " + currentProcess + " registered... (" + process.cpuTime + " " + process.currentIoBlocking + " " + process.cpuDone + ")");
+          out.println("Process: " + currentProcess + " registered... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
         }
 
-        if (process.currentIoBlocking == process.ioNext) {
-          out.println("Process: " + currentProcess + " I/O blocked... (" + process.cpuTime + " " + process.currentIoBlocking + " " + process.cpuDone + ")");
-          process.numBlocked++;
-          process.ioNext = 0;
+        if (process.getCurrentIoBlocking() == process.getIoNext()) {
+          out.println("Process: " + currentProcess + " I/O blocked... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
+          process.setNumBlocked(process.getNumBlocked() + 1);
+          process.setIoNext(0);
           process.randomizeBurstTime();
           previousProcess = currentProcess;
           for (i = size - 1; i >= 0; i--) {
             process = processVector.elementAt(i);
-            if (process.cpuDone < process.cpuTime && previousProcess != i) {
+            if (process.getCpuDone() < process.getCpuTime() && previousProcess != i) {
               currentProcess = i;
             }
           }
           process = processVector.elementAt(currentProcess);
-          out.println("Process: " + currentProcess + " registered... (" + process.cpuTime + " " + process.currentIoBlocking + " " + process.cpuDone + ")");
+          out.println("Process: " + currentProcess + " registered... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
         }
 
-        process.cpuDone++;
-        if (process.currentIoBlocking > 0) {
-          process.ioNext++;
+        process.setCpuDone(process.getCpuDone() + 1);
+        if (process.getCurrentIoBlocking() > 0) {
+          process.setIoNext(process.getIoNext() + 1);
         }
         comptime++;
       }

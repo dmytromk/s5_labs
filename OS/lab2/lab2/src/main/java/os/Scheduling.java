@@ -82,7 +82,7 @@ public class Scheduling {
     int size = processVector.size();
     for (i = 0; i < size; i++) {
       sProcess process = processVector.elementAt(i);
-      System.out.println("process " + i + " " + process.cpuTime + " " + process.ioBlocking + " " + process.cpuDone + " " + process.numBlocked);
+      System.out.println("process " + i + " " + process.getCpuTime() + " " + process.getIoBlocking() + " " + process.getCpuDone() + " " + process.getNumBlocked());
     }
     System.out.println("runtime " + runtime);
   }
@@ -126,19 +126,23 @@ public class Scheduling {
       out.println("Simulation Run Time: " + result.computationTime);
       out.println("Mean: " + meanDev);
       out.println("Standard Deviation: " + standardDev);
-      out.println("Process #\tCPU Time\tIO Blocking\tCPU Completed\tCPU Blocked");
+      out.println("Process #\tCPU Time\tIO Blocking\tBurst Deviation\tCPU Completed\tCPU Blocked");
+
       for (i = 0; i < processVector.size(); i++) {
         sProcess process = processVector.elementAt(i);
         out.print(i);
         if (i < 100) { out.print("\t\t"); } else { out.print("\t"); }
-        out.print(process.cpuTime);
-        if (process.cpuTime < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
-        out.print(process.ioBlocking);
-        if (process.ioBlocking < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
-        out.print(process.cpuDone);
-        if (process.cpuDone < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
-        out.println(process.numBlocked + " times");
+        out.print(process.getCpuTime());
+        if (process.getCpuTime() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
+        out.print(process.getIoBlocking());
+        if (process.getCpuTime() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
+        out.print(process.getBurstDeviation());
+        if (process.getIoBlocking() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
+        out.print(process.getCpuDone());
+        if (process.getCpuDone() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
+        out.println(process.getNumBlocked() + " times");
       }
+
       out.close();
     } catch (IOException e) { /* Handle exceptions */ }
   System.out.println("Completed.");
