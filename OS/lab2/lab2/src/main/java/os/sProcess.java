@@ -6,27 +6,36 @@ public class sProcess {
   private int cpuTime;
   private int burstTime;
   private int cpuDone;
-  private int currentBirstDuration;
+  private int currentBurstDuration;
   private int numBlocked;
 
   private int burstDeviation;
-  private int currentIoBlocking;
-  private int estimatedIoBlocking;
+  private int currentBurstTime;
+  private int estimatedBurstTime;
   private double agingCoefficient;
 
   private static final java.util.Random generator = new Random();
 
 
-  public sProcess (int cpuTime, int burstTime, int cpuDone, int currentBirstDuration, int numBlocked, int burstDeviation, double agingCoefficient) {
+  public sProcess (int cpuTime, int burstTime, int cpuDone, int currentBurstDuration, int numBlocked, int burstDeviation, double agingCoefficient) {
+    // total runtime
     this.cpuTime = cpuTime;
+    // burst time - general time between I/O blocks
     this.burstTime = burstTime;
+    // completed part of total runtime
     this.cpuDone = cpuDone;
-    this.currentBirstDuration = currentBirstDuration;
+    // completed part part of current burst
+    this.currentBurstDuration = currentBurstDuration;
+    // how many times has been this process blocked (I/O)
     this.numBlocked = numBlocked;
 
+    // [-deviation, +deviation] possible offset for current burst time
     this.burstDeviation = burstDeviation;
-    this.currentIoBlocking = burstTime;
-    this.estimatedIoBlocking = burstTime;
+    // current randomly calculated time for burst
+    this.currentBurstTime = burstTime;
+    // estimated burst time for process (we choose process with the least estimated time)
+    this.estimatedBurstTime = burstTime;
+    // aging coefficient for burst time estimation
     this.agingCoefficient = agingCoefficient;
   }
 
@@ -36,7 +45,7 @@ public class sProcess {
     if (result <= 0) {
       result = this.burstTime + Math.abs(randomOffset)*2;
     }
-    this.setCurrentIoBlocking(result);
+    this.setCurrentBurstTime(result);
   }
 
   public int getCpuTime() {
@@ -63,12 +72,12 @@ public class sProcess {
     this.cpuDone = cpuDone;
   }
 
-  public int getCurrentBirstDuration() {
-    return currentBirstDuration;
+  public int getCurrentBurstDuration() {
+    return currentBurstDuration;
   }
 
-  public void setCurrentBirstDuration(int currentBirstDuration) {
-    this.currentBirstDuration = currentBirstDuration;
+  public void setCurrentBurstDuration(int currentBurstDuration) {
+    this.currentBurstDuration = currentBurstDuration;
   }
 
   public int getNumBlocked() {
@@ -87,20 +96,20 @@ public class sProcess {
     this.burstDeviation = burstDeviation;
   }
 
-  public int getCurrentIoBlocking() {
-    return currentIoBlocking;
+  public int getCurrentBurstTime() {
+    return currentBurstTime;
   }
 
-  public void setCurrentIoBlocking(int currentIoBlocking) {
-    this.currentIoBlocking = currentIoBlocking;
+  public void setCurrentBurstTime(int currentBurstTime) {
+    this.currentBurstTime = currentBurstTime;
   }
 
-  public int getEstimatedIoBlocking() {
-    return estimatedIoBlocking;
+  public int getEstimatedBurstTime() {
+    return estimatedBurstTime;
   }
 
-  public void setEstimatedIoBlocking(int estimatedIoBlocking) {
-    this.estimatedIoBlocking = estimatedIoBlocking;
+  public void setEstimatedBurstTime(int estimatedBurstTime) {
+    this.estimatedBurstTime = estimatedBurstTime;
   }
 
   public double getAgingCoefficient() {

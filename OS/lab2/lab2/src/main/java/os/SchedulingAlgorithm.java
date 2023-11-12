@@ -27,13 +27,13 @@ public class SchedulingAlgorithm {
       out.println("CPU Completed\tCPU Time\tCurrent Burst Time\t\tEstimated Burst Time");
 
       out.println("Process: " + currentProcess + " registered...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
-                process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
+                process.getCurrentBurstTime() + " " + process.getEstimatedBurstTime() + ")");
 
       while (comptime < runtime) {
         if (process.getCpuDone() == process.getCpuTime()) {
           completed++;
           out.println("Process: " + currentProcess + " completed...\t\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
-                process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
+                process.getCurrentBurstTime() + " " + process.getEstimatedBurstTime() + ")");
 
           if (completed == size) {
             result.computationTime = comptime;
@@ -48,19 +48,19 @@ public class SchedulingAlgorithm {
           }
           process = processVector.elementAt(currentProcess);
           out.println("Process: " + currentProcess + " registered...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
-                process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
+                process.getCurrentBurstTime() + " " + process.getEstimatedBurstTime() + ")");
         }
 
-        if (process.getCurrentIoBlocking() == process.getCurrentBirstDuration()) {
+        if (process.getCurrentBurstTime() == process.getCurrentBurstDuration()) {
           out.println("Process: " + currentProcess + " I/O blocked...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
-                process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
+                process.getCurrentBurstTime() + " " + process.getEstimatedBurstTime() + ")");
 
           process.setNumBlocked(process.getNumBlocked() + 1);
-          int newEstimate = (int) (process.getEstimatedIoBlocking() * process.getAgingCoefficient()
-                  + process.getCurrentIoBlocking() * (1 - process.getAgingCoefficient()));
+          int newEstimate = (int) (process.getEstimatedBurstTime() * process.getAgingCoefficient()
+                  + process.getCurrentBurstTime() * (1 - process.getAgingCoefficient()));
 
-          process.setEstimatedIoBlocking(newEstimate);
-          process.setCurrentBirstDuration(0);
+          process.setEstimatedBurstTime(newEstimate);
+          process.setCurrentBurstDuration(0);
           process.randomizeBurstTime();
 
           previousProcess = currentProcess;
@@ -68,12 +68,12 @@ public class SchedulingAlgorithm {
 
           process = processVector.elementAt(currentProcess);
           out.println("Process: " + currentProcess + " registered...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
-                process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
+                process.getCurrentBurstTime() + " " + process.getEstimatedBurstTime() + ")");
         }
 
         process.setCpuDone(process.getCpuDone() + 1);
-        if (process.getCurrentIoBlocking() > 0) {
-          process.setCurrentBirstDuration(process.getCurrentBirstDuration() + 1);
+        if (process.getCurrentBurstTime() > 0) {
+          process.setCurrentBurstDuration(process.getCurrentBurstDuration() + 1);
         }
         comptime++;
       }
@@ -91,9 +91,9 @@ public class SchedulingAlgorithm {
       sProcess process = processVector.elementAt(i);
 
       if (process.getCpuDone() < process.getCpuTime() && previousProcess != i
-              && process.getEstimatedIoBlocking() < minEstimate) {
+              && process.getEstimatedBurstTime() < minEstimate) {
         currentProcess = i;
-        minEstimate = process.getEstimatedIoBlocking();
+        minEstimate = process.getEstimatedBurstTime();
       }
     }
 
