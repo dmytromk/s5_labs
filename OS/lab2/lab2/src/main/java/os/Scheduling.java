@@ -131,15 +131,20 @@ public class Scheduling {
       for (i = 0; i < processVector.size(); i++) {
         sProcess process = processVector.elementAt(i);
         out.print(i);
-        if (i < 100) { out.print("\t\t"); } else { out.print("\t"); }
+        out.print(i < 100 ? "\t\t\t" : "\t");
+
         out.print(process.getCpuTime());
-        if (process.getCpuTime() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
+        out.print(process.getCpuTime() < 100 ? " (ms)\t\t\t" : " (ms)\t");
+
         out.print(process.getIoBlocking());
-        if (process.getCpuTime() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
+        out.print(process.getIoBlocking() < 100 ? " (ms)\t\t\t" : " (ms)\t");
+
         out.print(process.getBurstDeviation());
-        if (process.getIoBlocking() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
+        out.print(process.getBurstDeviation() < 100 ? " (ms)\t\t\t" : " (ms)\t");
+
         out.print(process.getCpuDone());
-        if (process.getCpuDone() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
+        out.print(process.getCpuDone() < 100 ? " (ms)\t\t\t" : " (ms)\t");
+
         out.println(process.getNumBlocked() + " times");
       }
 
