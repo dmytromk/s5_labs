@@ -9,15 +9,21 @@ public class sProcess {
 
   private int burstDeviation;
   private int currentIoBlocking;
+  private int estimatedIoBlocking;
+  private double agingCoefficient;
 
-  public sProcess (int cpuTime, int ioBlocking, int cpuDone, int ioNext, int numBlocked, int burstDeviation) {
-    this.setCpuTime(cpuTime);
-    this.setIoBlocking(ioBlocking);
-    this.setCpuDone(cpuDone);
-    this.setIoNext(ioNext);
-    this.setNumBlocked(numBlocked);
-    this.setBurstDeviation(burstDeviation);
-    this.setCurrentIoBlocking(ioBlocking);
+
+  public sProcess (int cpuTime, int ioBlocking, int cpuDone, int ioNext, int numBlocked, int burstDeviation, double agingCoefficient) {
+    this.cpuTime = cpuTime;
+    this.ioBlocking = ioBlocking;
+    this.cpuDone = cpuDone;
+    this.ioNext = ioNext;
+    this.numBlocked = numBlocked;
+
+    this.burstDeviation = burstDeviation;
+    this.currentIoBlocking = ioBlocking;
+    this.estimatedIoBlocking = ioBlocking;
+    this.agingCoefficient = agingCoefficient;
   }
 
   public void randomizeBurstTime() {
@@ -83,5 +89,21 @@ public class sProcess {
 
   public void setCurrentIoBlocking(int currentIoBlocking) {
     this.currentIoBlocking = currentIoBlocking;
+  }
+
+  public int getEstimatedIoBlocking() {
+    return estimatedIoBlocking;
+  }
+
+  public void setEstimatedIoBlocking(int estimatedIoBlocking) {
+    this.estimatedIoBlocking = estimatedIoBlocking;
+  }
+
+  public double getAgingCoefficient() {
+    return agingCoefficient;
+  }
+
+  public void setAgingCoefficient(double agingCoefficient) {
+    this.agingCoefficient = agingCoefficient;
   }
 }

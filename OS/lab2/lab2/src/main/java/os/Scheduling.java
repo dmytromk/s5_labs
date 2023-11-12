@@ -2,7 +2,7 @@ package os;
 
 // This file contains the main() function for the Scheduling
 // simulation.  Init() initializes most of the variables by
-// reading from a provided file.  SchedulingAlgorithm.Run() is
+// reading from a provided file.  SchedulingAlgorithm.run() is
 // called from main() to run the simulation.  Summary-Results
 // is where the summary results are written, and Summary-Processes
 // is where the process scheduling summary is written.
@@ -29,6 +29,7 @@ public class Scheduling {
     int cputime = 0;
     int ioblocking = 0;
     int burstDeviation = 0;
+    double agingCoefficient = 0;
     double X = 0.0;
 
     try {   
@@ -40,34 +41,40 @@ public class Scheduling {
           st.nextToken();
           processNum = Common.s2i(st.nextToken());
         }
+
         if (line.startsWith("meandev")) {
           StringTokenizer st = new StringTokenizer(line);
           st.nextToken();
           meanDev = Common.s2i(st.nextToken());
         }
+
         if (line.startsWith("standdev")) {
           StringTokenizer st = new StringTokenizer(line);
           st.nextToken();
           standardDev = Common.s2i(st.nextToken());
         }
+
         if (line.startsWith("process")) {
           StringTokenizer st = new StringTokenizer(line);
           st.nextToken();
           ioblocking = Common.s2i(st.nextToken());
           burstDeviation = Common.s2i(st.nextToken());
+          agingCoefficient = Common.s2d(st.nextToken());
           X = Common.R1();
           while (X == -1.0) {
             X = Common.R1();
           }
           X = X * standardDev;
           cputime = (int) X + meanDev;
-          processVector.addElement(new sProcess(cputime, ioblocking, 0, 0, 0, burstDeviation));          
+          processVector.addElement(new sProcess(cputime, ioblocking, 0, 0, 0, burstDeviation, agingCoefficient));
         }
+
         if (line.startsWith("runtime")) {
           StringTokenizer st = new StringTokenizer(line);
           st.nextToken();
           runtime = Common.s2i(st.nextToken());
         }
+
       }
       in.close();
     } catch (IOException e) { /* Handle exceptions */ }
@@ -114,7 +121,7 @@ public class Scheduling {
           }
           X = X * standardDev;
         int cpuTime = (int) X + meanDev;
-        processVector.addElement(new sProcess(cpuTime,i*100,0,0,0, i*10));
+        processVector.addElement(new sProcess(cpuTime,i*100,0,0,0, i*10, (double) i/10));
         i++;
       }
     }

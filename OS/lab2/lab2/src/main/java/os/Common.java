@@ -13,6 +13,17 @@ public class Common {
     return i;
   }
 
+  static public double s2d (String s) {
+    double i = 0.1;
+
+    try {
+      i = Double.parseDouble(s.trim());
+    } catch (NumberFormatException nfe) {
+      System.out.println("NumberFormatException: " + nfe.getMessage());
+    }
+    return i;
+  }
+
   static public double R1 () {
     java.util.Random generator = new java.util.Random(System.currentTimeMillis());
     double U = generator.nextDouble();
