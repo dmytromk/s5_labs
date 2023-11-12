@@ -1,5 +1,7 @@
 package os;
 
+import java.util.Random;
+
 public class sProcess {
   private int cpuTime;
   private int burstTime;
@@ -11,6 +13,8 @@ public class sProcess {
   private int currentIoBlocking;
   private int estimatedIoBlocking;
   private double agingCoefficient;
+
+  private static final java.util.Random generator = new Random();
 
 
   public sProcess (int cpuTime, int burstTime, int cpuDone, int currentBirstDuration, int numBlocked, int burstDeviation, double agingCoefficient) {
@@ -27,12 +31,12 @@ public class sProcess {
   }
 
   public void randomizeBurstTime() {
-    double X = Common.R1();
-    while (X == -1.0) {
-      X = Common.R1();
+    int randomOffset = generator.nextInt(2 * this.burstDeviation + 1) - this.burstDeviation;
+    int result = randomOffset + this.burstTime;
+    if (result <= 0) {
+      result = this.burstTime + Math.abs(randomOffset)*2;
     }
-    X = X * getBurstDeviation();
-    this.setCurrentIoBlocking((int) X + getBurstTime());
+    this.setCurrentIoBlocking(result);
   }
 
   public int getCpuTime() {
