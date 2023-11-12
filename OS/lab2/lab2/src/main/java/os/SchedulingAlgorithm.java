@@ -12,8 +12,8 @@ public class SchedulingAlgorithm {
   public static Results run(int runtime, Vector<sProcess> processVector, Results result) {
     int i = 0;
     int comptime = 0;
-    int currentProcess = 0;
     int previousProcess = 0;
+    int currentProcess = findNextProcess(processVector, processVector.size(), previousProcess);
     int size = processVector.size();
     int completed = 0;
     String resultsFile = "Summary-Processes";
@@ -23,11 +23,18 @@ public class SchedulingAlgorithm {
     try {
       PrintStream out = new PrintStream(new FileOutputStream(resultsFile));
       sProcess process = processVector.elementAt(currentProcess);
-      out.println("Process: " + currentProcess + " registered... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
+
+      out.println("CPU Completed\tCPU Time\tCurrent IO Time\t\tEstimated IO Blocking");
+
+      out.println("Process: " + currentProcess + " registered...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
+                process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
+
       while (comptime < runtime) {
         if (process.getCpuDone() == process.getCpuTime()) {
           completed++;
-          out.println("Process: " + currentProcess + " completed... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
+          out.println("Process: " + currentProcess + " completed...\t\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
+                process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
+
           if (completed == size) {
             result.computationTime = comptime;
             out.close();
@@ -40,11 +47,13 @@ public class SchedulingAlgorithm {
             }
           }
           process = processVector.elementAt(currentProcess);
-          out.println("Process: " + currentProcess + " registered... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
+          out.println("Process: " + currentProcess + " registered...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
+                process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
         }
 
         if (process.getCurrentIoBlocking() == process.getIoNext()) {
-          out.println("Process: " + currentProcess + " I/O blocked... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
+          out.println("Process: " + currentProcess + " I/O blocked...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
+                process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
 
           process.setNumBlocked(process.getNumBlocked() + 1);
           int newEstimate = (int) (process.getEstimatedIoBlocking() * process.getAgingCoefficient()
@@ -55,18 +64,11 @@ public class SchedulingAlgorithm {
           process.randomizeBurstTime();
 
           previousProcess = currentProcess;
-          int minEstimate = Integer.MAX_VALUE;
-          for (i = 0; i < size; i++) {
-            process = processVector.elementAt(i);
-            if (process.getCpuDone() < process.getCpuTime() && previousProcess != i
-            && process.getEstimatedIoBlocking() < minEstimate) {
-              currentProcess = i;
-              minEstimate = process.getEstimatedIoBlocking();
-            }
-          }
+          currentProcess = findNextProcess(processVector, size, previousProcess);
 
           process = processVector.elementAt(currentProcess);
-          out.println("Process: " + currentProcess + " registered... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
+          out.println("Process: " + currentProcess + " registered...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
+                process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
         }
 
         process.setCpuDone(process.getCpuDone() + 1);
@@ -80,4 +82,22 @@ public class SchedulingAlgorithm {
     result.computationTime = comptime;
     return result;
   }
+
+  private static int findNextProcess(Vector<sProcess> processVector, int size, int previousProcess) {
+    int minEstimate = Integer.MAX_VALUE;
+    int currentProcess = 0;
+
+    for (int i = 0; i < size; i++) {
+      sProcess process = processVector.elementAt(i);
+
+      if (process.getCpuDone() < process.getCpuTime() && previousProcess != i
+              && process.getEstimatedIoBlocking() < minEstimate) {
+        currentProcess = i;
+        minEstimate = process.getEstimatedIoBlocking();
+      }
+    }
+
+    return currentProcess;
+  }
+
 }
