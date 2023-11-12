@@ -18,7 +18,7 @@ public class SchedulingAlgorithm {
     int completed = 0;
     String resultsFile = "Summary-Processes";
 
-    result.schedulingType = "Interactive";
+    result.schedulingType = "Interactive (Non preemptive)";
     result.schedulingName = "Shortest Process Next";
     try {
       PrintStream out = new PrintStream(new FileOutputStream(resultsFile));
@@ -45,16 +45,26 @@ public class SchedulingAlgorithm {
 
         if (process.getCurrentIoBlocking() == process.getIoNext()) {
           out.println("Process: " + currentProcess + " I/O blocked... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
+
           process.setNumBlocked(process.getNumBlocked() + 1);
+          int newEstimate = (int) (process.getEstimatedIoBlocking() * process.getAgingCoefficient()
+                  + process.getCurrentIoBlocking() * (1 - process.getAgingCoefficient()));
+
+          process.setEstimatedIoBlocking(newEstimate);
           process.setIoNext(0);
           process.randomizeBurstTime();
+
           previousProcess = currentProcess;
-          for (i = size - 1; i >= 0; i--) {
+          int minEstimate = Integer.MAX_VALUE;
+          for (i = 0; i < size; i++) {
             process = processVector.elementAt(i);
-            if (process.getCpuDone() < process.getCpuTime() && previousProcess != i) {
+            if (process.getCpuDone() < process.getCpuTime() && previousProcess != i
+            && process.getEstimatedIoBlocking() < minEstimate) {
               currentProcess = i;
+              minEstimate = process.getEstimatedIoBlocking();
             }
           }
+
           process = processVector.elementAt(currentProcess);
           out.println("Process: " + currentProcess + " registered... (" + process.getCpuTime() + " " + process.getCurrentIoBlocking() + " " + process.getCpuDone() + ")");
         }
