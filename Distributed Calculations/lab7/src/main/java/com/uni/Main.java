@@ -10,18 +10,22 @@ import java.io.File;
 import java.util.List;
 
 public class Main {
+    private static final String RESOURCES_PATH = "/Users/dmytromandziuk/uni/s5_labs/Distributed Calculations/lab7/src/main/resources";
+    private static final String XML_FILE_NAME = "airline.xml";
+    private static final String XSD_FILE_NAME = "airline.xsd";
+
     private final CommonController commonController;
     private final XmlController xmlController;
     private final DatabaseController databaseController;
     private final File xmlFile;
     private final File xsdFile;
 
-    public Main(File xsdFile) {
+    public Main() {
         this.commonController = new CommonController();
         this.xmlController = new XmlController(commonController);
         this.databaseController = new DatabaseController();
-        this.xmlFile = new File("/Users/dmytromandziuk/uni/s5_labs/Distributed Calculations/lab7/src/main/resources", "airline.xml");
-        this.xsdFile = xsdFile;
+        this.xmlFile = new File(RESOURCES_PATH, XML_FILE_NAME);
+        this.xsdFile = new File(RESOURCES_PATH, XSD_FILE_NAME);
     }
 
     public void addAirline(String name, String country) {
@@ -36,7 +40,7 @@ public class Main {
         commonController.addFlight(new Flight(name, origin, destination, price, airlineId));
     }
 
-    public void fillCollection1() {
+    public void addTestData() {
         addAirline("A1", "Airline1", "Country1");
         addFlight("Flight1_1", "Origin1", "Destination1", 100.0, "A1");
         addFlight("Flight1_2", "Origin2", "Destination2", 150.0, "A1");
@@ -63,13 +67,13 @@ public class Main {
     }
 
     public void test1() {
-        fillCollection1();
+        addTestData();
         System.out.println(xmlController.toXmlFormattedString(xsdFile));
         xmlController.toXmlFile(xmlFile, xsdFile);
     }
 
     public void test2() {
-        fillCollection1();
+        addTestData();
         String str1 = xmlController.toXmlString(xsdFile);
 
         for (int i = 0; i < 100; i++) {
@@ -85,7 +89,7 @@ public class Main {
     }
 
     public void test3() {
-        fillCollection1();
+        addTestData();
         fillDatabase(commonController);
 
         xmlController.toXmlFile(xmlFile, xsdFile);
@@ -129,7 +133,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        new Main(new File("/Users/dmytromandziuk/uni/s5_labs/Distributed Calculations/lab7/src/main/resources", "airline.xsd")).test3();
+        new Main().test3();
     }
 
 }
