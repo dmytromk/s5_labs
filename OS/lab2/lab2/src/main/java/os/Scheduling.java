@@ -89,7 +89,7 @@ public class Scheduling {
     int size = processVector.size();
     for (i = 0; i < size; i++) {
       sProcess process = processVector.elementAt(i);
-      System.out.println("process " + i + " " + process.getCpuTime() + " " + process.getIoBlocking() + " " + process.getCpuDone() + " " + process.getNumBlocked());
+      System.out.println("process " + i + " " + process.getCpuTime() + " " + process.getBurstTime() + " " + process.getCpuDone() + " " + process.getNumBlocked());
     }
     System.out.println("runtime " + runtime);
   }
@@ -133,7 +133,7 @@ public class Scheduling {
       out.println("Simulation Run Time: " + result.computationTime);
       out.println("Mean: " + meanDev);
       out.println("Standard Deviation: " + standardDev);
-      out.println("Process #\tCPU Time\tIO Blocking\tBurst Deviation\tCPU Completed\tCPU Blocked");
+      out.println("Process #\tCPU Time\tBurst Time\tBurst Deviation\tCPU Completed\tCPU Blocked");
 
       for (i = 0; i < processVector.size(); i++) {
         sProcess process = processVector.elementAt(i);
@@ -143,8 +143,8 @@ public class Scheduling {
         out.print(process.getCpuTime());
         out.print(process.getCpuTime() < 100 ? " (ms)\t\t\t" : " (ms)\t");
 
-        out.print(process.getIoBlocking());
-        out.print(process.getIoBlocking() < 100 ? " (ms)\t\t\t" : " (ms)\t");
+        out.print(process.getBurstTime());
+        out.print(process.getBurstTime() < 100 ? " (ms)\t\t\t" : " (ms)\t");
 
         out.print(process.getBurstDeviation());
         out.print(process.getBurstDeviation() < 100 ? " (ms)\t\t\t" : " (ms)\t");

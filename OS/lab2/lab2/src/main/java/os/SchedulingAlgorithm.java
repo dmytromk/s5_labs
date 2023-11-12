@@ -24,7 +24,7 @@ public class SchedulingAlgorithm {
       PrintStream out = new PrintStream(new FileOutputStream(resultsFile));
       sProcess process = processVector.elementAt(currentProcess);
 
-      out.println("CPU Completed\tCPU Time\tCurrent IO Time\t\tEstimated IO Blocking");
+      out.println("CPU Completed\tCPU Time\tCurrent Burst Time\t\tEstimated Burst Time");
 
       out.println("Process: " + currentProcess + " registered...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
                 process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
@@ -51,7 +51,7 @@ public class SchedulingAlgorithm {
                 process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
         }
 
-        if (process.getCurrentIoBlocking() == process.getIoNext()) {
+        if (process.getCurrentIoBlocking() == process.getCurrentBirstDuration()) {
           out.println("Process: " + currentProcess + " I/O blocked...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
                 process.getCurrentIoBlocking() + " " + process.getEstimatedIoBlocking() + ")");
 
@@ -60,7 +60,7 @@ public class SchedulingAlgorithm {
                   + process.getCurrentIoBlocking() * (1 - process.getAgingCoefficient()));
 
           process.setEstimatedIoBlocking(newEstimate);
-          process.setIoNext(0);
+          process.setCurrentBirstDuration(0);
           process.randomizeBurstTime();
 
           previousProcess = currentProcess;
@@ -73,7 +73,7 @@ public class SchedulingAlgorithm {
 
         process.setCpuDone(process.getCpuDone() + 1);
         if (process.getCurrentIoBlocking() > 0) {
-          process.setIoNext(process.getIoNext() + 1);
+          process.setCurrentBirstDuration(process.getCurrentBirstDuration() + 1);
         }
         comptime++;
       }

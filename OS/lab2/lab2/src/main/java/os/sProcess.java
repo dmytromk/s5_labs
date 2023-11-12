@@ -2,9 +2,9 @@ package os;
 
 public class sProcess {
   private int cpuTime;
-  private int ioBlocking;
+  private int burstTime;
   private int cpuDone;
-  private int ioNext;
+  private int currentBirstDuration;
   private int numBlocked;
 
   private int burstDeviation;
@@ -13,16 +13,16 @@ public class sProcess {
   private double agingCoefficient;
 
 
-  public sProcess (int cpuTime, int ioBlocking, int cpuDone, int ioNext, int numBlocked, int burstDeviation, double agingCoefficient) {
+  public sProcess (int cpuTime, int burstTime, int cpuDone, int currentBirstDuration, int numBlocked, int burstDeviation, double agingCoefficient) {
     this.cpuTime = cpuTime;
-    this.ioBlocking = ioBlocking;
+    this.burstTime = burstTime;
     this.cpuDone = cpuDone;
-    this.ioNext = ioNext;
+    this.currentBirstDuration = currentBirstDuration;
     this.numBlocked = numBlocked;
 
     this.burstDeviation = burstDeviation;
-    this.currentIoBlocking = ioBlocking;
-    this.estimatedIoBlocking = ioBlocking;
+    this.currentIoBlocking = burstTime;
+    this.estimatedIoBlocking = burstTime;
     this.agingCoefficient = agingCoefficient;
   }
 
@@ -32,7 +32,7 @@ public class sProcess {
       X = Common.R1();
     }
     X = X * getBurstDeviation();
-    this.setCurrentIoBlocking((int) X + getIoBlocking());
+    this.setCurrentIoBlocking((int) X + getBurstTime());
   }
 
   public int getCpuTime() {
@@ -43,12 +43,12 @@ public class sProcess {
     this.cpuTime = cpuTime;
   }
 
-  public int getIoBlocking() {
-    return ioBlocking;
+  public int getBurstTime() {
+    return burstTime;
   }
 
-  public void setIoBlocking(int ioBlocking) {
-    this.ioBlocking = ioBlocking;
+  public void setBurstTime(int burstTime) {
+    this.burstTime = burstTime;
   }
 
   public int getCpuDone() {
@@ -59,12 +59,12 @@ public class sProcess {
     this.cpuDone = cpuDone;
   }
 
-  public int getIoNext() {
-    return ioNext;
+  public int getCurrentBirstDuration() {
+    return currentBirstDuration;
   }
 
-  public void setIoNext(int ioNext) {
-    this.ioNext = ioNext;
+  public void setCurrentBirstDuration(int currentBirstDuration) {
+    this.currentBirstDuration = currentBirstDuration;
   }
 
   public int getNumBlocked() {
