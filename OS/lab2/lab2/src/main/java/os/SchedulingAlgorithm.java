@@ -40,13 +40,9 @@ public class SchedulingAlgorithm {
             out.close();
             return result;
           }
-          for (i = size - 1; i >= 0; i--) {
-            process = processVector.elementAt(i);
-            if (process.getCpuDone() < process.getCpuTime()) {
-              currentProcess = i;
-            }
-          }
-          process = processVector.elementAt(currentProcess);
+
+          previousProcess = currentProcess;
+          currentProcess = findNextProcess(processVector, size, previousProcess);
           out.println("Process: " + currentProcess + " registered...\t (" + process.getCpuDone() + " " + process.getCpuTime() + " " +
                 process.getCurrentBurstTime() + " " + process.getEstimatedBurstTime() + ")");
         }
