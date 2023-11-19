@@ -1,4 +1,4 @@
-package com.uni.model;
+package com.uni.common.model;
 
 import lombok.Getter;
 import lombok.Setter;

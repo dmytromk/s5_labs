@@ -1,4 +1,4 @@
-package com.uni.controller;
+package com.uni.common.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,8 +10,8 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.uni.model.Airline;
-import com.uni.model.Flight;
+import com.uni.common.model.Airline;
+import com.uni.common.model.Flight;
 
 public class DatabaseController {
     private final String url;

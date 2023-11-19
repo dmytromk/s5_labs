@@ -1,7 +1,7 @@
-package com.uni.controller;
+package com.uni.common.controller;
 
-import com.uni.model.Airline;
-import com.uni.model.Flight;
+import com.uni.common.model.Airline;
+import com.uni.common.model.Flight;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class XmlController {

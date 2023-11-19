@@ -1,7 +1,7 @@
-package com.uni.controller;
+package com.uni.common.controller;
 
-import com.uni.model.Airline;
-import com.uni.model.Flight;
+import com.uni.common.model.Airline;
+import com.uni.common.model.Flight;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -124,10 +124,6 @@ public class CommonController {
         List<Flight> list = getSortedFlights().get(i);
         return new ArrayList<>(list);
     }
-
-//    public List<Airline> getAirlinesCopy() {
-//        return new ArrayList<>(airlines);
-//    }
 
     public List<List<Flight>> getSortedFlights() {
         List<List<Flight>> res = new ArrayList<>();
