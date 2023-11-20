@@ -21,8 +21,9 @@ public class DatabaseController {
         this.url = url;
 
         try {
+            Class.forName("org.postgresql.Driver");
             this.con = DriverManager.getConnection(url);
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
