@@ -14,18 +14,11 @@ import com.uni.common.model.Airline;
 import com.uni.common.model.Flight;
 
 public class DatabaseController {
-    private final String url;
-    private Connection con = null;
+    Connection connection = null;
+    private ConnectionPool connectionPool;
 
-    public DatabaseController(String url) {
-        this.url = url;
-
-        try {
-            Class.forName("org.postgresql.Driver");
-            this.con = DriverManager.getConnection(url);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
+    public DatabaseController(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
 
 
@@ -33,16 +26,32 @@ public class DatabaseController {
         String sql1 = "DROP TABLE IF EXISTS airlines";
         String sql2 = "DROP TABLE IF EXISTS flights";
 
-        try (Statement st = con.createStatement()) {
+        try {
+            this.connection = connectionPool.getConnection();
+            Statement st = connection.createStatement();
             st.execute(sql1);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        try (Statement st = con.createStatement()) {
+        try {
+            this.connection = connectionPool.getConnection();
+            Statement st = connection.createStatement();
             st.execute(sql2);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -53,10 +62,18 @@ public class DatabaseController {
                 + "     country text NOT NULL \n"
                 + ");";
 
-        try (Statement st = con.createStatement()) {
+        try {
+            this.connection = connectionPool.getConnection();
+            Statement st = connection.createStatement();
             st.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -70,28 +87,47 @@ public class DatabaseController {
                 + "     airline_id text NOT NULL \n"
                 + ");";
 
-        try (Statement st = con.createStatement()) {
+        try {
+            this.connection = connectionPool.getConnection();
+            Statement st = connection.createStatement();
             st.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void addAirline(Airline airline) {
         String sql = "INSERT INTO airlines (id, name, country) VALUES (?, ?, ?)";
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        
+        try {
+            this.connection = connectionPool.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, airline.getId());
             pstmt.setString(2, airline.getName());
             pstmt.setString(3, airline.getCountry());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error inserting airline: " + e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void addFlight(Flight flight) {
         String sql = "INSERT INTO flights (id, name, origin, destination, price, airline_id) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try {
+            this.connection = connectionPool.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, flight.getId());
             pstmt.setString(2, flight.getName());
             pstmt.setString(3, flight.getOrigin());
@@ -101,12 +137,20 @@ public class DatabaseController {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error inserting flight: " + e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public Airline getAirlineById(String airlineId) {
         String sql = "SELECT * FROM airlines WHERE id = ?";
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try {
+            this.connection = connectionPool.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, airlineId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -118,13 +162,21 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             System.err.println("Error retrieving airline by ID: " + e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return null;
     }
 
     public Flight getFlightById(String flightId) {
         String sql = "SELECT * FROM flights WHERE id = ?";
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try {
+            this.connection = connectionPool.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, flightId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -136,6 +188,12 @@ public class DatabaseController {
                     String airlineId = rs.getString("airline_id");
                     return new Flight(id, name, origin, destination, price, airlineId);
                 }
+            } finally {
+                try {
+                    this.connectionPool.releaseConnection(this.connection);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         } catch (SQLException e) {
             System.err.println("Error retrieving flight by ID: " + e.getMessage());
@@ -146,7 +204,11 @@ public class DatabaseController {
     public List<Airline> getAllAirlines() {
         List<Airline> airlines = new ArrayList<>();
         String sql = "SELECT * FROM airlines";
-        try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        try {
+            this.connection = connectionPool.getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
             while (rs.next()) {
                 String id = rs.getString("id");
                 String name = rs.getString("name");
@@ -156,6 +218,12 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             System.err.println("Error retrieving airlines: " + e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return airlines;
     }
@@ -163,7 +231,11 @@ public class DatabaseController {
     public List<Flight> getAllFlights() {
         List<Flight> flights = new ArrayList<>();
         String sql = "SELECT * FROM flights";
-        try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        try {
+            this.connection = connectionPool.getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
             while (rs.next()) {
                 String id = rs.getString("id");
                 String name = rs.getString("name");
@@ -174,27 +246,44 @@ public class DatabaseController {
                 Flight flight = new Flight(id, name, origin, destination, price, airlineId);
                 flights.add(flight);
             }
+
         } catch (SQLException e) {
             System.err.println("Error retrieving flights: " + e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return flights;
     }
 
     public void updateAirline(Airline airline) {
         String sql = "UPDATE airlines SET name = ?, country = ? WHERE id = ?";
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try {
+            this.connection = connectionPool.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, airline.getName());
             pstmt.setString(2, airline.getCountry());
             pstmt.setString(3, airline.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error updating airline: " + e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void updateFlight(Flight flight) {
         String sql = "UPDATE flights SET name = ?, origin = ?, destination = ?, price = ?, airline_id = ? WHERE id = ?";
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try {
+            this.connection = connectionPool.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, flight.getName());
             pstmt.setString(2, flight.getOrigin());
             pstmt.setString(3, flight.getDestination());
@@ -204,26 +293,48 @@ public class DatabaseController {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error updating flight: " + e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void deleteAirlineById(String airlineId) {
         String sql = "DELETE FROM airlines WHERE id = ?";
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try {
+            this.connection = connectionPool.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, airlineId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting airline: " + e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void deleteFlightById(String flightId) {
         String sql = "DELETE FROM flights WHERE id = ?";
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        try {
+            this.connection = connectionPool.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, flightId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting flight: " + e.getMessage());
+        } finally {
+            try {
+                this.connectionPool.releaseConnection(this.connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
