@@ -63,11 +63,11 @@ public class RequestHandler implements Runnable {
         }
     }
 
-    private void getAuthor() throws IOException {
+    private void getFlight() throws IOException {
         String id = reader.readLine();
-        Airline airline = server.getDatabaseController().getAirlineById(id);
-        if (airline != null) {
-            writer.println(JsonMapper.convertObjectToJson(airline));
+        Flight flight = server.getDatabaseController().getFlightById(id);
+        if (flight != null) {
+            writer.println(JsonMapper.convertObjectToJson(flight));
         } else {
             writer.println("[]");
         }
@@ -83,5 +83,27 @@ public class RequestHandler implements Runnable {
         String value = reader.readLine();
         Flight flight = JsonMapper.convertJsonToObject(value, Flight.class);
         server.getDatabaseController().addFlight(flight);
+    }
+
+    private void deleteAirline() throws IOException {
+        String id = reader.readLine();
+        server.getDatabaseController().deleteAirlineById(id);
+    }
+
+    private void deleteFlight() throws IOException {
+        String id = reader.readLine();
+        server.getDatabaseController().deleteFlightById(id);
+    }
+
+    private void updateAirline() throws IOException {
+        String value = reader.readLine();
+        Airline airline = JsonMapper.convertJsonToObject(value, Airline.class);
+        server.getDatabaseController().updateAirline(airline);
+    }
+
+    private void updateFlight() throws IOException {
+        String value = reader.readLine();
+        Flight flight = JsonMapper.convertJsonToObject(value, Flight.class);
+        server.getDatabaseController().updateFlight(flight);
     }
 }
