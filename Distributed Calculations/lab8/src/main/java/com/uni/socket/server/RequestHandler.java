@@ -1,5 +1,6 @@
 package com.uni.socket.server;
 
+import com.uni.common.JsonMapper;
 import com.uni.common.model.Airline;
 import com.uni.common.model.Flight;
 
@@ -10,15 +11,15 @@ import java.util.List;
 public class RequestHandler implements Runnable {
     private Socket socket;
     private Server server;
-    private ObjectInputStream reader;
-    private ObjectOutputStream writer;
+    private BufferedReader reader;
+    private PrintWriter writer;
 
     public RequestHandler(Server server, Socket socket) {
         this.server = server;
         this.socket = socket;
         try {
-            this.reader = new ObjectInputStream(socket.getInputStream());
-            this.writer = new ObjectOutputStream(socket.getOutputStream());
+            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -41,12 +42,46 @@ public class RequestHandler implements Runnable {
     }
 
     private void showAirlines() throws IOException {
-        List<Airline> authors = server.getDatabaseController().getAllAirlines();
-        writer.writeObject(authors);
+        List<Airline> authors;
+        authors = server.getDatabaseController().getAllAirlines();
+        writer.println(JsonMapper.convertObjectToJson(authors));
     }
 
     private void showFlights() throws IOException {
-        List<Flight> flights = server.getDatabaseController().getAllFlights();
-        writer.writeObject(flights);
+        List<Flight> authors;
+        authors = server.getDatabaseController().getAllFlights();
+        writer.println(JsonMapper.convertObjectToJson(authors));
+    }
+
+    private void getAirline() throws IOException {
+        String id = reader.readLine();
+        Airline airline = server.getDatabaseController().getAirlineById(id);
+        if (airline != null) {
+            writer.println(JsonMapper.convertObjectToJson(airline));
+        } else {
+            writer.println("[]");
+        }
+    }
+
+    private void getAuthor() throws IOException {
+        String id = reader.readLine();
+        Airline airline = server.getDatabaseController().getAirlineById(id);
+        if (airline != null) {
+            writer.println(JsonMapper.convertObjectToJson(airline));
+        } else {
+            writer.println("[]");
+        }
+    }
+
+    private void addAirline() throws IOException {
+        String value = reader.readLine();
+        Airline airline = JsonMapper.convertJsonToObject(value, Airline.class);
+        server.getDatabaseController().addAirline(airline);
+    }
+
+    private void addFlight() throws IOException {
+        String value = reader.readLine();
+        Flight flight = JsonMapper.convertJsonToObject(value, Flight.class);
+        server.getDatabaseController().addFlight(flight);
     }
 }
