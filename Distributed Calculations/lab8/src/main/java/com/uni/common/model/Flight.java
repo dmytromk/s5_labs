@@ -1,13 +1,12 @@
 package com.uni.common.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-@Setter
-@Getter
-public class Flight {
+@Data
+public class Flight implements Serializable {
     private final String id;
     private String airlineId;
     private String name;

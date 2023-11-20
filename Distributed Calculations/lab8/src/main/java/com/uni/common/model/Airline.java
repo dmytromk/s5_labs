@@ -1,15 +1,12 @@
 package com.uni.common.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 import java.util.UUID;
 
-@Getter
-@Setter
-public class Airline {
+@Data
+public class Airline implements Serializable {
     private final String id;
     private String name;
     private String country;
