@@ -2,11 +2,15 @@ package com.uni.common.model;
 
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
 @Data
 public class Airline implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final String id;
     private String name;
     private String country;
