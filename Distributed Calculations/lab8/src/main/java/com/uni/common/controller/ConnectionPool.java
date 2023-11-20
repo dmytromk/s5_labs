@@ -43,7 +43,6 @@ public class ConnectionPool implements AutoCloseable {
     }
 
     public synchronized boolean releaseConnection(Connection connection) throws SQLException {
-        connection.close();
         connectionPool.add(connection);
         notify();
         return usedConnections.remove(connection);
