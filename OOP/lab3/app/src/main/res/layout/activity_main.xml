@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="Start"
-        android:fontFamily="@font/Cartesian"
+        android:fontFamily="@font/cartesian"
         android:textSize="32sp"
         android:textColor="@color/white"
         android:backgroundTint="#bb8044"
