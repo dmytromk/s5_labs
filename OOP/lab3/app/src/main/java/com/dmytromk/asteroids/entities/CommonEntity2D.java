@@ -43,10 +43,10 @@ public abstract class CommonEntity2D {
     }
 
     // https://kishimotostudios.com/articles/aabb_collision/
-    boolean checkCollision(CommonEntity2D otherObject) {
-        return !(this.getLeftX() > otherObject.getRightX()      // this is to the right
-                || this.getRightX() < otherObject.getLeftX()    // this is to the left
-                || this.getBottomY() < otherObject.getTopY()    // this is above
-                || this.getTopY() > otherObject.getBottomY());  // this is below
+    static boolean checkCollision(CommonEntity2D A, CommonEntity2D B) {
+        return !(A.getLeftX() > B.getRightX()      // A is to the right of B
+                || A.getRightX() < B.getLeftX()    // A is to the left of B
+                || A.getBottomY() < B.getTopY()    // A is above B
+                || A.getTopY() > B.getBottomY());  // A is below B
     }
 }
