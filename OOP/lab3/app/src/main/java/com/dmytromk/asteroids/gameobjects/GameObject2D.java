@@ -1,4 +1,4 @@
-package com.dmytromk.asteroids.entities;
+package com.dmytromk.asteroids.gameobjects;
 
 import static java.lang.Math.max;
 
@@ -7,21 +7,21 @@ import android.graphics.Bitmap;
 
 import com.dmytromk.asteroids.common.Vector2;
 
-public abstract class CommonEntity2D {
+public abstract class GameObject2D {
     protected Context context;
     protected Bitmap currentSprite;
     // top-left position
     protected Vector2 coordinates;
     protected Vector2 velocity;
 
-    public CommonEntity2D(Context context, Vector2 coordinates, Vector2 velocity, Bitmap currentSprite) {
+    public GameObject2D(Context context, Vector2 coordinates, Vector2 velocity, Bitmap currentSprite) {
         this.context = context;
         this.coordinates = coordinates;
         this.velocity = velocity;
         this.currentSprite = currentSprite;
     }
 
-    public CommonEntity2D(Context context, Bitmap currentSprite) {
+    public GameObject2D(Context context, Bitmap currentSprite) {
         this(context, new Vector2(0, 0), new Vector2(0, 0), currentSprite);
     }
 
@@ -50,7 +50,7 @@ public abstract class CommonEntity2D {
     }
 
     // https://kishimotostudios.com/articles/aabb_collision/
-    static boolean checkCollision(CommonEntity2D A, CommonEntity2D B) {
+    static boolean checkCollision(GameObject2D A, GameObject2D B) {
         return !(A.getLeftX() > B.getRightX()      // A is to the right of B
                 || A.getRightX() < B.getLeftX()    // A is to the left of B
                 || A.getBottomY() < B.getTopY()    // A is above B

@@ -1,7 +1,6 @@
-package com.dmytromk.asteroids.entities;
+package com.dmytromk.asteroids.gameobjects;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.dmytromk.asteroids.R;
@@ -9,7 +8,7 @@ import com.dmytromk.asteroids.common.Vector2;
 
 import java.util.Random;
 
-public class Asteroid extends CommonEntity2D {
+public class Asteroid extends GameObject2D {
     private final Random random;
     private static final int MIN_VELOCITY = 15;
     private static final int MAX_VELOCITY = 30;
