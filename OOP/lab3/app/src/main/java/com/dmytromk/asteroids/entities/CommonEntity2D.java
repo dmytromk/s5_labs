@@ -41,4 +41,12 @@ public abstract class CommonEntity2D {
     public int getBottomY() {
         return coordinates.getY() + getHeight();
     }
+
+    // https://kishimotostudios.com/articles/aabb_collision/
+    boolean checkCollision(CommonEntity2D otherObject) {
+        return !(this.getLeftX() > otherObject.getRightX()      // this is to the right
+                || this.getRightX() < otherObject.getLeftX()    // this is to the left
+                || this.getBottomY() < otherObject.getTopY()    // this is above
+                || this.getTopY() > otherObject.getBottomY());  // this is below
+    }
 }
