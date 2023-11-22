@@ -8,6 +8,7 @@ import com.dmytromk.asteroids.common.Vector2;
 
 public abstract class CommonEntity2D {
     protected Bitmap currentSprite;
+    // top-left position
     protected Vector2 coordinates;
     protected Vector2 velocity;
 
@@ -26,18 +27,18 @@ public abstract class CommonEntity2D {
     }
 
     public int getLeftX() {
-        return coordinates.getX() - getWidth()/2;
+        return coordinates.getX();
     }
 
     public int getRightX() {
-        return coordinates.getX() + getWidth()/2;
+        return coordinates.getX() + getWidth();
     }
 
     public int getTopY() {
-        return coordinates.getY() + getHeight()/2;
+        return coordinates.getY();
     }
 
     public int getBottomY() {
-        return coordinates.getY() - getHeight()/2;
+        return coordinates.getY() + getHeight();
     }
 }

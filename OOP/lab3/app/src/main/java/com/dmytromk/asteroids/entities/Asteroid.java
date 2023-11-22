@@ -29,8 +29,8 @@ public class Asteroid extends CommonEntity2D {
     }
 
     public void reset() {
-        int newX = this.random.nextInt(GameView.width-this.getWidth()) + this.getWidth()/2;
-        int newY = this.random.nextInt(GameView.height-this.getHeight()) + this.getHeight()/2;
+        int newX = this.random.nextInt(GameView.width-this.getWidth());
+        int newY = this.random.nextInt(GameView.height-this.getHeight());
         this.coordinates = new Vector2(newX, newY);
 
         int newVelocityX = this.random.nextInt(15) + 15;
