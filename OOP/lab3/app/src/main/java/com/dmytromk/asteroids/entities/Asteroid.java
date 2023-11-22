@@ -10,22 +10,20 @@ import com.dmytromk.asteroids.common.Vector2;
 import java.util.Random;
 
 public class Asteroid extends CommonEntity2D {
-    Random random;
-    Context context;
+    private final Random random;
+    private static final int MIN_VELOCITY = 15;
+    private static final int MAX_VELOCITY = 30;
 
-    public Asteroid(Context context) {
-        super(new Vector2(0, 0), new Vector2(0, 0),
+    public Asteroid(Context context, Vector2 coordinates, Vector2 velocity) {
+        super(context, coordinates, velocity,
                 BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_blue));
-        this.context = context;
         this.random = new Random();
-        this.reset();
     }
 
-    public Asteroid(Vector2 coordinates, Vector2 velocity, Context context) {
-        super(coordinates, velocity,
-                BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_blue));
-        this.context = context;
+    public Asteroid(Context context) {
+        super(context, BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_blue));
         this.random = new Random();
+        this.reset();
     }
 
     public void reset() {
@@ -33,8 +31,8 @@ public class Asteroid extends CommonEntity2D {
         int newY = this.random.nextInt(GameView.height-this.getHeight());
         this.coordinates = new Vector2(newX, newY);
 
-        int newVelocityX = this.random.nextInt(15) + 15;
-        int newVelocityY = this.random.nextInt(15) + 15;
+        int newVelocityX = this.random.nextInt(MAX_VELOCITY-MIN_VELOCITY) + MIN_VELOCITY;
+        int newVelocityY = this.random.nextInt(MAX_VELOCITY-MIN_VELOCITY) + MIN_VELOCITY;
         this.velocity = new Vector2(newVelocityX, newVelocityY);
     }
 }

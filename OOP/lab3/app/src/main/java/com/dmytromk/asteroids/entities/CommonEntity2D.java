@@ -2,20 +2,27 @@ package com.dmytromk.asteroids.entities;
 
 import static java.lang.Math.max;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.dmytromk.asteroids.common.Vector2;
 
 public abstract class CommonEntity2D {
+    protected Context context;
     protected Bitmap currentSprite;
     // top-left position
     protected Vector2 coordinates;
     protected Vector2 velocity;
 
-    public CommonEntity2D(Vector2 coordinates, Vector2 velocity, Bitmap currentSprite) {
+    public CommonEntity2D(Context context, Vector2 coordinates, Vector2 velocity, Bitmap currentSprite) {
+        this.context = context;
         this.coordinates = coordinates;
         this.velocity = velocity;
         this.currentSprite = currentSprite;
+    }
+
+    public CommonEntity2D(Context context, Bitmap currentSprite) {
+        this(context, new Vector2(0, 0), new Vector2(0, 0), currentSprite);
     }
 
     public int getHeight() {
