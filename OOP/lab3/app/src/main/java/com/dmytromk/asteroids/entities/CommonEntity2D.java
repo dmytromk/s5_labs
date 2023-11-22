@@ -14,7 +14,7 @@ public abstract class CommonEntity2D {
     public CommonEntity2D(Vector2 coordinates, Vector2 velocity, Bitmap currentSprite) {
         this.coordinates = coordinates;
         this.velocity = velocity;
-        this.radius = max(currentSprite.getWidth(), currentSprite.getHeight());
+        this.currentSprite = currentSprite;
     }
 
     public int getHeight() {
