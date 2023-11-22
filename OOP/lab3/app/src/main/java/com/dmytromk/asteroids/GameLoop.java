@@ -46,16 +46,28 @@ public class GameLoop extends Thread {
         long sleepTime;
 
         // Actual loop
-        Canvas canvas;
+        Canvas canvas = null;
         startTime = System.currentTimeMillis();
         while (isRunning) {
             try {
                 canvas = surfaceHolder.lockCanvas();
-                gameView.update();
-                gameView.draw(canvas);
-                surfaceHolder.unlockCanvasAndPost(canvas);
+                synchronized (surfaceHolder) {
+                    this.gameView.update();
+                    updateCount++;
+
+                    this.gameView.draw(canvas);
+                }
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
+            } finally {
+                if(canvas != null) {
+                    try {
+                        surfaceHolder.unlockCanvasAndPost(canvas);
+                        frameCount++;
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             updateCount++;
