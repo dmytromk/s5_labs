@@ -26,9 +26,9 @@ public class Asteroid extends GameObject2D {
     }
 
     public void reset() {
-        int newX = this.random.nextInt(GameView.width-this.getWidth());
-        int newY = this.random.nextInt(GameView.height-this.getHeight());
-        this.coordinates = new Vector2(newX, newY);
+        //int newX = this.random.nextInt(GameView.width-this.getWidth());
+        //int newY = this.random.nextInt(GameView.height-this.getHeight());
+        //this.coordinates = new Vector2(newX, newY);
 
         int newVelocityX = this.random.nextInt(MAX_VELOCITY-MIN_VELOCITY) + MIN_VELOCITY;
         int newVelocityY = this.random.nextInt(MAX_VELOCITY-MIN_VELOCITY) + MIN_VELOCITY;
