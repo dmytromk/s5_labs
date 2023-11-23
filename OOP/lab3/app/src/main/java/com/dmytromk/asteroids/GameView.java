@@ -23,7 +23,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (joystick.isPressed(new Vector2(event.getX(), event.getY()))) {
+                    joystick.setIsPressed(true);
+                }
 
+                return true;
+
+            case MotionEvent.ACTION_MOVE:
+                if (joystick.getIsPressed()) {
+
+                }
+
+                return true;
+
+            case MotionEvent.ACTION_UP:
+                joystick.setIsPressed(false);
+
+
+                return true;
         }
 
         return super.onTouchEvent(event);

@@ -18,6 +18,7 @@ public class Joystick {
 
     private Paint innerCirclePaint;
     private Paint outerCirclePaint;
+    private boolean isPressed = false;
 
     public Joystick(Context context, Vector2 center, int innerCircleRadius, int outerCircleRadius) {
         this.innerCircleCenterPosition = center;
@@ -53,6 +54,21 @@ public class Joystick {
         );
     }
 
+    public boolean getIsPressed() {
+        return this.isPressed;
+    }
+
+
+
+    public void setIsPressed(boolean value) {
+        this.isPressed = value;
+    }
+
+    public boolean isPressed(Vector2 position) {
+        return true;
+    }
+
     public void update() {
+
     }
 }
