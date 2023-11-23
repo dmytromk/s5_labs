@@ -10,21 +10,21 @@ import com.dmytromk.asteroids.R;
 import com.dmytromk.asteroids.common.Vector2;
 
 public class Joystick {
-    private Vector2 innerCenter;
-    private Vector2 outerCenter;
+    private Vector2 innerCircleCenterPosition;
+    private Vector2 outerCircleCenterPosition;
 
-    private final int innerRadius;
-    private final int outerRadius;
+    private final int innerCircleRadius;
+    private final int outerCircleRadius;
 
     private Paint innerCirclePaint;
     private Paint outerCirclePaint;
 
-    public Joystick(Context context, Vector2 center, int innerRadius, int outerRadius) {
-        this.innerCenter = center;
-        this.outerCenter = center;
+    public Joystick(Context context, Vector2 center, int innerCircleRadius, int outerCircleRadius) {
+        this.innerCircleCenterPosition = center;
+        this.outerCircleCenterPosition = center;
         
-        this.innerRadius = innerRadius;
-        this.outerRadius = outerRadius;
+        this.innerCircleRadius = innerCircleRadius;
+        this.outerCircleRadius = outerCircleRadius;
 
         // paint of circles
         outerCirclePaint = new Paint();
@@ -37,6 +37,20 @@ public class Joystick {
     }
 
     public void draw(Canvas canvas) {
+        canvas.drawCircle(
+                outerCircleCenterPosition.x,
+                outerCircleCenterPosition.y,
+                outerCircleRadius,
+                outerCirclePaint
+        );
+
+        // Draw inner circle
+        canvas.drawCircle(
+                innerCircleCenterPosition.x,
+                innerCircleCenterPosition.y,
+                innerCircleRadius,
+                innerCirclePaint
+        );
     }
 
     public void update() {
