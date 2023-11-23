@@ -22,8 +22,12 @@ public class Vector2 {
         return new Vector2(v1.x - v2.x, v1.y - v2.y);
     }
 
-    public static Vector2 multiply(Vector2 vector, int scalar) {
+    public static Vector2 multiply(Vector2 vector, float scalar) {
         return new Vector2(vector.x * scalar, vector.y * scalar);
+    }
+
+    public static Vector2 divide(Vector2 vector, float scalar) {
+        return new Vector2(vector.x / scalar, vector.y / scalar);
     }
 
     public static double length(Vector2 vector) {
@@ -34,9 +38,9 @@ public class Vector2 {
         return v1.x * v2.x + v1.y * v2.y;
     }
 
-    public static double distance(Vector2 v1, Vector2 v2) {
+    public static float distance(Vector2 v1, Vector2 v2) {
         float dx = v1.x - v2.x;
         float dy = v1.y - v2.y;
-        return Math.sqrt(dx * dx + dy * dy);
+        return (float) Math.sqrt(dx * dx + dy * dy);
     }
 }

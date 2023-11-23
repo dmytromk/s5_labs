@@ -32,14 +32,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             case MotionEvent.ACTION_MOVE:
                 if (joystick.getIsPressed()) {
-
+                    joystick.setActuator(new Vector2(event.getX(), event.getY()));
                 }
 
                 return true;
 
             case MotionEvent.ACTION_UP:
                 joystick.setIsPressed(false);
-
+                joystick.resetActuator();
 
                 return true;
         }
@@ -55,7 +55,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
 
-        this.joystick = new Joystick(context, new Vector2(275, 700), 30, 120);
+        this.joystick = new Joystick(context, new Vector2(275, 700), 50, 70);
         this.spaceship = new Spaceship(getContext(), new Vector2(1000, 500));
 
         setFocusable(true);

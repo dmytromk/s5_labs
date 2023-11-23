@@ -18,6 +18,10 @@ public class Joystick {
 
     private Paint innerCirclePaint;
     private Paint outerCirclePaint;
+
+    private Vector2 actuator = new Vector2(0, 0);
+    private float centerToTouchDistance;
+
     private boolean isPressed = false;
 
     public Joystick(Context context, Vector2 center, int innerCircleRadius, int outerCircleRadius) {
@@ -54,21 +58,41 @@ public class Joystick {
         );
     }
 
+    public void update() {
+        updateInnerCirclePosition();
+    }
+
+    private void updateInnerCirclePosition() {
+        this.innerCircleCenterPosition = Vector2.add(outerCircleCenterPosition,
+                Vector2.multiply(actuator, innerCircleRadius));
+    }
+
     public boolean getIsPressed() {
         return this.isPressed;
     }
-
-
 
     public void setIsPressed(boolean value) {
         this.isPressed = value;
     }
 
-    public boolean isPressed(Vector2 position) {
-        return true;
+    public boolean isPressed(Vector2 touchPosition) {
+        this.centerToTouchDistance = Vector2.distance(this.outerCircleCenterPosition, touchPosition);
+        return this.centerToTouchDistance < outerCircleRadius;
     }
 
-    public void update() {
+    public void setActuator(Vector2 touchPosition) {
+        Vector2 delta = Vector2.subtract(touchPosition, outerCircleCenterPosition);
+        float deltaDistance = Vector2.distance(touchPosition, outerCircleCenterPosition);
 
+        // normalization to ensure that results falls in [-1, 1]
+        if(deltaDistance < outerCircleRadius) {
+            this.actuator = Vector2.divide(delta, this.outerCircleRadius);
+        } else {
+            this.actuator = Vector2.divide(delta, deltaDistance);
+        }
+    }
+
+    public void resetActuator() {
+        this.actuator = new Vector2(0, 0);
     }
 }
