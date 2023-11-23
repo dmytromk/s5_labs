@@ -9,9 +9,12 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.dmytromk.asteroids.common.Vector2;
+import com.dmytromk.asteroids.gameobjects.Spaceship;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+    private final Spaceship spaceship;
     private GameLoop gameLoop;
-    private Context context;
 
     public GameView(Context context) {
         super(context);
@@ -19,8 +22,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
-        this.context = context;
         this.gameLoop = new GameLoop(this, surfaceHolder);
+        this.spaceship = new Spaceship(getContext(), new Vector2(1000, 500));
 
         setFocusable(true);
     }
@@ -45,11 +48,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         drawUPS(canvas);
         drawFPS(canvas);
+
+        spaceship.draw(canvas);
     }
 
     public void drawUPS(Canvas canvas) {
         String averageUPS = Double.toString(this.gameLoop.getAverageUPS());
-        int color = ContextCompat.getColor(this.context, R.color.magenta);
+        int color = ContextCompat.getColor(getContext(), R.color.magenta);
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setTextSize(50);
@@ -58,7 +63,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void drawFPS(Canvas canvas) {
         String averageFPS = Double.toString(this.gameLoop.getAverageFPS());
-        int color = ContextCompat.getColor(this.context, R.color.magenta);
+        int color = ContextCompat.getColor(getContext(), R.color.magenta);
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setTextSize(50);
@@ -66,5 +71,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
+        spaceship.update();
     }
 }

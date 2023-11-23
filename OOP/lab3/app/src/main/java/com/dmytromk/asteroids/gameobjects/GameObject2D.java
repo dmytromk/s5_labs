@@ -4,6 +4,7 @@ import static java.lang.Math.max;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 import com.dmytromk.asteroids.common.Vector2;
 
@@ -56,4 +57,7 @@ public abstract class GameObject2D {
                 || A.getBottomY() < B.getTopY()    // A is above B
                 || A.getTopY() > B.getBottomY());  // A is below B
     }
+
+    // public abstract void draw(Canvas canvas, GameDisplay gameDisplay);
+    // public abstract void update();
 }
