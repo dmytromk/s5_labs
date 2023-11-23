@@ -80,6 +80,10 @@ public class Joystick {
         return this.centerToTouchDistance < outerCircleRadius;
     }
 
+    public Vector2 getActuator() {
+        return actuator;
+    }
+
     public void setActuator(Vector2 touchPosition) {
         Vector2 delta = Vector2.subtract(touchPosition, outerCircleCenterPosition);
         float deltaDistance = Vector2.distance(touchPosition, outerCircleCenterPosition);

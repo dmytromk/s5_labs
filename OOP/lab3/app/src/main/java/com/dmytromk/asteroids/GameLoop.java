@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
 public class GameLoop extends Thread {
-    private final static double MAX_UPS = 120.0;
+    public final static double MAX_UPS = 120.0;
     // times for one update in milliseconds
     private final static double UPS_PERIOD = 1000 / MAX_UPS;
 

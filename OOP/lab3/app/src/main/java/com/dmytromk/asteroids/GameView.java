@@ -106,6 +106,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         joystick.update();
-        spaceship.update();
+        spaceship.update(joystick);
     }
 }
