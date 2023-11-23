@@ -35,19 +35,19 @@ public abstract class GameObject2D {
     }
 
     public int getLeftX() {
-        return coordinates.getX();
+        return coordinates.x;
     }
 
     public int getRightX() {
-        return coordinates.getX() + getWidth();
+        return coordinates.x + getWidth();
     }
 
     public int getTopY() {
-        return coordinates.getY();
+        return coordinates.y;
     }
 
     public int getBottomY() {
-        return coordinates.getY() + getHeight();
+        return coordinates.y + getHeight();
     }
 
     // https://kishimotostudios.com/articles/aabb_collision/

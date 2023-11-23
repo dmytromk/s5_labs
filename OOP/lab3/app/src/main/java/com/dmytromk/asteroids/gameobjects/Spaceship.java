@@ -22,7 +22,7 @@ public class Spaceship {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(this.currentSprite, coordinates.getX(), coordinates.getY(), null);
+        canvas.drawBitmap(this.currentSprite, coordinates.x, coordinates.y, null);
     }
 
     public void update() {
