@@ -1,11 +1,11 @@
 package com.dmytromk.asteroids.common;
 
 public class Vector2 {
-    public int x;
-    public int y;
+    public float x;
+    public float y;
 
 
-    public Vector2(int x, int y) {
+    public Vector2(float x, float y) {
         this.x = x;
         this.y = y;
     }
@@ -30,13 +30,13 @@ public class Vector2 {
         return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
     }
 
-    public static int dotProduct(Vector2 v1, Vector2 v2) {
+    public static float dotProduct(Vector2 v1, Vector2 v2) {
         return v1.x * v2.x + v1.y * v2.y;
     }
 
     public static double distance(Vector2 v1, Vector2 v2) {
-        int dx = v1.x - v2.x;
-        int dy = v1.y - v2.y;
+        float dx = v1.x - v2.x;
+        float dy = v1.y - v2.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
 }

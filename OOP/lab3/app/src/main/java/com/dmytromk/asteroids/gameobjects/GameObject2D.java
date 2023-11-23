@@ -34,19 +34,19 @@ public abstract class GameObject2D {
         return currentSprite.getWidth();
     }
 
-    public int getLeftX() {
+    public float getLeftX() {
         return coordinates.x;
     }
 
-    public int getRightX() {
+    public float getRightX() {
         return coordinates.x + getWidth();
     }
 
-    public int getTopY() {
+    public float getTopY() {
         return coordinates.y;
     }
 
-    public int getBottomY() {
+    public float getBottomY() {
         return coordinates.y + getHeight();
     }
 
