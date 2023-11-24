@@ -15,9 +15,11 @@ public class Spaceship {
     private Bitmap currentSprite;
     // top-left position
     private Vector2 coordinates;
-    private Vector2 velocity;
-    private static final double SPEED_PIXELS_PER_SECOND = 400;
+    private Vector2 velocity = new Vector2(0, 0);
+
+    private static final double SPEED_PIXELS_PER_SECOND = 1000;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+
 
     public Spaceship(Context context, Vector2 coordinates) {
         this.context = context;
@@ -31,7 +33,13 @@ public class Spaceship {
     }
 
     public void update(Joystick joystick) {
-        this.velocity = Vector2.multiply(joystick.getActuator(), (float) MAX_SPEED);
         this.coordinates = Vector2.add(this.coordinates, this.velocity);
+
+        if (joystick.getIsPressed()) {
+            Vector2 acceleration = Vector2.multiply(joystick.getActuator(), (float) (MAX_SPEED * 0.05));
+            this.velocity = Vector2.add(acceleration, velocity);
+        }
+
+        this.velocity = Vector2.multiply(this.velocity, 0.98F);
     }
 }
