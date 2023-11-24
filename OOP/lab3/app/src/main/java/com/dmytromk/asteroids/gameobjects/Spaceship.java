@@ -1,12 +1,8 @@
 package com.dmytromk.asteroids.gameobjects;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.DisplayMetrics;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmytromk.asteroids.GameLoop;
 import com.dmytromk.asteroids.R;
@@ -17,7 +13,7 @@ import com.dmytromk.asteroids.utils.utils;
 public class Spaceship extends GameObject2D {
     private final Joystick joystick;
 
-    private static final double SPEED_PIXELS_PER_SECOND = 1000;
+    public static final double SPEED_PIXELS_PER_SECOND = 1000;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
 

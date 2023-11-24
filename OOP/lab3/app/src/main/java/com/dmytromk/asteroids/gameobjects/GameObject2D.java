@@ -1,7 +1,5 @@
 package com.dmytromk.asteroids.gameobjects;
 
-import static java.lang.Math.max;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

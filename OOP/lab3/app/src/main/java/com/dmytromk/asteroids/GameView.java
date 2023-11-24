@@ -12,11 +12,16 @@ import androidx.core.content.ContextCompat;
 
 import com.dmytromk.asteroids.common.Vector2;
 import com.dmytromk.asteroids.controls.Joystick;
+import com.dmytromk.asteroids.gameobjects.Asteroid;
 import com.dmytromk.asteroids.gameobjects.Spaceship;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Joystick joystick;
     private final Spaceship spaceship;
+    private final List<Asteroid> asteroidList = new ArrayList<>();
 
     private GameLoop gameLoop;
 
@@ -79,11 +84,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        drawUPS(canvas);
-        drawFPS(canvas);
 
         joystick.draw(canvas);
         spaceship.draw(canvas);
+        for (Asteroid asteroid : asteroidList) {
+            asteroid.draw(canvas);
+        }
+
+        drawUPS(canvas);
+        drawFPS(canvas);
     }
 
     public void drawUPS(Canvas canvas) {
@@ -107,5 +116,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         joystick.update();
         spaceship.update();
+
+        if (Asteroid.readyToSpawn()) {
+            asteroidList.add(new Asteroid(getContext(), spaceship));
+        }
+
+        for (Asteroid asteroid : asteroidList) {
+            asteroid.update();
+        }
     }
 }
