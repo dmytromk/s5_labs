@@ -56,7 +56,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.gameLoop = new GameLoop(this, surfaceHolder);
 
         this.joystick = new Joystick(context, new Vector2(275, 700), 50, 70);
-        this.spaceship = new Spaceship(getContext(), new Vector2(1000, 500));
+        this.spaceship = new Spaceship(getContext(), joystick, new Vector2(1000, 500));
 
         setFocusable(true);
     }
@@ -106,6 +106,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         joystick.update();
-        spaceship.update(joystick);
+        spaceship.update();
     }
 }

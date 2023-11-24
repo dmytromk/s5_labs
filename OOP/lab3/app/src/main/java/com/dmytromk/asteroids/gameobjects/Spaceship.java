@@ -18,6 +18,7 @@ import com.dmytromk.asteroids.utils.utils;
 
 public class Spaceship {
     private final Context context;
+    private final Joystick joystick;
     private Bitmap currentSprite;
     // top-left position
     private Vector2 coordinates;
@@ -28,8 +29,9 @@ public class Spaceship {
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
 
-    public Spaceship(Context context, Vector2 coordinates) {
+    public Spaceship(Context context, Joystick joystick, Vector2 coordinates) {
         this.context = context;
+        this.joystick = joystick;
         this.currentSprite = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.ship);
         this.coordinates = coordinates;
@@ -42,23 +44,22 @@ public class Spaceship {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(this.currentSprite, coordinates.x, coordinates.y, null);
+        canvas.drawBitmap(currentSprite, coordinates.x, coordinates.y, null);
     }
 
-    public void update(Joystick joystick) {
-        this.coordinates = Vector2.add(this.coordinates, this.velocity);
+    public void update() {
+        coordinates = Vector2.add(this.coordinates, this.velocity);
 
         coordinates.x = utils.positiveMod(coordinates.x, windowWidth
-                - this.currentSprite.getWidth()/2);
+                - currentSprite.getWidth()/2);
         coordinates.y = utils.positiveMod(coordinates.y, windowHeight
-                - this.currentSprite.getHeight()/2);
-
+                - currentSprite.getHeight()/2);
 
         if (joystick.getIsPressed()) {
             Vector2 acceleration = Vector2.multiply(joystick.getActuator(), (float) (MAX_SPEED * 0.05));
-            this.velocity = Vector2.add(acceleration, velocity);
+            velocity = Vector2.add(acceleration, velocity);
         }
 
-        this.velocity = Vector2.multiply(this.velocity, 0.98F);
+        velocity = Vector2.multiply(velocity, 0.98F);
     }
 }
