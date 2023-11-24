@@ -5,6 +5,9 @@ import static java.lang.Math.max;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.DisplayMetrics;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmytromk.asteroids.common.Vector2;
 
@@ -13,18 +16,23 @@ public abstract class GameObject2D {
     protected Bitmap currentSprite;
     // top-left position
     protected Vector2 coordinates;
-    protected Vector2 velocity;
+    protected Vector2 velocity = new Vector2(0, 0);
+    protected int windowWidth;
+    protected int windowHeight;
 
-    public GameObject2D(Context context, Vector2 coordinates, Vector2 velocity, Bitmap currentSprite) {
+    public GameObject2D(Context context, Vector2 coordinates) {
         this.context = context;
         this.coordinates = coordinates;
-        this.velocity = velocity;
-        this.currentSprite = currentSprite;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((AppCompatActivity) this.context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        this.windowWidth = displayMetrics.widthPixels;
+        this.windowHeight = displayMetrics.heightPixels;
     }
 
-    public GameObject2D(Context context, Bitmap currentSprite) {
-        this(context, new Vector2(0, 0), new Vector2(0, 0), currentSprite);
-    }
+    public abstract void draw(Canvas canvas);
+    public abstract void update();
 
     public int getHeight() {
         return currentSprite.getHeight();
@@ -39,7 +47,7 @@ public abstract class GameObject2D {
     }
 
     public float getRightX() {
-        return coordinates.x + getWidth();
+        return coordinates.x + currentSprite.getWidth();
     }
 
     public float getTopY() {
@@ -47,7 +55,7 @@ public abstract class GameObject2D {
     }
 
     public float getBottomY() {
-        return coordinates.y + getHeight();
+        return coordinates.y + currentSprite.getHeight();
     }
 
     // https://kishimotostudios.com/articles/aabb_collision/
@@ -57,7 +65,4 @@ public abstract class GameObject2D {
                 || A.getBottomY() < B.getTopY()    // A is above B
                 || A.getTopY() > B.getBottomY());  // A is below B
     }
-
-    // public abstract void draw(Canvas canvas, GameDisplay gameDisplay);
-    // public abstract void update();
 }

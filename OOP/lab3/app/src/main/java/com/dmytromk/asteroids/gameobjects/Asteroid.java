@@ -2,6 +2,7 @@ package com.dmytromk.asteroids.gameobjects;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 
 import com.dmytromk.asteroids.R;
 import com.dmytromk.asteroids.common.Vector2;
@@ -13,16 +14,18 @@ public class Asteroid extends GameObject2D {
     private static final int MIN_VELOCITY = 15;
     private static final int MAX_VELOCITY = 30;
 
-    public Asteroid(Context context, Vector2 coordinates, Vector2 velocity) {
-        super(context, coordinates, velocity,
-                BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_blue));
+    public Asteroid(Context context, Vector2 coordinates) {
+        super(context, coordinates);
+        this.currentSprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_blue);
         this.random = new Random();
     }
 
-    public Asteroid(Context context) {
-        super(context, BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_blue));
-        this.random = new Random();
-        this.reset();
+    public void draw(Canvas canvas) {
+
+    }
+
+    public void update() {
+
     }
 
     public void reset() {

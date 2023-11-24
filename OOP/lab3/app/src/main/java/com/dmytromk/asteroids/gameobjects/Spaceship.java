@@ -1,7 +1,5 @@
 package com.dmytromk.asteroids.gameobjects;
 
-import static java.lang.Math.abs;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,31 +14,18 @@ import com.dmytromk.asteroids.common.Vector2;
 import com.dmytromk.asteroids.controls.Joystick;
 import com.dmytromk.asteroids.utils.utils;
 
-public class Spaceship {
-    private final Context context;
+public class Spaceship extends GameObject2D {
     private final Joystick joystick;
-    private Bitmap currentSprite;
-    // top-left position
-    private Vector2 coordinates;
-    private Vector2 velocity = new Vector2(0, 0);
-    private int windowHeight, windowWidth;
 
     private static final double SPEED_PIXELS_PER_SECOND = 1000;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
 
     public Spaceship(Context context, Joystick joystick, Vector2 coordinates) {
-        this.context = context;
+        super(context, coordinates);
         this.joystick = joystick;
         this.currentSprite = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.ship);
-        this.coordinates = coordinates;
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((AppCompatActivity) this.context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        this.windowHeight = displayMetrics.heightPixels;
-        this.windowWidth = displayMetrics.widthPixels;
     }
 
     public void draw(Canvas canvas) {
@@ -48,7 +33,7 @@ public class Spaceship {
     }
 
     public void update() {
-        coordinates = Vector2.add(this.coordinates, this.velocity);
+        this.coordinates = Vector2.add(this.coordinates, this.velocity);
 
         coordinates.x = utils.positiveMod(coordinates.x, windowWidth
                 - currentSprite.getWidth()/2);
