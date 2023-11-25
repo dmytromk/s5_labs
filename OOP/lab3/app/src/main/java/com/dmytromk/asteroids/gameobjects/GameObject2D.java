@@ -56,13 +56,13 @@ public abstract class GameObject2D {
         return coordinates.y + currentSprite.getHeight();
     }
     
-//    public Vector2 getCenter() {
-//        return new Vector2(coordinates.x + getWidth() / 2, coordinates.y + getHeight() / 2);
-//    }
-//
-//    public float getRadius() {
-//        return (float) (Math.sqrt(getHeight() * getHeight() + getWidth() * getWidth()) / 2);
-//    }
+    public Vector2 getCenter() {
+        return new Vector2(coordinates.x + getWidth() / 2, coordinates.y + getHeight() / 2);
+    }
+
+    public float getRadius() {
+        return (float) (Math.sqrt(getHeight() * getHeight() + getWidth() * getWidth()) / 2);
+    }
 
     // https://kishimotostudios.com/articles/aabb_collision/
     public static boolean checkCollisionAABB(GameObject2D obj1, GameObject2D obj2) {
@@ -83,5 +83,24 @@ public abstract class GameObject2D {
             angle += 360;
 
         return angle;
+    }
+
+    public static boolean checkCollisionCircles(GameObject2D obj1, GameObject2D obj2) {
+        float sumRadius = obj1.getRadius() + obj2.getRadius();
+        float distance = Vector2.distance(obj1.getCenter(), obj2.getCenter());
+
+        if (distance <= sumRadius)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static void resolveCollisionCircles(GameObject2D obj1, GameObject2D obj2) {
+        Vector2 temp = obj1.velocity;
+
+        obj1.velocity = obj2.velocity;
+        obj2.velocity = temp;
     }
 }
