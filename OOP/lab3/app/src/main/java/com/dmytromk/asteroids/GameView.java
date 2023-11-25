@@ -14,6 +14,7 @@ import com.dmytromk.asteroids.common.Vector2;
 import com.dmytromk.asteroids.controls.Joystick;
 import com.dmytromk.asteroids.gameobjects.Asteroid;
 import com.dmytromk.asteroids.gameobjects.GameObject2D;
+import com.dmytromk.asteroids.gameobjects.Missile;
 import com.dmytromk.asteroids.gameobjects.Spaceship;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Joystick joystick;
     private final Spaceship spaceship;
     private final List<Asteroid> asteroidList = new ArrayList<>();
+    private final List<Missile> missileList = new ArrayList<>();
 
     private GameLoop gameLoop;
 
@@ -115,12 +117,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        if (Asteroid.readyToSpawn()) {
+        if (Asteroid.readyToSpawn() && asteroidList.size() < 10) {
             Asteroid toAdd = new Asteroid(getContext(), spaceship);
 
             for (int i = 0; i < asteroidList.size(); i++) {
-                if (toAdd.distanceCenters(asteroidList.get(i)) < toAdd.getWidth()
-                || toAdd.distanceCenters(spaceship) < toAdd.getWidth()) {
+                if (GameObject2D.checkCollisionCircles(toAdd, asteroidList.get(i))
+                || GameObject2D.checkCollisionCircles(toAdd, spaceship)) {
                     toAdd.resetCoordinates();
                     i = 0;
                 }
@@ -129,17 +131,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             asteroidList.add(toAdd);
         }
 
-        for (Asteroid asteroid : asteroidList) {
-            asteroid.update();
-        }
-
         for (int i = 0; i < asteroidList.size(); i++) {
-            if (!asteroidList.get(i).isInWindowBoundaries()) {
-                asteroidList.remove(i);
-                i--;
-                continue;
-            }
-
             for (int j = i + 1; j < asteroidList.size(); j++) {
                 if (GameObject2D.checkCollisionCircles(asteroidList.get(i), asteroidList.get(j))) {
                     GameObject2D.resolveCollisionCircles(asteroidList.get(i), asteroidList.get(j));
@@ -150,6 +142,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 asteroidList.remove(i);
                 i--;
             }
+        }
+
+        for (Asteroid asteroid : asteroidList) {
+            asteroid.update();
         }
 
         joystick.update();
