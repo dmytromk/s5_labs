@@ -28,7 +28,7 @@ public class Spaceship extends GameObject2D {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(this.rotateBitmap(this.angle), coordinates.x, coordinates.y, null);
+        canvas.drawBitmap(currentSprite, position, null);
     }
 
     public void update() {
@@ -48,17 +48,17 @@ public class Spaceship extends GameObject2D {
             if (joystickAngle < 0)
                 joystickAngle += 360;
 
-            if (utils.positiveMod((float) (angle - joystickAngle), 360) < 0.1) {
+            if (utils.positiveMod((float) (angle - joystickAngle), 360) < 1) {
                 float result = (float) ((angle - joystickAngle + 360) % 360);
                 Log.d("STATE", String.valueOf(angle));
             } else if ((angle - joystickAngle + 360) % 360 < 180) {
-                angle = (float) ((angle - ROTATION_SPEED) % 360);
+                angle = utils.positiveMod((float) (angle - ROTATION_SPEED), 360);
             } else {
-                angle = (float) ((angle + ROTATION_SPEED) % 360);
+                angle = utils.positiveMod((float) (angle + ROTATION_SPEED), 360);
             }
-
-
         }
+
+        rotateBitmap(angle);
 
         velocity = Vector2.multiply(velocity, 0.98F);
     }

@@ -3,6 +3,7 @@ package com.dmytromk.asteroids.gameobjects;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.util.DisplayMetrics;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,12 +16,14 @@ public abstract class GameObject2D {
     // top-left position
     protected Vector2 coordinates;
     protected Vector2 velocity = new Vector2(0, 0);
+    protected Matrix position;
     protected int windowWidth;
     protected int windowHeight;
 
     public GameObject2D(Context context, Vector2 coordinates) {
         this.context = context;
         this.coordinates = coordinates;
+        this.position = new Matrix();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((AppCompatActivity) this.context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -106,5 +109,13 @@ public abstract class GameObject2D {
 
         obj1.velocity = obj2.velocity;
         obj2.velocity = temp;
+    }
+
+    protected void rotateBitmap(float degrees) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees, getWidth()/2, getHeight()/2);
+        matrix.postTranslate(coordinates.x, coordinates.y);
+
+        position.set(matrix);
     }
 }
