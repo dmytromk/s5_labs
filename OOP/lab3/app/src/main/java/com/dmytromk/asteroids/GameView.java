@@ -134,7 +134,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         for (int i = 0; i < asteroidList.size(); i++) {
-            for (int j = i + 1; j <asteroidList.size(); j++) {
+            if (!asteroidList.get(i).isInWindowBoundaries()) {
+                asteroidList.remove(i);
+                i--;
+                continue;
+            }
+
+            for (int j = i + 1; j < asteroidList.size(); j++) {
                 if (GameObject2D.checkCollisionCircles(asteroidList.get(i), asteroidList.get(j))) {
                     GameObject2D.resolveCollisionCircles(asteroidList.get(i), asteroidList.get(j));
                 }

@@ -73,11 +73,12 @@ public class Asteroid extends GameObject2D {
         canvas.drawBitmap(currentSprite, coordinates.x, coordinates.y, null);
     }
 
+    public boolean isInWindowBoundaries() {
+        return coordinates.x < windowWidth & coordinates.y < windowHeight;
+    }
+
     public void update() {
         this.coordinates = Vector2.add(this.coordinates, this.velocity);
-
-        coordinates.x = utils.positiveMod(coordinates.x + getWidth()/2, windowWidth) - getWidth()/2;
-        coordinates.y = utils.positiveMod(coordinates.y + getHeight()/2, windowHeight) - getHeight()/2;
     }
 
     public void reset() {
