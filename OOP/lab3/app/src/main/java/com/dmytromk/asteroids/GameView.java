@@ -36,6 +36,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_DOWN:
                 if (joystick.isPressed(new Vector2(event.getX(), event.getY()))) {
                     joystick.setIsPressed(true);
+                } else {
+                    missileList.add(new Missile(getContext(), spaceship));
                 }
 
                 return true;
@@ -92,8 +94,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         joystick.draw(canvas);
         spaceship.draw(canvas);
+
         for (Asteroid asteroid : asteroidList) {
             asteroid.draw(canvas);
+        }
+
+        for (Missile missile : missileList) {
+            missile.draw(canvas);
         }
 
         drawUPS(canvas);
@@ -121,7 +128,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         List<Map.Entry<GameObject2D, GameObject2D>> collidingAsteroidsPairsList = new ArrayList<>();
 
-        //spawning
+        //spawning asteroids
         if (Asteroid.readyToSpawn() && asteroidList.size() < 10) {
             Asteroid toAdd = new Asteroid(getContext());
 
@@ -134,6 +141,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
 
             asteroidList.add(toAdd);
+        }
+
+        // collision missiles with asteroids
+        for (int i = 0; i < missileList.size(); i++) {
+            for (int j = 0; j < asteroidList.size(); j++) {
+                if (GameObject2D.checkCollisionCircles(asteroidList.get(j), missileList.get(i))) {
+                    missileList.remove(i);
+                    asteroidList.remove(j);
+                    i--;
+                    break;
+                }
+            }
         }
 
         for (int i = 0; i < asteroidList.size(); i++) {
@@ -163,7 +182,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for (Asteroid asteroid : asteroidList) {
             asteroid.update();
         }
-
+        for (Missile missile : missileList) {
+            missile.update();
+        }
         joystick.update();
         spaceship.update();
     }

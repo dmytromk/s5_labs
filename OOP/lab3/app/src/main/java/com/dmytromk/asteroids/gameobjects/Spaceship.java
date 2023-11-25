@@ -13,7 +13,7 @@ import com.dmytromk.asteroids.utils.utils;
 
 public class Spaceship extends GameObject2D {
     private final Joystick joystick;
-    private float angle = 0; // degree
+    public float angle = 0; // degree
 
     public static final double SPEED_PIXELS_PER_SECOND = 1000;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
@@ -25,6 +25,11 @@ public class Spaceship extends GameObject2D {
         this.joystick = joystick;
         this.currentSprite = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.ship);
+    }
+
+    @Override
+    public float getRadius() {
+        return (float) getWidth() / 2;
     }
 
     public void draw(Canvas canvas) {
