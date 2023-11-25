@@ -3,6 +3,7 @@ package com.dmytromk.asteroids.gameobjects;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.dmytromk.asteroids.GameLoop;
 import com.dmytromk.asteroids.R;
@@ -12,9 +13,11 @@ import com.dmytromk.asteroids.utils.utils;
 
 public class Spaceship extends GameObject2D {
     private final Joystick joystick;
+    private float angle = 0; // degree
 
     public static final double SPEED_PIXELS_PER_SECOND = 1000;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+    private static final double ROTATION_SPEED = MAX_SPEED / 5;
 
 
     public Spaceship(Context context, Joystick joystick, Vector2 coordinates) {
@@ -25,7 +28,7 @@ public class Spaceship extends GameObject2D {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(currentSprite, coordinates.x, coordinates.y, null);
+        canvas.drawBitmap(this.rotateBitmap(this.angle), coordinates.x, coordinates.y, null);
     }
 
     public void update() {
@@ -37,6 +40,24 @@ public class Spaceship extends GameObject2D {
         if (joystick.getIsPressed()) {
             Vector2 acceleration = Vector2.multiply(joystick.getActuator(), (float) (MAX_SPEED * 0.05));
             velocity = Vector2.add(acceleration, velocity);
+
+
+            // rotate spaceship
+            double joystickAngle = Math.atan2(joystick.getActuator().y, joystick.getActuator().x)
+                    * 180 / Math.PI;
+            if (joystickAngle < 0)
+                joystickAngle += 360;
+
+            if (utils.positiveMod((float) (angle - joystickAngle), 360) < 0.1) {
+                float result = (float) ((angle - joystickAngle + 360) % 360);
+                Log.d("STATE", String.valueOf(angle));
+            } else if ((angle - joystickAngle + 360) % 360 < 180) {
+                angle = (float) ((angle - ROTATION_SPEED) % 360);
+            } else {
+                angle = (float) ((angle + ROTATION_SPEED) % 360);
+            }
+
+
         }
 
         velocity = Vector2.multiply(velocity, 0.98F);
