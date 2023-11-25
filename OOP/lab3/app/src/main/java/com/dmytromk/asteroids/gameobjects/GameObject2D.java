@@ -57,10 +57,11 @@ public abstract class GameObject2D {
     }
 
     // https://kishimotostudios.com/articles/aabb_collision/
-    static boolean checkCollision(GameObject2D A, GameObject2D B) {
-        return !(A.getLeftX() > B.getRightX()      // A is to the right of B
-                || A.getRightX() < B.getLeftX()    // A is to the left of B
-                || A.getBottomY() < B.getTopY()    // A is above B
-                || A.getTopY() > B.getBottomY());  // A is below B
+    public static boolean checkCollision(GameObject2D obj1, GameObject2D obj2) {
+        // check collision between object A and B
+        return !(obj1.getLeftX() > obj2.getRightX()      // A is to the right of B
+                || obj1.getRightX() < obj2.getLeftX()    // A is to the left of B
+                || obj1.getBottomY() < obj2.getTopY()    // A is above B
+                || obj1.getTopY() > obj2.getBottomY());  // A is below B
     }
 }

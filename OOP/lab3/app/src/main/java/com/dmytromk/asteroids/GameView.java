@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import com.dmytromk.asteroids.common.Vector2;
 import com.dmytromk.asteroids.controls.Joystick;
 import com.dmytromk.asteroids.gameobjects.Asteroid;
+import com.dmytromk.asteroids.gameobjects.GameObject2D;
 import com.dmytromk.asteroids.gameobjects.Spaceship;
 
 import java.util.ArrayList;
@@ -123,6 +124,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         for (Asteroid asteroid : asteroidList) {
             asteroid.update();
+        }
+
+        for (int i = 0; i < asteroidList.size(); i++) {
+            for (int j = i + 1; j <asteroidList.size(); j++) {
+                if (GameObject2D.checkCollision(asteroidList.get(i), asteroidList.get(j))) {
+
+                }
+            }
+
+            if (GameObject2D.checkCollision(asteroidList.get(i), spaceship)) {
+                asteroidList.remove(i);
+                i--;
+            }
         }
     }
 }
