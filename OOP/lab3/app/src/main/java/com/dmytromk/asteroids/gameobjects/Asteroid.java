@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import com.dmytromk.asteroids.GameLoop;
 import com.dmytromk.asteroids.R;
 import com.dmytromk.asteroids.common.Vector2;
+import com.dmytromk.asteroids.utils.utils;
 
 import java.util.Random;
 
@@ -15,7 +16,8 @@ public class Asteroid extends GameObject2D {
 
     private static final double SPEED_PIXELS_PER_SECOND = Spaceship.SPEED_PIXELS_PER_SECOND * 0.6;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
-    private static final double SPAWNS_PER_MINUTE = 30;
+    private static final double MIN_SPEED = MAX_SPEED / 2;
+    private static final double SPAWNS_PER_MINUTE = 50;
     private static final double SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE/60.0;
     private static final double UPDATES_PER_SPAWN = GameLoop.MAX_UPS/SPAWNS_PER_SECOND;
     private static double updatesUntilNextSpawn = UPDATES_PER_SPAWN;
@@ -30,10 +32,24 @@ public class Asteroid extends GameObject2D {
     public Asteroid(Context context, Spaceship spaceship) {
 
         this(context, spaceship, new Vector2(0, 0));
+
         this.coordinates = new Vector2(
                 (float) (Math.random() * (windowWidth - this.getWidth())),
                 (float) (Math.random() * (windowHeight - this.getHeight()))
         );
+
+        this.velocity = new Vector2(
+                (float) (MIN_SPEED + Math.random() * MAX_SPEED),
+                (float) (MIN_SPEED + Math.random() * MAX_SPEED)
+        );
+
+        if (Math.random() < 0.5) {
+            velocity.x *= -1;
+        }
+
+        if (Math.random() < 0.5) {
+            velocity.y *= -1;
+        }
     }
 
     public static boolean readyToSpawn() {
@@ -51,7 +67,10 @@ public class Asteroid extends GameObject2D {
     }
 
     public void update() {
+        this.coordinates = Vector2.add(this.coordinates, this.velocity);
 
+        coordinates.x = utils.positiveMod(coordinates.x + getWidth()/2, windowWidth) - getWidth()/2;
+        coordinates.y = utils.positiveMod(coordinates.y + getHeight()/2, windowHeight) - getHeight()/2;
     }
 
     public void reset() {

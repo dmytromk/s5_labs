@@ -31,11 +31,9 @@ public class Spaceship extends GameObject2D {
     public void update() {
         this.coordinates = Vector2.add(this.coordinates, this.velocity);
 
-        coordinates.x = utils.positiveMod(coordinates.x, windowWidth
-                - currentSprite.getWidth()/2);
-        coordinates.y = utils.positiveMod(coordinates.y, windowHeight
-                - currentSprite.getHeight()/2);
-
+        coordinates.x = utils.positiveMod(coordinates.x + getWidth()/2, windowWidth) - getWidth()/2;
+        coordinates.y = utils.positiveMod(coordinates.y + getHeight()/2, windowHeight) - getHeight()/2;
+        
         if (joystick.getIsPressed()) {
             Vector2 acceleration = Vector2.multiply(joystick.getActuator(), (float) (MAX_SPEED * 0.05));
             velocity = Vector2.add(acceleration, velocity);
