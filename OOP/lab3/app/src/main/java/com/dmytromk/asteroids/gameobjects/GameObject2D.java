@@ -47,26 +47,11 @@ public abstract class GameObject2D {
         return currentSprite.getWidth();
     }
 
-    public float getLeftX() {
-        return coordinates.x;
-    }
-
-    public float getRightX() {
-        return coordinates.x + currentSprite.getWidth();
-    }
-
-    public float getTopY() {
-        return coordinates.y;
-    }
-
-    public float getBottomY() {
-        return coordinates.y + currentSprite.getHeight();
-    }
-    
     public Vector2 getCenter() {
         return new Vector2(coordinates.x + getWidth() / 2, coordinates.y + getHeight() / 2);
     }
 
+    // radius for escribed circle
     public float getRadius() {
         return (float) (Math.sqrt(getHeight() * getHeight() + getWidth() * getWidth()) / 2);
     }
@@ -75,30 +60,46 @@ public abstract class GameObject2D {
         return Vector2.length(Vector2.subtract(obj2.getCenter(), getCenter()));
     }
 
-    // https://kishimotostudios.com/articles/aabb_collision/
-    public static boolean checkCollisionAABB(GameObject2D obj1, GameObject2D obj2) {
-        // check collision between object A and B
-        return !(obj1.getLeftX() > obj2.getRightX()      // A is to the right of B
-                || obj1.getRightX() < obj2.getLeftX()    // A is to the left of B
-                || obj1.getBottomY() < obj2.getTopY()    // A is above B
-                || obj1.getTopY() > obj2.getBottomY());  // A is below B
-    }
-
-    public static double getCollisionAngle(GameObject2D obj1, GameObject2D obj2) {
-        Vector2 difference = new Vector2(obj2.coordinates.x - obj1.coordinates.x,
-                obj2.coordinates.y - obj1.coordinates.y);
-
-        /// for simplicity convert radians to degree
-        double angle = Math.atan2(difference.y, difference.x) * 180 / Math.PI;
-        if (angle < 0)
-            angle += 360;
-
-        return angle;
-    }
+//    public float getLeftX() {
+//        return coordinates.x;
+//    }
+//
+//    public float getRightX() {
+//        return coordinates.x + currentSprite.getWidth();
+//    }
+//
+//    public float getTopY() {
+//        return coordinates.y;
+//    }
+//
+//    public float getBottomY() {
+//        return coordinates.y + currentSprite.getHeight();
+//    }
+//
+//    // https://kishimotostudios.com/articles/aabb_collision/
+//    public static boolean checkCollisionAABB(GameObject2D obj1, GameObject2D obj2) {
+//        // check collision between object A and B
+//        return !(obj1.getLeftX() > obj2.getRightX()      // A is to the right of B
+//                || obj1.getRightX() < obj2.getLeftX()    // A is to the left of B
+//                || obj1.getBottomY() < obj2.getTopY()    // A is above B
+//                || obj1.getTopY() > obj2.getBottomY());  // A is below B
+//    }
+//
+//    public static double getCollisionAngle(GameObject2D obj1, GameObject2D obj2) {
+//        Vector2 difference = new Vector2(obj2.coordinates.x - obj1.coordinates.x,
+//                obj2.coordinates.y - obj1.coordinates.y);
+//
+//        /// for simplicity convert radians to degree
+//        double angle = Math.atan2(difference.y, difference.x) * 180 / Math.PI;
+//        if (angle < 0)
+//            angle += 360;
+//
+//        return angle;
+//    }
 
     public static boolean checkCollisionCircles(GameObject2D obj1, GameObject2D obj2) {
         float sumRadius = obj1.getRadius() + obj2.getRadius();
-        float distance = Vector2.distance(obj1.getCenter(), obj2.getCenter());
+        float distance = (float) obj1.distanceCenters(obj2);
 
         if (distance <= sumRadius)
         {

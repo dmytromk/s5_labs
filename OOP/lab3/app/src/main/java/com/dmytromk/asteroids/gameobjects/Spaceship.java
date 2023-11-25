@@ -48,7 +48,7 @@ public class Spaceship extends GameObject2D {
             if (joystickAngle < 0)
                 joystickAngle += 360;
 
-            if (utils.positiveMod((float) (angle - joystickAngle), 360) < 1) {
+            if (utils.positiveMod((float) (angle - joystickAngle), 360) < 0.1) {
                 float result = (float) ((angle - joystickAngle + 360) % 360);
                 Log.d("STATE", String.valueOf(angle));
             } else if ((angle - joystickAngle + 360) % 360 < 180) {

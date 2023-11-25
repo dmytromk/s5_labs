@@ -119,10 +119,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        List<Map.Entry<GameObject2D, GameObject2D>> collidingPairs = new ArrayList<>();
+        List<Map.Entry<GameObject2D, GameObject2D>> collidingAsteroidsPairsList = new ArrayList<>();
 
+        //spawning
         if (Asteroid.readyToSpawn() && asteroidList.size() < 10) {
-            Asteroid toAdd = new Asteroid(getContext(), spaceship);
+            Asteroid toAdd = new Asteroid(getContext());
 
             for (int i = 0; i < asteroidList.size(); i++) {
                 if (GameObject2D.checkCollisionCircles(toAdd, asteroidList.get(i))
@@ -136,12 +137,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         for (int i = 0; i < asteroidList.size(); i++) {
+            // static collision between asteroids
             for (int j = i + 1; j < asteroidList.size(); j++) {
                 if (GameObject2D.checkCollisionCircles(asteroidList.get(i), asteroidList.get(j))) {
                     GameObject2D.resolveStaticCollisionCircles(asteroidList.get(i),
                             asteroidList.get(j));
 
-                    collidingPairs.add(new AbstractMap.SimpleImmutableEntry<> (asteroidList.get(i),
+                    collidingAsteroidsPairsList.add(new AbstractMap.SimpleImmutableEntry<> (asteroidList.get(i),
                             asteroidList.get(j)));
                 }
             }
@@ -153,7 +155,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        for (Map.Entry<GameObject2D, GameObject2D> pair : collidingPairs) {
+        // dynamic collisions
+        for (Map.Entry<GameObject2D, GameObject2D> pair : collidingAsteroidsPairsList) {
             GameObject2D.resolveDynamicCollisionCircles(pair.getKey(), pair.getValue());
         }
 

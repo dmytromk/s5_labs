@@ -9,11 +9,7 @@ import com.dmytromk.asteroids.R;
 import com.dmytromk.asteroids.common.Vector2;
 import com.dmytromk.asteroids.utils.utils;
 
-import java.util.Random;
-
 public class Asteroid extends GameObject2D {
-    private final Spaceship spaceship;
-
     private static final double SPEED_PIXELS_PER_SECOND = Spaceship.SPEED_PIXELS_PER_SECOND * 0.6;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private static final double MIN_SPEED = MAX_SPEED / 2;
@@ -22,16 +18,15 @@ public class Asteroid extends GameObject2D {
     private static final double UPDATES_PER_SPAWN = GameLoop.MAX_UPS/SPAWNS_PER_SECOND;
     private static double updatesUntilNextSpawn = UPDATES_PER_SPAWN;
 
-    public Asteroid(Context context, Spaceship spaceship, Vector2 coordinates) {
+    public Asteroid(Context context, Vector2 coordinates) {
         super(context, coordinates);
-        this.spaceship = spaceship;
         this.currentSprite = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.asteroid_blue);
     }
 
-    public Asteroid(Context context, Spaceship spaceship) {
+    public Asteroid(Context context) {
 
-        this(context, spaceship, new Vector2(0, 0));
+        this(context, new Vector2(0, 0));
 
         this.coordinates = new Vector2(
                 (float) (Math.random() * (windowWidth - this.getWidth())),
@@ -54,7 +49,7 @@ public class Asteroid extends GameObject2D {
 
     @Override
     public float getRadius() {
-        return (float) getHeight() / 2;
+        return (float) Math.max(getHeight(), getWidth()) / 2;
     }
 
     public static boolean readyToSpawn() {
