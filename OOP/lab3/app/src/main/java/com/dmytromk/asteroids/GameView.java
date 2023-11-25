@@ -115,9 +115,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        joystick.update();
-        spaceship.update();
-
         if (Asteroid.readyToSpawn()) {
             asteroidList.add(new Asteroid(getContext(), spaceship));
         }
@@ -128,15 +125,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         for (int i = 0; i < asteroidList.size(); i++) {
             for (int j = i + 1; j <asteroidList.size(); j++) {
-                if (GameObject2D.checkCollision(asteroidList.get(i), asteroidList.get(j))) {
-
+                if (GameObject2D.checkCollisionAABB(asteroidList.get(i), asteroidList.get(j))) {
+                    GameObject2D.collide(asteroidList.get(i), asteroidList.get(j));
                 }
             }
 
-            if (GameObject2D.checkCollision(asteroidList.get(i), spaceship)) {
+            if (GameObject2D.checkCollisionAABB(asteroidList.get(i), spaceship)) {
                 asteroidList.remove(i);
                 i--;
             }
         }
+
+        joystick.update();
+        spaceship.update();
     }
 }
