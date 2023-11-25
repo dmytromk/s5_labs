@@ -14,6 +14,15 @@ public class Vector2 {
         return new Vector2(-this.y, this.x);
     }
 
+    public Vector2 normalize() {
+        float length = (float) Math.sqrt(x * x + y * y);
+        if (length != 0) {
+            return new Vector2(x / length, y / length);
+        } else {
+            return new Vector2(0, 0);
+        }
+    }
+
     public static Vector2 add(Vector2 v1, Vector2 v2) {
         return new Vector2(v1.x + v2.x, v1.y + v2.y);
     }
