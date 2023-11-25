@@ -64,6 +64,10 @@ public abstract class GameObject2D {
         return (float) (Math.sqrt(getHeight() * getHeight() + getWidth() * getWidth()) / 2);
     }
 
+    public double distanceCenters(GameObject2D obj2) {
+        return Vector2.length(Vector2.subtract(obj2.getCenter(), getCenter()));
+    }
+
     // https://kishimotostudios.com/articles/aabb_collision/
     public static boolean checkCollisionAABB(GameObject2D obj1, GameObject2D obj2) {
         // check collision between object A and B

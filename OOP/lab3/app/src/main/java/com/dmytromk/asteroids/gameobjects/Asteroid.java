@@ -62,6 +62,13 @@ public class Asteroid extends GameObject2D {
         }
     }
 
+    public void resetCoordinates() {
+        this.coordinates = new Vector2(
+                (float) (Math.random() * (windowWidth - this.getWidth())),
+                (float) (Math.random() * (windowHeight - this.getHeight()))
+        );
+    }
+
     public void draw(Canvas canvas) {
         canvas.drawBitmap(currentSprite, coordinates.x, coordinates.y, null);
     }

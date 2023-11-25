@@ -116,7 +116,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         if (Asteroid.readyToSpawn()) {
-            asteroidList.add(new Asteroid(getContext(), spaceship));
+            Asteroid toAdd = new Asteroid(getContext(), spaceship);
+
+            for (int i = 0; i < asteroidList.size(); i++) {
+                if (toAdd.distanceCenters(asteroidList.get(i)) < toAdd.getWidth()
+                || toAdd.distanceCenters(spaceship) < toAdd.getWidth()) {
+                    toAdd.resetCoordinates();
+                    i = 0;
+                }
+            }
+
+            asteroidList.add(toAdd);
         }
 
         for (Asteroid asteroid : asteroidList) {
