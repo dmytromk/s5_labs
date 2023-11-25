@@ -52,6 +52,11 @@ public class Asteroid extends GameObject2D {
         }
     }
 
+    @Override
+    public float getRadius() {
+        return (float) getHeight() / 2;
+    }
+
     public static boolean readyToSpawn() {
         if (updatesUntilNextSpawn <= 0) {
             updatesUntilNextSpawn += UPDATES_PER_SPAWN;
@@ -79,15 +84,8 @@ public class Asteroid extends GameObject2D {
 
     public void update() {
         this.coordinates = Vector2.add(this.coordinates, this.velocity);
-    }
 
-    public void reset() {
-        //int newX = this.random.nextInt(GameView.width-this.getWidth());
-        //int newY = this.random.nextInt(GameView.height-this.getHeight());
-        //this.coordinates = new Vector2(newX, newY);
-
-        //int newVelocityX = this.random.nextInt(MAX_SPEED) + MIN_VELOCITY;
-        //int newVelocityY = this.random.nextInt(MAX_SPEED) + MIN_VELOCITY;
-        //this.velocity = new Vector2(newVelocityX, newVelocityY);
+        coordinates.x = utils.positiveMod(coordinates.x + getWidth()/2, windowWidth) - getWidth()/2;
+        coordinates.y = utils.positiveMod(coordinates.y + getHeight()/2, windowHeight) - getHeight()/2;
     }
 }

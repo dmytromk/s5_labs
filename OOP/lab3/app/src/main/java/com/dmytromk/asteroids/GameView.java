@@ -17,8 +17,10 @@ import com.dmytromk.asteroids.gameobjects.GameObject2D;
 import com.dmytromk.asteroids.gameobjects.Missile;
 import com.dmytromk.asteroids.gameobjects.Spaceship;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Joystick joystick;
@@ -117,6 +119,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
+        List<Map.Entry<GameObject2D, GameObject2D>> collidingPairs = new ArrayList<>();
+
         if (Asteroid.readyToSpawn() && asteroidList.size() < 10) {
             Asteroid toAdd = new Asteroid(getContext(), spaceship);
 
@@ -134,14 +138,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for (int i = 0; i < asteroidList.size(); i++) {
             for (int j = i + 1; j < asteroidList.size(); j++) {
                 if (GameObject2D.checkCollisionCircles(asteroidList.get(i), asteroidList.get(j))) {
-                    GameObject2D.resolveCollisionCircles(asteroidList.get(i), asteroidList.get(j));
+                    GameObject2D.resolveStaticCollisionCircles(asteroidList.get(i),
+                            asteroidList.get(j));
+
+                    collidingPairs.add(new AbstractMap.SimpleImmutableEntry<> (asteroidList.get(i),
+                            asteroidList.get(j)));
                 }
             }
 
+            // collision with spaceship
             if (GameObject2D.checkCollisionCircles(asteroidList.get(i), spaceship)) {
                 asteroidList.remove(i);
                 i--;
             }
+        }
+
+        for (Map.Entry<GameObject2D, GameObject2D> pair : collidingPairs) {
+            GameObject2D.resolveDynamicCollisionCircles(pair.getKey(), pair.getValue());
         }
 
         for (Asteroid asteroid : asteroidList) {

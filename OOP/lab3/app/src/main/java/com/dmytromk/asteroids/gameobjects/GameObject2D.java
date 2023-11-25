@@ -10,6 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmytromk.asteroids.common.Vector2;
 
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
+
 public abstract class GameObject2D {
     protected Context context;
     protected Bitmap currentSprite;
@@ -104,7 +108,19 @@ public abstract class GameObject2D {
         return false;
     }
 
-    public static void resolveCollisionCircles(GameObject2D obj1, GameObject2D obj2) {
+    public static void resolveStaticCollisionCircles(GameObject2D obj1, GameObject2D obj2) {
+        Vector2 difference = Vector2.subtract(obj1.coordinates, obj2.coordinates);
+        float distance = Vector2.distance(obj1.getCenter(), obj2.getCenter());
+        float overlap = (Vector2.distance(obj1.getCenter(), obj2.getCenter())
+                - obj1.getRadius() - obj2.getRadius()) / 2;
+
+        obj1.coordinates = Vector2.subtract(obj1.coordinates,
+                Vector2.multiply(difference, overlap/distance));
+        obj2.coordinates = Vector2.add(obj2.coordinates,
+                Vector2.multiply(difference, overlap/distance));
+    }
+
+    public static void resolveDynamicCollisionCircles(GameObject2D obj1, GameObject2D obj2) {
         Vector2 temp = obj1.velocity;
 
         obj1.velocity = obj2.velocity;
