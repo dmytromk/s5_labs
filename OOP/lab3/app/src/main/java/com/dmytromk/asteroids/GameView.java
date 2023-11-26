@@ -34,6 +34,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final List<Missile> missileList = Collections.synchronizedList(new ArrayList<>());
     private Boolean missileIsFired = false;
 
+    private int score = 0;
+    private int lives = 3;
+
     private GameLoop gameLoop;
 
     @Override
@@ -114,6 +117,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         drawFPS(canvas);
+        drawScore(canvas);
+        drawLives(canvas);
         //drawUPS(canvas);
     }
 
@@ -133,6 +138,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("FPS: " + averageFPS, 100, 100, paint);
+    }
+
+    public void drawScore(Canvas canvas) {
+        int color = ContextCompat.getColor(getContext(), R.color.magenta);
+        Paint paint = new Paint();
+        paint.setColor(color);
+        paint.setTextSize(50);
+        canvas.drawText("Score: " + score, this.getWidth() - 400, 100, paint);
+    }
+
+    public void drawLives(Canvas canvas) {
+        String averageFPS = Double.toString((int) this.gameLoop.getAverageFPS());
+        int color = ContextCompat.getColor(getContext(), R.color.magenta);
+        Paint paint = new Paint();
+        paint.setColor(color);
+        paint.setTextSize(50);
+        canvas.drawText("Current lives: " + lives, this.getWidth() - 400, 200, paint);
     }
 
     public void update() {
@@ -170,7 +192,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             asteroidList.add(toAdd);
         }
-        
+
         // Spawn missile if one is fired
         if (missileIsFired) {
             missileList.add(new Missile(getContext(), spaceship));
@@ -195,6 +217,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 if (GameObject2D.checkCollisionCircles(asteroid, missile)) {
                     missileIterator.remove();
                     asteroidIterator.remove();
+                    score += 100;
                     break;
                 }
             }
@@ -220,6 +243,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // Collision with spaceship
             if (GameObject2D.checkCollisionCircles(currentAsteroid, spaceship)) {
                 asteroidIterator.remove();
+                score -= 200;
+                lives -= 1;
             }
         }
 
