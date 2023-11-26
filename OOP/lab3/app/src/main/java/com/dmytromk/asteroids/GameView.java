@@ -3,8 +3,8 @@ package com.dmytromk.asteroids;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -21,6 +21,8 @@ import com.dmytromk.asteroids.gameobjects.Spaceship;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +30,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final MediaPlayer backgroundMediaPlayer;
     private final Joystick joystick;
     private final Spaceship spaceship;
-    private final List<Asteroid> asteroidList = new ArrayList<>();
-    private final List<Missile> missileList = new ArrayList<>();
+    private final List<Asteroid> asteroidList = Collections.synchronizedList(new ArrayList<>());
+    private final List<Missile> missileList = Collections.synchronizedList(new ArrayList<>());
+    private Boolean missileIsFired = false;
 
     private GameLoop gameLoop;
 
@@ -40,7 +43,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 if (joystick.isPressed(new Vector2(event.getX(), event.getY()))) {
                     joystick.setIsPressed(true);
                 } else {
-                    missileList.add(new Missile(getContext(), spaceship));
+                    missileIsFired = true;
                 }
 
                 return true;
@@ -82,7 +85,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
         backgroundMediaPlayer.start();
-
         gameLoop.startLoop();
     }
 
@@ -136,58 +138,92 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         List<Map.Entry<GameObject2D, GameObject2D>> collidingAsteroidsPairsList = new ArrayList<>();
 
-        //spawning asteroids
+        // Spawning asteroids
         if (Asteroid.readyToSpawn() && asteroidList.size() < 10) {
             Asteroid toAdd = new Asteroid(getContext());
+            boolean collisionDetected = false;
 
-            for (int i = 0; i < asteroidList.size(); i++) {
-                if (GameObject2D.checkCollisionCircles(toAdd, asteroidList.get(i))
-                || GameObject2D.checkCollisionCircles(toAdd, spaceship)) {
+            while (true) {
+                for (Asteroid existingAsteroid : asteroidList) {
+                    if (GameObject2D.checkCollisionCircles(toAdd, existingAsteroid) ||
+                            GameObject2D.checkCollisionCircles(toAdd, spaceship)) {
+                        collisionDetected = true;
+                        break;
+                    }
+                }
+
+                // Check for collisions with missiles
+                for (Missile missile : missileList) {
+                    if (GameObject2D.checkCollisionCircles(toAdd, missile)) {
+                        collisionDetected = true;
+                        break;
+                    }
+                }
+
+                if (collisionDetected) {
                     toAdd.resetCoordinates();
-                    i = 0;
+                    collisionDetected = false;
+                } else {
+                    break;
                 }
             }
 
             asteroidList.add(toAdd);
         }
+        
+        // Spawn missile if one is fired
+        if (missileIsFired) {
+            missileList.add(new Missile(getContext(), spaceship));
+            missileIsFired = false;
+        }
 
-        // collision missiles with asteroids
-        for (int i = 0; i < missileList.size(); i++) {
-            if (missileList.get(i).finished()) {
-                missileList.remove(i);
-                i--;
-            } else {
-                for (int j = 0; j < asteroidList.size(); j++) {
-                    if (GameObject2D.checkCollisionCircles(asteroidList.get(j), missileList.get(i))) {
-                        missileList.remove(i);
-                        asteroidList.remove(j);
-                        i--;
-                        break;
-                    }
+
+        // Collision missiles with asteroids
+        Iterator<Missile> missileIterator = missileList.iterator();
+        while (missileIterator.hasNext()) {
+            Missile missile = missileIterator.next();
+
+            if (missile.finished()) {
+                missileIterator.remove();
+                continue;
+            }
+
+            Iterator<Asteroid> asteroidIterator = asteroidList.iterator();
+            while (asteroidIterator.hasNext()) {
+                Asteroid asteroid = asteroidIterator.next();
+
+                if (GameObject2D.checkCollisionCircles(asteroid, missile)) {
+                    missileIterator.remove();
+                    asteroidIterator.remove();
+                    break;
                 }
             }
         }
 
-        for (int i = 0; i < asteroidList.size(); i++) {
-            // static collision between asteroids
-            for (int j = i + 1; j < asteroidList.size(); j++) {
-                if (GameObject2D.checkCollisionCircles(asteroidList.get(i), asteroidList.get(j))) {
-                    GameObject2D.resolveStaticCollisionCircles(asteroidList.get(i),
-                            asteroidList.get(j));
 
-                    collidingAsteroidsPairsList.add(new AbstractMap.SimpleImmutableEntry<> (asteroidList.get(i),
-                            asteroidList.get(j)));
+        Iterator<Asteroid> asteroidIterator = asteroidList.iterator();
+        while (asteroidIterator.hasNext()) {
+            Asteroid currentAsteroid = asteroidIterator.next();
+
+            // Static collision between asteroids
+            Iterator<Asteroid> otherAsteroidIterator = asteroidList.iterator();
+            while (otherAsteroidIterator.hasNext()) {
+                Asteroid otherAsteroid = otherAsteroidIterator.next();
+
+                if (currentAsteroid != otherAsteroid && GameObject2D.checkCollisionCircles(currentAsteroid, otherAsteroid)) {
+                    GameObject2D.resolveStaticCollisionCircles(currentAsteroid, otherAsteroid);
+
+                    collidingAsteroidsPairsList.add(new AbstractMap.SimpleImmutableEntry<>(currentAsteroid, otherAsteroid));
                 }
             }
 
-            // collision with spaceship
-            if (GameObject2D.checkCollisionCircles(asteroidList.get(i), spaceship)) {
-                asteroidList.remove(i);
-                i--;
+            // Collision with spaceship
+            if (GameObject2D.checkCollisionCircles(currentAsteroid, spaceship)) {
+                asteroidIterator.remove();
             }
         }
 
-        // dynamic collisions
+        // Dynamic collisions
         for (Map.Entry<GameObject2D, GameObject2D> pair : collidingAsteroidsPairsList) {
             GameObject2D.resolveDynamicCollisionCircles(pair.getKey(), pair.getValue());
         }
