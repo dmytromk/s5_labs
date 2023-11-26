@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
+    private GameView gameView;
+    private RelativeLayout root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,41 @@ public class MainActivity extends AppCompatActivity {
         rootPanel.addView(gameView, fillParentLayout);
         rootPanel.addView(bgImagePanel, fillParentLayout);
 
+        this.gameView = gameView;
+        this.root = rootPanel;
+
         setContentView(rootPanel);
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d("MainActivity.java", "onStart()");
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d("MainActivity.java", "onResume()");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d("MainActivity.java", "onPause()");
+        gameView.pause();
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("MainActivity.java", "onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("MainActivity.java", "onDestroy()");
+        super.onDestroy();
     }
 }
