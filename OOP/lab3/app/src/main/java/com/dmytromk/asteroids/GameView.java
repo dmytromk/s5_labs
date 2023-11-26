@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,6 +18,7 @@ import com.dmytromk.asteroids.gameobjects.Asteroid;
 import com.dmytromk.asteroids.gameobjects.GameObject2D;
 import com.dmytromk.asteroids.gameobjects.Missile;
 import com.dmytromk.asteroids.gameobjects.Spaceship;
+import com.dmytromk.asteroids.ui.Performance;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -39,6 +39,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int lives = 3;
 
     private GameLoop gameLoop;
+    private Performance performance;
+
+    public GameView(Context context) {
+        super(context);
+
+        SurfaceHolder surfaceHolder = getHolder();
+        surfaceHolder.addCallback(this);
+
+        this.gameLoop = new GameLoop(this, surfaceHolder);
+
+        this.performance = new Performance(context, gameLoop);
+
+        this.backgroundMediaPlayer = MediaPlayer.create(context, R.raw.glorious_morning);
+        backgroundMediaPlayer.setVolume(30,30);
+        backgroundMediaPlayer.setLooping(true);
+
+        this.joystick = new Joystick(context, new Vector2(275, 700), 50, 70);
+        this.spaceship = new Spaceship(getContext(), joystick, new Vector2(1000, 500));
+
+        setFocusable(true);
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -67,23 +88,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         return super.onTouchEvent(event);
-    }
-
-    public GameView(Context context) {
-        super(context);
-
-        SurfaceHolder surfaceHolder = getHolder();
-        surfaceHolder.addCallback(this);
-
-        this.gameLoop = new GameLoop(this, surfaceHolder);
-        this.backgroundMediaPlayer = MediaPlayer.create(context, R.raw.glorious_morning);
-        backgroundMediaPlayer.setVolume(30,30);
-        backgroundMediaPlayer.setLooping(true);
-
-        this.joystick = new Joystick(context, new Vector2(275, 700), 50, 70);
-        this.spaceship = new Spaceship(getContext(), joystick, new Vector2(1000, 500));
-
-        setFocusable(true);
     }
 
     @Override
@@ -118,10 +122,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             missile.draw(canvas);
         }
 
-        drawFPS(canvas);
+        performance.draw(canvas);
+
         drawScore(canvas);
-        drawLives(canvas);
-        //drawUPS(canvas);
+        //drawLives(canvas);
     }
 
     public void drawUPS(Canvas canvas) {
