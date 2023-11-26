@@ -3,6 +3,7 @@ package com.dmytromk.asteroids;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+    private final MediaPlayer backgroundMediaPlayer; 
     private final Joystick joystick;
     private final Spaceship spaceship;
     private final List<Asteroid> asteroidList = new ArrayList<>();
@@ -66,6 +68,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         surfaceHolder.addCallback(this);
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
+        this.backgroundMediaPlayer = MediaPlayer.create(context, R.raw.glorious_morning);
+        backgroundMediaPlayer.setVolume(30,30);
+        backgroundMediaPlayer.setLooping(true);
 
         this.joystick = new Joystick(context, new Vector2(275, 700), 50, 70);
         this.spaceship = new Spaceship(getContext(), joystick, new Vector2(1000, 500));
@@ -75,17 +80,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
+        backgroundMediaPlayer.start();
+
         gameLoop.startLoop();
     }
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
-
     }
 
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
-
+        backgroundMediaPlayer.stop();
+        backgroundMediaPlayer.release();
     }
 
     @Override
