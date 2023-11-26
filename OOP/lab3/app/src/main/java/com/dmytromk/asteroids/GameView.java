@@ -3,6 +3,7 @@ package com.dmytromk.asteroids;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -103,6 +104,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void draw(Canvas canvas) {
+        canvas.drawColor(0, PorterDuff.Mode.CLEAR);
         super.draw(canvas);
 
         joystick.draw(canvas);
@@ -141,7 +143,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawScore(Canvas canvas) {
-        int color = ContextCompat.getColor(getContext(), R.color.magenta);
+        int color = ContextCompat.getColor(getContext(), R.color.white);
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setTextSize(50);
@@ -150,7 +152,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void drawLives(Canvas canvas) {
         String averageFPS = Double.toString((int) this.gameLoop.getAverageFPS());
-        int color = ContextCompat.getColor(getContext(), R.color.magenta);
+        int color = ContextCompat.getColor(getContext(), R.color.white);
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setTextSize(50);
