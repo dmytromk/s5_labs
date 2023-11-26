@@ -3,6 +3,7 @@ package com.dmytromk.asteroids;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    private final MediaPlayer backgroundMediaPlayer; 
+    private final MediaPlayer backgroundMediaPlayer;
     private final Joystick joystick;
     private final Spaceship spaceship;
     private final List<Asteroid> asteroidList = new ArrayList<>();
@@ -110,26 +111,26 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             missile.draw(canvas);
         }
 
-        drawUPS(canvas);
         drawFPS(canvas);
+        //drawUPS(canvas);
     }
 
     public void drawUPS(Canvas canvas) {
-        String averageUPS = Double.toString(this.gameLoop.getAverageUPS());
-        int color = ContextCompat.getColor(getContext(), R.color.magenta);
+        String averageUPS = Double.toString((int) this.gameLoop.getAverageUPS());
+        int color = ContextCompat.getColor(getContext(), R.color.yellow);
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setTextSize(50);
-        canvas.drawText("UPS: " + averageUPS, 100, 100, paint);
+        canvas.drawText("UPS: " + averageUPS, 100, 200, paint);
     }
 
     public void drawFPS(Canvas canvas) {
-        String averageFPS = Double.toString(this.gameLoop.getAverageFPS());
-        int color = ContextCompat.getColor(getContext(), R.color.magenta);
+        String averageFPS = Double.toString((int) this.gameLoop.getAverageFPS());
+        int color = ContextCompat.getColor(getContext(), R.color.yellow);
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setTextSize(50);
-        canvas.drawText("FPS: " + averageFPS, 100, 200, paint);
+        canvas.drawText("FPS: " + averageFPS, 100, 100, paint);
     }
 
     public void update() {
