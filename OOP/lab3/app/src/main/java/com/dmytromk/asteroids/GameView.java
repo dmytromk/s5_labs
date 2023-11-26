@@ -149,6 +149,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
+        // Update objects
+        for (Asteroid asteroid : asteroidList) {
+            asteroid.update();
+        }
+        for (Missile missile : missileList) {
+            missile.update();
+        }
+        joystick.update();
+        spaceship.update();
+
+
         List<Map.Entry<GameObject2D, GameObject2D>> collidingAsteroidsPairsList = new ArrayList<>();
 
         // Spawning asteroids
@@ -243,15 +254,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for (Map.Entry<GameObject2D, GameObject2D> pair : collidingAsteroidsPairsList) {
             GameObject2D.resolveDynamicCollisionCircles(pair.getKey(), pair.getValue());
         }
-
-        for (Asteroid asteroid : asteroidList) {
-            asteroid.update();
-        }
-        for (Missile missile : missileList) {
-            missile.update();
-        }
-        joystick.update();
-        spaceship.update();
     }
 
     public void pause() {
