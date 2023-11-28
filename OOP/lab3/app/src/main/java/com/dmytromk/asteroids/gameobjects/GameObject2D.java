@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -122,10 +123,26 @@ public abstract class GameObject2D {
     }
 
     public static void resolveDynamicCollisionCircles(GameObject2D obj1, GameObject2D obj2) {
-        Vector2 temp = obj1.velocity;
+        double velocitySum = Vector2.length(Vector2.add(obj1.velocity, obj2.velocity));
 
-        obj1.velocity = obj2.velocity;
-        obj2.velocity = temp;
+        Vector2 normal = Vector2.subtract(obj2.getCenter(), obj1.getCenter());
+        float distance = Vector2.distance(obj2.getCenter(), obj1.getCenter());
+        normal = Vector2.divide(normal, distance);
+
+        Vector2 relativeVelocity = Vector2.subtract(obj2.velocity, obj1.velocity);
+        float dotProduct = Vector2.dotProduct(relativeVelocity, normal);
+
+        float elasticity = 1;
+
+        float impulse = (2.0f * dotProduct) / (2);
+
+        Vector2 impulseVector = Vector2.multiply(normal, impulse);
+
+        obj1.velocity = Vector2.add(obj1.velocity, Vector2.multiply(impulseVector, elasticity));
+        obj2.velocity = Vector2.subtract(obj2.velocity, Vector2.multiply(impulseVector, elasticity));
+
+        double newVelocitySum = Vector2.length(Vector2.add(obj1.velocity, obj2.velocity));
+        Log.d("TAG", String.valueOf((newVelocitySum - velocitySum)));
     }
 
     protected void rotateBitmap(float degrees) {
