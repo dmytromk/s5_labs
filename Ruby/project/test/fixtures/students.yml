@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  last_name: MyString
+  need_dormitory: false
+  length_of_service: 1
+  worked_as_teacher: false
+  school_type: MyString
+  language_studied: MyString
+
+two:
+  last_name: MyString
+  need_dormitory: false
+  length_of_service: 1
+  worked_as_teacher: false
+  school_type: MyString
+  language_studied: MyString

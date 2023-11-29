@@ -1,0 +1,35 @@
+<h1>Students</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Last Name</th>
+    <th>Need Dormitory</th>
+    <th>Length of Service</th>
+    <th>Worked as Teacher</th>
+    <th>School Type</th>
+    <th>Language Studied</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @students.each do |student| %>
+    <tr>
+      <td><%= student.last_name %></td>
+      <td><%= student.need_dormitory %></td>
+      <td><%= student.length_of_service %></td>
+      <td><%= student.worked_as_teacher %></td>
+      <td><%= student.school_type %></td>
+      <td><%= student.language_studied %></td>
+      <td><%= link_to 'Show', student, class: 'action-btn show-btn'%></td>
+      <td><%= link_to 'Edit', edit_student_path(student), class: 'action-btn edit-btn'%></td>
+      <td><%= button_to 'Destroy', student, method: :delete, class: 'action-btn destroy-btn'%></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Student', new_student_path %>

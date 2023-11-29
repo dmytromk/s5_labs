@@ -1,0 +1,141 @@
+/* app/assets/stylesheets/students.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 2%;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #e0e0e0;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#error_explanation {
+    color: #d9534f;
+}
+
+.notice {
+    color: #5bc0de;
+}
+
+
+/* Buttons */
+
+.action-btn {
+    padding: 8px 12px;
+    margin-right: 5px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.show-btn {
+    background-color: #5bc0de;
+}
+
+.edit-btn {
+    background-color: #5bc0de;
+}
+
+.destroy-btn {
+    background-color: #d9534f;
+}
+
+.action-btn:hover {
+    text-decoration: none;
+}
+
+.show-btn:hover {
+    background-color: #4cae4c;
+}
+
+.edit-btn:hover {
+    background-color: #4cae4c;
+}
+
+.destroy-btn:hover {
+    background-color: #c9302c;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+}

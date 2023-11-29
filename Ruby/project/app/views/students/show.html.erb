@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+  <tr>
+    <td><strong>Last Name:</strong></td>
+    <td><strong>Need Dormitory:</strong></td>
+    <td><strong>Length of Service:</strong></td>
+    <td><strong>Worked as Teacher:</strong></td>
+    <td><strong>School Type:</strong></td>
+    <td><strong>Language Studied:</strong></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><%= @student.last_name %></td>
+    <td><%= @student.need_dormitory %></td>
+    <td><%= @student.length_of_service %></td>
+    <td><%= @student.worked_as_teacher %></td>
+    <td><%= @student.school_type %></td>
+    <td><%= @student.language_studied %></td>
+    <td><%= link_to 'Edit', edit_student_path(@student), class: 'action-btn edit-btn'%></td>
+    <td><%= button_to "Destroy", @student, method: :delete, class: 'action-btn destroy-btn'%></td>
+  </tr>
+</table>
+
+<%= link_to 'Back', students_path %>
