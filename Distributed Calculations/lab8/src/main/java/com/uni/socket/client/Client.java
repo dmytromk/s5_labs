@@ -145,7 +145,55 @@ public class Client {
             Flight flight = createFlight();
             out.println(JsonMapper.convertObjectToJson(flight));
         } else {
-            System.out.println("No airline with such an id");
+            System.out.println("No airline with such an ID");
+        }
+    }
+
+    private void getAirline() throws IOException {
+        out.println("ga");
+        String airlineId = manager.getString("Enter airline ID: ");
+        out.println(airlineId);
+        Airline airline = JsonMapper.convertJsonToObject(in.readLine(), Airline.class);
+        if (airline != null) {
+            System.out.println(airline);
+        } else {
+            System.out.println("No airline with such an ID");
+        }
+    }
+
+    private void getFlight() throws IOException {
+        out.println("gf");
+        String flightId = manager.getString("Enter flight ID: ");
+        out.println(flightId);
+        Flight flight = JsonMapper.convertJsonToObject(in.readLine(), Flight.class);
+        if (flight != null) {
+            System.out.println(flight);
+        } else {
+            System.out.println("No flight with such an ID");
+        }
+    }
+
+    private void updateAirline() throws IOException {
+        out.println("ua");
+        String airlineId = manager.getString("Enter airline ID: ");
+        out.println(airlineId);
+        Airline airline = JsonMapper.convertJsonToObject(in.readLine(), Airline.class);
+        if (airline != null) {
+            out.println(JsonMapper.convertObjectToJson(modifyAirline(airline)));
+        } else {
+            System.out.println("No airline with such an ID");
+        }
+    }
+
+    private void updateFlight() throws IOException {
+        out.println("uf");
+        String flightId = manager.getString("Enter flight ID: ");
+        out.println(flightId);
+        Flight flight = JsonMapper.convertJsonToObject(in.readLine(), Flight.class);
+        if (flight != null) {
+            out.println(JsonMapper.convertObjectToJson(modifyFlight(flight)));
+        } else {
+            System.out.println("No flight with such an ID");
         }
     }
 }
