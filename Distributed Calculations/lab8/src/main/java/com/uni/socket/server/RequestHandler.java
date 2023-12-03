@@ -106,4 +106,45 @@ public class RequestHandler implements Runnable {
         Flight flight = JsonMapper.convertJsonToObject(value, Flight.class);
         server.getDatabaseController().updateFlight(flight);
     }
+
+    public void run() {
+        try {
+            while (socket.isConnected() && !socket.isClosed()) {
+                String input = reader.readLine();
+                writer.flush();
+                switch (input) {
+                    case "sa":
+                        showAirlines();
+                        break;
+                    case "sf":
+                        showFlights();
+                        break;
+                    case "ga":
+                        showAirlines();
+                        break;
+                    case "gf":
+                        showFlights();
+                        break;
+                    case "da":
+                        showAirlines();
+                        break;
+                    case "df":
+                        showFlights();
+                        break;
+                    case "ua":
+                        showAirlines();
+                        break;
+                    case "uf":
+                        showFlights();
+                        break;
+                    case "q", "e", "exit", "quit":
+                        closeClient();
+                        return;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            closeClient();
+        }
+    }
 }
