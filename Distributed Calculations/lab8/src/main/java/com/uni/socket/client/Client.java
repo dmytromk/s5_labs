@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
+import java.util.Objects;
 
 public class Client {
     private InputManager manager = new InputManager();
@@ -55,18 +56,18 @@ public class Client {
     }
 
     private Airline createAirline() {
-        System.out.println("\nYou are in an airline creation menu\n");
+        System.out.println("\nYou are in an airline creation menu");
         Airline airline = new Airline();
-        System.out.println("\nNew airline`s ID is " + airline.getId());
+        System.out.println("New airline`s ID is " + airline.getId());
         airline.setName(manager.getString("Enter name: "));
         airline.setCountry(manager.getString("Enter country: "));
         return airline;
     }
 
     private Flight createFlight() {
-        System.out.println("\n You are in a flight creation menu\n");
+        System.out.println("\nYou are in a flight creation menu");
         Flight flight = new Flight();
-        System.out.println("\n New flight`s ID is " + flight.getId());
+        System.out.println("New flight`s ID is " + flight.getId());
         flight.setAirlineId(manager.getString("Enter airline's ID : "));
         flight.setName(manager.getString("Enter name : "));
         flight.setPrice(manager.getDouble("Enter price : "));
@@ -76,7 +77,7 @@ public class Client {
     }
 
     private Airline modifyAirline(Airline airline) {
-        System.out.println("\n You are in an airline modification menu\n");
+        System.out.println("\nYou are in an airline modification menu");
         System.out.println("Current state : \n" + airline);
         while (manager.getBoolean("Do you want change something? ")) {
             System.out.println(" n - name;\n c - country;");
@@ -91,7 +92,7 @@ public class Client {
     }
 
     private Flight modifyFlight(Flight flight) {
-        System.out.println("\n You are in flight modification menu\n");
+        System.out.println("\n You are in flight modification menu");
         System.out.println("Current state : \n" + flight);
         while (manager.getBoolean("Do you want change something? ")) {
             System.out.println(" n - name;\n p - price;\n o - origin;\n d - destination;");
@@ -109,10 +110,11 @@ public class Client {
 
     private void showAirlines() throws IOException {
         out.println("sa");
-        List<Airline> airlines = JsonMapper.convertJsonToList(in.readLine(), Airline.class);
-        if (airlines == null) {
+        String result = in.readLine();
+        if (Objects.equals(result, "")) {
             return;
         }
+        List<Airline> airlines = JsonMapper.convertJsonToList(result, Airline.class);
         for (Airline airline : airlines) {
             System.out.println(airline.toString());
         }
@@ -120,10 +122,11 @@ public class Client {
 
     private void showFlights() throws IOException {
         out.println("sf");
-        List<Flight> flights = JsonMapper.convertJsonToList(in.readLine(), Flight.class);
-        if (flights == null) {
+        String result = in.readLine();
+        if (Objects.equals(result, "")) {
             return;
         }
+        List<Flight> flights = JsonMapper.convertJsonToList(in.readLine(), Flight.class);
         for (Flight flight : flights) {
             System.out.println(flight.toString());
         }
@@ -139,8 +142,9 @@ public class Client {
         out.println("ga");
         String airlineId = manager.getString("Enter airline ID: ");
         out.println(airlineId);
-        Airline airline = JsonMapper.convertJsonToObject(in.readLine(), Airline.class);
-        if (airline == null) {
+        String result = in.readLine();
+        if (!Objects.equals(result, "")) {
+            Airline airline = JsonMapper.convertJsonToObject(result, Airline.class);
             out.println("af");
             Flight flight = createFlight();
             out.println(JsonMapper.convertObjectToJson(flight));
@@ -153,8 +157,9 @@ public class Client {
         out.println("ga");
         String airlineId = manager.getString("Enter airline ID: ");
         out.println(airlineId);
-        Airline airline = JsonMapper.convertJsonToObject(in.readLine(), Airline.class);
-        if (airline != null) {
+        String result = in.readLine();
+        if (!Objects.equals(result, "")) {
+            Airline airline = JsonMapper.convertJsonToObject(result, Airline.class);
             System.out.println(airline);
         } else {
             System.out.println("No airline with such an ID");
@@ -165,8 +170,9 @@ public class Client {
         out.println("gf");
         String flightId = manager.getString("Enter flight ID: ");
         out.println(flightId);
-        Flight flight = JsonMapper.convertJsonToObject(in.readLine(), Flight.class);
-        if (flight != null) {
+        String result = in.readLine();
+        if (!Objects.equals(result, "")) {
+            Flight flight = JsonMapper.convertJsonToObject(result, Flight.class);
             System.out.println(flight);
         } else {
             System.out.println("No flight with such an ID");
@@ -177,8 +183,9 @@ public class Client {
         out.println("ga");
         String airlineId = manager.getString("Enter airline ID: ");
         out.println(airlineId);
-        Airline airline = JsonMapper.convertJsonToObject(in.readLine(), Airline.class);
-        if (airline != null) {
+        String result = in.readLine();
+        if (!Objects.equals(result, "")) {
+            Airline airline = JsonMapper.convertJsonToObject(result, Airline.class);
             out.println("ua");
             out.println(JsonMapper.convertObjectToJson(modifyAirline(airline)));
         } else {
@@ -190,8 +197,9 @@ public class Client {
         out.println("gf");
         String flightId = manager.getString("Enter flight ID: ");
         out.println(flightId);
-        Flight flight = JsonMapper.convertJsonToObject(in.readLine(), Flight.class);
-        if (flight != null) {
+        String result = in.readLine();
+        if (!Objects.equals(result, "")) {
+            Flight flight = JsonMapper.convertJsonToObject(result, Flight.class);
             out.println("uf");
             out.println(JsonMapper.convertObjectToJson(modifyFlight(flight)));
         } else {
@@ -246,5 +254,12 @@ public class Client {
             System.out.println(e.getMessage());
         }
         closeClient();
+    }
+
+    public static void main(String[] args){
+        String host = "localhost";
+        final int portId = 1234;
+        Client client = new Client(host, portId);
+        client.run();
     }
 }

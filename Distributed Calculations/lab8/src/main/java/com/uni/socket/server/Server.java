@@ -22,6 +22,9 @@ public class Server {
             String url = "jdbc:postgresql://localhost:5432/lab8";
             this.connectionPool = new ConnectionPool(url, "postgres", "");
             this.databaseController = new DatabaseController(this.connectionPool);
+            databaseController.dropTables();
+            databaseController.createAirlinesTable();
+            databaseController.createFlightsTable();
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());
             closeServer();
