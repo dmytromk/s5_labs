@@ -17,7 +17,7 @@ public class Client {
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
-    private boolean here = true;
+    private boolean exit = false;
 
     public Client(String host, int portId) {
         try {
@@ -174,11 +174,12 @@ public class Client {
     }
 
     private void updateAirline() throws IOException {
-        out.println("ua");
+        out.println("ga");
         String airlineId = manager.getString("Enter airline ID: ");
         out.println(airlineId);
         Airline airline = JsonMapper.convertJsonToObject(in.readLine(), Airline.class);
         if (airline != null) {
+            out.println("ua");
             out.println(JsonMapper.convertObjectToJson(modifyAirline(airline)));
         } else {
             System.out.println("No airline with such an ID");
@@ -186,14 +187,52 @@ public class Client {
     }
 
     private void updateFlight() throws IOException {
-        out.println("uf");
+        out.println("gf");
         String flightId = manager.getString("Enter flight ID: ");
         out.println(flightId);
         Flight flight = JsonMapper.convertJsonToObject(in.readLine(), Flight.class);
         if (flight != null) {
+            out.println("uf");
             out.println(JsonMapper.convertObjectToJson(modifyFlight(flight)));
         } else {
             System.out.println("No flight with such an ID");
+        }
+    }
+
+    private void deleteAirline() throws IOException {
+        out.println("da");
+        String airlineId = manager.getString("Enter airline ID: ");
+        out.println(airlineId);
+    }
+
+    private void deleteFlight() throws IOException {
+        out.println("db");
+        String flightId = manager.getString("Enter flight ID: ");
+        out.println(flightId);
+    }
+
+    private void loop() throws IOException {
+        String input;
+        input = manager.getString("Enter command : ");
+        switch (input) {
+            case "sa" -> showAirlines();
+            case "sf" -> showFlights();
+            case "aa" -> addAirline();
+            case "af" -> addFlight();
+            case "ga" -> getAirline();
+            case "gf" -> getFlight();
+            case "ua" -> updateAirline();
+            case "uf" -> updateFlight();
+            case "da" -> deleteAirline();
+            case "df" -> deleteFlight();
+            case "h" -> printAvailableCommands();
+            case "q", "e", "exit", "quit" -> {
+                System.out.println("\nExiting...\n");
+                out.println("e");
+                exit = true;
+                return;
+            }
+            default -> System.out.println("Invalid command!");
         }
     }
 }
