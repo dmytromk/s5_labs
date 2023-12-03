@@ -19,7 +19,8 @@ public class Server {
         try {
             this.serverSocket = new ServerSocket(port);
             // TODO: change to real url
-            this.connectionPool = new ConnectionPool("localhost", "user", "password");
+            String url = "jdbc:postgresql://localhost:5432/lab8";
+            this.connectionPool = new ConnectionPool(url, "postgres", "");
             this.databaseController = new DatabaseController(this.connectionPool);
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());
@@ -51,5 +52,11 @@ public class Server {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void main(String[] args){
+        System.out.println("SERVER ONLINE");
+        Server server = new Server(1234);
+        server.start();
     }
 }
