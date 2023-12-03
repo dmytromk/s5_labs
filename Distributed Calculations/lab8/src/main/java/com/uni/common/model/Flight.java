@@ -17,6 +17,10 @@ public class Flight implements Serializable {
     private String destination;
     private Double price;
 
+    public Flight() {
+        this.id = String.valueOf(UUID.randomUUID());
+    }
+
     public Flight(String id) {
         this.id = id;
     }

@@ -15,6 +15,10 @@ public class Airline implements Serializable {
     private String name;
     private String country;
 
+    public Airline() {
+        this.id = String.valueOf(UUID.randomUUID());
+    }
+
     public Airline(String id) {
         this.id = id;
     }
