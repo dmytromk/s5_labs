@@ -120,22 +120,28 @@ public class RequestHandler implements Runnable {
                         showFlights();
                         break;
                     case "ga":
-                        showAirlines();
+                        getAirline();
                         break;
                     case "gf":
-                        showFlights();
+                        getFlight();
+                        break;
+                    case "aa":
+                        addAirline();
+                        break;
+                    case "af":
+                        addFlight();
                         break;
                     case "da":
-                        showAirlines();
+                        deleteAirline();
                         break;
                     case "df":
-                        showFlights();
+                        deleteFlight();
                         break;
                     case "ua":
-                        showAirlines();
+                        updateAirline();
                         break;
                     case "uf":
-                        showFlights();
+                        updateFlight();
                         break;
                     case "q", "e", "exit", "quit":
                         closeClient();
