@@ -235,4 +235,16 @@ public class Client {
             default -> System.out.println("Invalid command!");
         }
     }
+
+    public void run() {
+        try {
+            printAvailableCommands();
+            while (clientSocket.isConnected() && !clientSocket.isClosed() && !exit) {
+                loop();
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        closeClient();
+    }
 }
