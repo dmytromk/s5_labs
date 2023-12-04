@@ -1,125 +1,110 @@
-require 'date'
+class Note
+  attr_accessor :title, :content, :created_at, :updated_at, :tags, :importance
 
-class Event
-  attr_accessor :date, :importance
-
-  def initialize(date, importance)
-    @date = date
+  def initialize(title, content, tags = [], importance = 0)
+    @title = title
+    @content = content
+    @created_at = Time.now
+    @updated_at = @created_at + rand(100)
+    @tags = tags
     @importance = importance
   end
 end
 
-class SingleEvent < Event
-end
-
-class RecurringEvent < Event
-  attr_accessor :frequency
-
-  def initialize(date, importance, frequency)
-    super(date, importance)
-    @frequency = frequency
+module Sortable
+  def sort_by_creation_time(notes)
+    notes.sort_by(&:created_at)
   end
 
-  def final_occurrence(end_date)
-    current_occurrence = @date
+  def sort_by_last_update_time(notes)
+    notes.sort_by(&:updated_at)
+  end
 
-    case @frequency
-    when 'daily'
-      current_occurrence += 1 until current_occurrence > end_date
-    when 'weekly'
-      current_occurrence += 7 until current_occurrence > end_date
-    when 'monthly'
-      current_occurrence = current_occurrence.next_month until current_occurrence > end_date
-    else
-      # Handle other frequencies as needed
-      current_occurrence
-    end
-
-    current_occurrence
+  def sort_by_importance(notes)
+    notes.sort_by(&:importance).reverse
   end
 end
 
-
-class Organizer
-  attr_accessor :events
-
-  def initialize
-    @events = []
+module Searchable
+  def search_by_content(notes, keyword)
+    notes.select { |note| note.content.include?(keyword) }
   end
 
-  def add_event(event)
-    @events << event
+  def search_by_tags(notes, tags)
+    notes.select { |note| (tags - note.tags).empty? }
   end
 
-  def find_events_by_date(start_date, end_date)
-    @events.select { |event| event.date.between?(start_date, end_date) }
+  def search_by_time_range(notes, start_time, end_time)
+    notes.select { |note| note.created_at.between?(start_time, end_time) }
+  end
+end
+
+class ImageNote < Note
+  attr_accessor :image_path
+
+  def initialize(title, content, image_path, tags = [], importance = 0)
+    super(title, content, tags, importance)
+    @image_path = image_path
+  end
+end
+
+class TextNote < Note
+end
+
+class ChecklistNote < Note
+  attr_accessor :checklist_items
+
+  def initialize(title, checklist_items, tags = [], importance = 0)
+    super(title, "", tags, importance)
+    @checklist_items = checklist_items
+  end
+end
+
+class NoteManager
+  include Sortable
+  include Searchable
+
+  attr_accessor :notes
+
+  def initialize(notes = [])
+    @notes = notes
   end
 
-  def find_events_by_importance(importance)
-    @events.select { |event| event.importance == importance }
-  end
-
-  def sort_events_by_date
-    @events.sort_by(&:date)
-  end
-
-  def sort_events_by_importance
-    @events.sort_by(&:importance).reverse
-  end
-
-  def upcoming_events(num)
-    @events.sort_by(&:date).first(num)
-  end
-
-  def remind_upcoming_events(today, period)
-    end_date = today + period
-    upcoming = []
-
-    @events.each do |event|
-      if event.is_a?(RecurringEvent)
-        final_date = event.final_occurrence(end_date)
-        upcoming << event if final_date >= today
-      else
-        upcoming << event if event.date.between?(today, end_date)
-      end
-    end
-
-    puts "\nПодії в періоді з #{today} до #{end_date}:"
-    upcoming.each do |event|
-      puts "Дата: #{event.date}, Важливість: #{event.importance}"
+  def display_notes(notes)
+    notes.each do |note|
+      puts "Title: #{note.title}"
+      puts "Content: #{note.content}"
+      puts "Tags: #{note.tags.join(', ')}"
+      puts "Importance: #{note.importance}"
+      puts "Created At: #{note.created_at}"
+      puts "Updated At: #{note.updated_at}"
+      puts "\n"
     end
   end
 end
 
+# Додавання декількох нотаток до менеджера
+image_note = ImageNote.new("Nature", "Beautiful landscape", "/path/to/image.jpg", ["nature", "landscape"], 5)
+text_note = TextNote.new("Meeting", "Discuss project plan", ["meeting"], 3)
+checklist_note = ChecklistNote.new("Shopping", ["Milk", "Eggs", "Bread"], ["shopping"], 2)
 
-organizer = Organizer.new
+note_manager = NoteManager.new([image_note, text_note, checklist_note])
 
-event1 = SingleEvent.new(Date.new(2023, 12, 10), 3)
-event2 = RecurringEvent.new(Date.new(2023, 11, 15), 5, 'monthly')
-event3 = SingleEvent.new(Date.new(2023, 12, 5), 2)
+# Сортування по часу
+sorted_notes_by_update_time = note_manager.sort_by_last_update_time(note_manager.notes)
+puts "\nSorted Notes by Last Update Time:"
+note_manager.display_notes(sorted_notes_by_update_time)
 
-organizer.add_event(event1)
-organizer.add_event(event2)
-organizer.add_event(event3)
+# Пошук
+searched_notes_by_tags = note_manager.search_by_tags(note_manager.notes, ["nature"])
+puts "\nSearched Notes by Tags:"
+note_manager.display_notes(searched_notes_by_tags)
 
-sorted_by_date = organizer.sort_events_by_date
-sorted_by_importance = organizer.sort_events_by_importance
-result_events = organizer.find_events_by_date(Date.new(2023, 12, 1), Date.new(2023, 12, 15))
+# Додавання нової нотатки
+new_text_note = TextNote.new("\nNew Note", "This is a new note", ["new"], 4)
+note_manager.notes << new_text_note
 
-# Вивід результатів
-puts "Події в заданому діапазоні дат:"
-result_events.each do |event|
-  puts "Дата: #{event.date}, Важливість: #{event.importance}"
-end
-
-puts "\nПодії, відсортовані за датою:"
-sorted_by_date.each do |event|
-  puts "Дата: #{event.date}, Важливість: #{event.importance}"
-end
-
-puts "\nПодії, відсортовані за важливістю:"
-sorted_by_importance.each do |event|
-  puts "Дата: #{event.date}, Важливість: #{event.importance}"
-end
-
-organizer.remind_upcoming_events(Date.new(2024, 12, 8), 7)
+# Сортування по важливості
+sorted_notes_by_importance = note_manager.sort_by_importance(note_manager.notes)
+puts "\nSorted Notes by Importance:"
+note_manager.display_notes(sorted_notes_by_importance)
