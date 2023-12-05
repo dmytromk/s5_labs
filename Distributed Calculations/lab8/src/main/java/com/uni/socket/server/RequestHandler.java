@@ -59,7 +59,7 @@ public class RequestHandler implements Runnable {
         if (airline != null) {
             writer.println(JsonMapper.convertObjectToJson(airline));
         } else {
-            writer.println("[]");
+            writer.println("");
         }
     }
 
@@ -69,7 +69,7 @@ public class RequestHandler implements Runnable {
         if (flight != null) {
             writer.println(JsonMapper.convertObjectToJson(flight));
         } else {
-            writer.println("[]");
+            writer.println("");
         }
     }
 

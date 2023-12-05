@@ -126,7 +126,7 @@ public class Client {
         if (Objects.equals(result, "")) {
             return;
         }
-        List<Flight> flights = JsonMapper.convertJsonToList(in.readLine(), Flight.class);
+        List<Flight> flights = JsonMapper.convertJsonToList(result, Flight.class);
         for (Flight flight : flights) {
             System.out.println(flight.toString());
         }
