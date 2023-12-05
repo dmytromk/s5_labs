@@ -5,12 +5,14 @@ import com.uni.common.model.Airline;
 import com.uni.common.model.Flight;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class RemoteDatabaseController implements RemoteDatabaseInterface {
+public class RemoteDatabaseController extends UnicastRemoteObject implements RemoteDatabaseInterface {
     private final DatabaseController databaseController;
 
-    public RemoteDatabaseController(DatabaseController databaseController) {
+    public RemoteDatabaseController(DatabaseController databaseController) throws RemoteException {
+        super();
         this.databaseController = databaseController;
     }
 
