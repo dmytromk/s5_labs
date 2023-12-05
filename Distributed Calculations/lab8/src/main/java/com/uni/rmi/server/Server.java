@@ -27,7 +27,7 @@ public class Server {
 
     public void start(int port) throws RemoteException {
         Registry registry = LocateRegistry.createRegistry(port);
-        registry.rebind("Airtable", remoteDatabaseController);
+        registry.rebind("Airservice", remoteDatabaseController);
 
         System.out.println("SERVER ONLINE");
     }

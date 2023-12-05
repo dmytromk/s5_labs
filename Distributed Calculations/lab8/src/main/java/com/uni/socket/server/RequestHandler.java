@@ -42,15 +42,15 @@ public class RequestHandler implements Runnable {
     }
 
     private void showAirlines() throws IOException {
-        List<Airline> authors;
-        authors = server.getDatabaseController().getAllAirlines();
-        writer.println(JsonMapper.convertObjectToJson(authors));
+        List<Airline> airlines;
+        airlines = server.getDatabaseController().getAllAirlines();
+        writer.println(JsonMapper.convertObjectToJson(airlines));
     }
 
     private void showFlights() throws IOException {
-        List<Flight> authors;
-        authors = server.getDatabaseController().getAllFlights();
-        writer.println(JsonMapper.convertObjectToJson(authors));
+        List<Flight> flights;
+        flights = server.getDatabaseController().getAllFlights();
+        writer.println(JsonMapper.convertObjectToJson(flights));
     }
 
     private void getAirline() throws IOException {
