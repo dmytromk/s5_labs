@@ -64,11 +64,11 @@ public class Client {
         return airline;
     }
 
-    private Flight createFlight() {
+    private Flight createFlight(String airlineId) {
         System.out.println("\nYou are in a flight creation menu");
         Flight flight = new Flight();
         System.out.println("New flight`s ID is " + flight.getId());
-        flight.setAirlineId(manager.getString("Enter airline's ID : "));
+        flight.setAirlineId(airlineId);
         flight.setName(manager.getString("Enter name : "));
         flight.setPrice(manager.getDouble("Enter price : "));
         flight.setOrigin(manager.getString("Enter origin : "));
@@ -146,7 +146,7 @@ public class Client {
         if (!Objects.equals(result, "")) {
             Airline airline = JsonMapper.convertJsonToObject(result, Airline.class);
             out.println("af");
-            Flight flight = createFlight();
+            Flight flight = createFlight(airlineId);
             out.println(JsonMapper.convertObjectToJson(flight));
         } else {
             System.out.println("No airline with such an ID");
