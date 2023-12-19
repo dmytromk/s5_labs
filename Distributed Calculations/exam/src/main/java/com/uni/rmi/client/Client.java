@@ -38,6 +38,10 @@ public class Client {
         System.out.println("add - Add Note");
         System.out.println("delete - Delete Notes");
         System.out.println("update - Update Notes");
+        System.out.println("sort_time - Sort Notes by Time");
+        System.out.println("sort_importance - Sort Notes by Importance");
+        System.out.println("sort_title - Sort Notes by Title");
+        System.out.println("sort_id - Sort Notes by ID");
         System.out.println("q, e, exit, quit - Quit the application");
     }
 
@@ -45,8 +49,9 @@ public class Client {
         System.out.println("\nYou are in an note creation menu");
         Note note = new Note();
         System.out.println("New note`s ID is " + note.getId());
-        note.setName(manager.getString("Enter name: "));
-        note.setCountry(manager.getString("Enter country: "));
+        note.setTitle(manager.getString("Enter title: "));
+        note.setContent(manager.getString("Enter content: "));
+        note.setImportance(manager.getInt("Enter importance: "));
         return note;
     }
 
@@ -54,11 +59,12 @@ public class Client {
         System.out.println("\nYou are in an note modification menu");
         System.out.println("Current state : \n" + note);
         while (manager.getBoolean("Do you want change something? ")) {
-            System.out.println(" n - name;\n c - country;");
+            System.out.println(" t - title;\n c - content;\ni - importance");
             String input = manager.getString("Enter command : ");
             switch (input) {
-                case "n" -> note.setName(manager.getString("Enter name : "));
-                case "c" -> note.setCountry(manager.getString("Enter country : "));
+                case "t" -> note.setTitle(manager.getString("Enter title : "));
+                case "c" -> note.setContent(manager.getString("Enter content : "));
+                case "i" -> note.setImportance(manager.getInt("Enter importance : "));
                 default -> System.out.println("Invalid command!");
             }
         }
@@ -107,11 +113,11 @@ public class Client {
             String input;
             input = manager.getString("Enter command : ");
             switch (input) {
-                case "sa" -> showNotes();
-                case "aa" -> addNote();
-                case "ga" -> getNote();
-                case "ua" -> updateNote();
-                case "da" -> deleteNote();
+                case "show" -> showNotes();
+                case "add" -> addNote();
+                case "get" -> getNote();
+                case "update" -> updateNote();
+                case "delete" -> deleteNote();
                 case "h" -> printAvailableCommands();
                 case "q", "e", "exit", "quit" -> {
                     System.out.println("\nExiting...\n");
