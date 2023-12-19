@@ -5,8 +5,10 @@ import com.uni.common.Note;
 import com.uni.rmi.server.controller.RemoteNotesInterface;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
+import java.util.Comparator;
 import java.util.List;
 
 public class Client {
@@ -108,6 +110,22 @@ public class Client {
         remoteNotesInterface.deleteNoteById(noteId);
     }
 
+    public void sortNotesByTime() throws RemoteException {
+        remoteNotesInterface.sortNotesByTime();
+    }
+
+    public void sortNotesByImportance() throws RemoteException {
+        remoteNotesInterface.sortNotesByImportance();
+    }
+
+    public void sortNotesByTitle() throws RemoteException {
+        remoteNotesInterface.sortNotesByTitle();
+    }
+
+    public void sortNotesById() throws RemoteException {
+        remoteNotesInterface.sortNotesById();
+    }
+
     private void loop() throws IOException {
         while (true) {
             String input;
@@ -118,6 +136,10 @@ public class Client {
                 case "get" -> getNote();
                 case "update" -> updateNote();
                 case "delete" -> deleteNote();
+                case "sort_time" -> sortNotesByTime();
+                case "sort_importance" -> sortNotesByImportance();
+                case "sort_title" -> sortNotesByTitle();
+                case "sort_id" -> sortNotesById();
                 case "h" -> printAvailableCommands();
                 case "q", "e", "exit", "quit" -> {
                     System.out.println("\nExiting...\n");

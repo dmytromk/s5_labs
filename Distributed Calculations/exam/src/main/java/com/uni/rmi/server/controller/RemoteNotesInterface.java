@@ -13,4 +13,12 @@ public interface RemoteNotesInterface extends Remote{
     List<Note> getAllNotes() throws RemoteException;
     void updateNote(Note updateNote) throws RemoteException;
     void deleteNoteById(String noteId) throws RemoteException;
+
+    void sortNotesByTime() throws RemoteException;
+
+    void sortNotesByImportance() throws RemoteException;
+
+    void sortNotesByTitle() throws RemoteException;
+
+    void sortNotesById() throws RemoteException;
 }

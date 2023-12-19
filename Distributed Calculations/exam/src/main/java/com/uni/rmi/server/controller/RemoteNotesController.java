@@ -4,6 +4,7 @@ import com.uni.common.Note;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -47,5 +48,21 @@ public class RemoteNotesController extends UnicastRemoteObject implements Remote
 
     public void deleteNoteById(String noteId) throws RemoteException {
         noteList.removeIf(note -> noteId.equals(note.getId()));
+    }
+
+    public void sortNotesByTime() throws RemoteException {
+        noteList.sort(Comparator.comparing(Note::getLastModified));
+    }
+
+    public void sortNotesByImportance() throws RemoteException {
+        noteList.sort(Comparator.comparingInt(Note::getImportance));
+    }
+
+    public void sortNotesByTitle() throws RemoteException {
+        noteList.sort(Comparator.comparing(Note::getTitle));
+    }
+
+    public void sortNotesById() throws RemoteException {
+        noteList.sort(Comparator.comparing(Note::getId));
     }
 }
