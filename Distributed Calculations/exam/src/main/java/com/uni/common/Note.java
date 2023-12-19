@@ -36,6 +36,7 @@ public class Note implements Serializable {
 
     public Note() {
         this.id = String.valueOf(UUID.randomUUID());
+        this.lastModified = new Date();
     }
 
     @Override

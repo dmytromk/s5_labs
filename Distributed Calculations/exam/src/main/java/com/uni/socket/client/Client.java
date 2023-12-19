@@ -46,6 +46,10 @@ public class Client {
         System.out.println("add - Add Note");
         System.out.println("delete - Delete Notes");
         System.out.println("update - Update Notes");
+        System.out.println("sort_time - Sort Notes by Time");
+        System.out.println("sort_importance - Sort Notes by Importance");
+        System.out.println("sort_title - Sort Notes by Title");
+        System.out.println("sort_id - Sort Notes by ID");
         System.out.println("q, e, exit, quit - Quit the application");
     }
 
@@ -125,6 +129,10 @@ public class Client {
         out.println(noteId);
     }
 
+    private void sortNotes(String input) throws IOException {
+        out.println(input);
+    }
+
     private void loop() throws IOException {
         String input;
         input = manager.getString("Enter command : ");
@@ -134,6 +142,7 @@ public class Client {
             case "get" -> getNote();
             case "update" -> updateNote();
             case "delete" -> deleteNote();
+            case "sort_time", "sort_importance", "sort_title", "sort_id" -> sortNotes(input);
             case "h" -> printAvailableCommands();
             case "q", "e", "exit", "quit" -> {
                 System.out.println("\nExiting...\n");
